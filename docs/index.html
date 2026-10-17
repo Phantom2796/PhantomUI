@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhantomUI – Azeroth Survivors</title>
+<meta name="description" content="PhantomUI: the complete, dark and flat interface for Azeroth Survivors – frames, minimap, damage meter, floating numbers and an ability plan in one addon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0a0e; --panel:#121016; --panel2:#18151d; --line:#000;
+  --text:#ece6f3; --muted:#a59cb2; --accent:#9e4deb; --accent2:#c08af5;
+  --rage:#e5191a; --combo:#f2401a; --hp:#3fbf55; --gold:#ffd200;
+  --radius:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent2)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+
+/* Hintergrund-Gitter wie im Ankerpunkt-Modus */
+.grid-bg{position:fixed;inset:0;z-index:-1;
+  background:
+   radial-gradient(ellipse 70% 50% at 50% 0%,rgba(158,77,235,.28),transparent 70%),
+   repeating-linear-gradient(0deg,rgba(90,40,140,.18) 0 1px,transparent 1px 32px),
+   repeating-linear-gradient(90deg,rgba(90,40,140,.18) 0 1px,transparent 1px 32px),
+   var(--bg)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-family:Cinzel,serif;font-weight:700;letter-spacing:3px;font-size:20px;color:var(--text);text-decoration:none}
+.logo span{color:var(--accent2)}
+nav .links a{color:var(--muted);text-decoration:none;margin-left:22px;font-size:14px}
+nav .links a:hover{color:var(--text)}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:56px 0 72px}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);border:1px solid #2c1d40;background:#150f1d;padding:4px 10px;border-radius:999px}
+h1{font-family:Cinzel,serif;font-size:clamp(40px,6vw,68px);line-height:1.05;margin:18px 0 14px;letter-spacing:2px}
+h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:18px;max-width:520px}
+.cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border:1px solid #000;border-radius:var(--radius);font-weight:600;text-decoration:none;font-size:15px;transition:transform .15s,box-shadow .15s}
+.btn.primary{background:linear-gradient(180deg,#a85cf0,#7b33c6);color:#fff;box-shadow:0 0 0 1px #000,0 8px 28px rgba(158,77,235,.35)}
+.btn.ghost{background:#16121c;color:var(--text);box-shadow:0 0 0 1px #000}
+.btn:hover{transform:translateY(-2px)}
+.meta{margin-top:14px;font-size:13px;color:var(--muted)}
+
+/* UI-Vorschau aus reinem CSS */
+.mock{background:linear-gradient(180deg,#203a1d,#16260f);border:2px solid #000;border-radius:6px;padding:26px 20px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px #2c1d40}
+.mock::after{content:"";position:absolute;inset:0;border-radius:6px;background:radial-gradient(circle at 50% 120%,rgba(0,0,0,.55),transparent 60%);pointer-events:none}
+.row{display:flex;gap:10px;justify-content:center;align-items:flex-start}
+.uf{display:flex;border:1px solid #000;background:#121014;height:42px}
+.uf .por{width:40px;background:linear-gradient(135deg,#3a2a55,#16101f)}
+.uf .body{display:flex;flex-direction:column;width:132px}
+.uf .name{height:15px;font-size:10px;padding:0 4px;color:var(--gold);display:flex;justify-content:space-between;border-bottom:1px solid #000}
+.uf .hp{flex:1;position:relative;font-size:11px;display:flex;align-items:center;justify-content:center;color:#fff;text-shadow:0 1px 0 #000}
+.uf .hp i{position:absolute;inset:0;width:var(--w);background:var(--c)}
+.uf .hp b{position:relative;font-weight:500}
+.mid{display:flex;flex-direction:column;gap:5px;width:150px}
+.row{align-items:flex-end}
+.tgt{display:flex;flex-direction:column;gap:5px}
+.boss{position:relative;height:18px;border:1px solid #000;background:#1a0f26;font-size:10px;display:flex;align-items:center;justify-content:space-between;padding:0 5px;color:#fff;text-shadow:0 1px 0 #000}
+.boss i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,#7a35c4,#b57af2)}
+.boss span,.boss b{position:relative;font-weight:500}
+.tally{display:flex;border:1px solid #000;background:#121014;font-size:12px;height:20px}
+.tally span{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border-right:1px solid #000}
+.tally span:last-child{border:0}
+.bar{display:flex;justify-content:center;margin-top:26px}
+.bar i{width:34px;height:34px;border:1px solid #000;margin-left:-1px;background:linear-gradient(135deg,var(--a),var(--b))}
+.xp{height:6px;width:232px;margin:4px auto 0;border:1px solid #000;background:#1d1028}
+.xp i{display:block;height:100%;width:62%;background:var(--accent)}
+.meter{position:relative;margin:0 0 22px auto;width:200px;background:rgba(14,12,18,.94);border:1px solid #000;font-size:11px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.meter header{display:flex;justify-content:space-between;padding:5px 8px;color:var(--accent2);border-bottom:1px solid #000;font-weight:600}
+.meter .l{display:flex;align-items:center;gap:6px;padding:3px 6px;position:relative}
+.meter .l::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:var(--w);background:rgba(158,77,235,.28)}
+.meter .l *{position:relative}
+.meter .ic{width:14px;height:14px;border:1px solid #000;background:var(--c)}
+.meter .v{margin-left:auto;color:var(--muted)}
+.float{position:absolute;font-weight:700;font-family:Inter,sans-serif;text-shadow:0 0 3px #000,0 0 3px #000;color:#fff;animation:up 2.6s infinite ease-out;opacity:0}
+.float.crit{color:#ff4d4d;font-size:18px}
+@keyframes up{0%{transform:translateY(8px);opacity:0}15%{opacity:1}100%{transform:translateY(-34px);opacity:0}}
+
+section{padding:64px 0}
+h2{font-family:Cinzel,serif;font-size:34px;margin:0 0 8px;letter-spacing:1px}
+.sub{color:var(--muted);margin:0 0 34px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid #000;box-shadow:0 0 0 1px #221a2c inset;padding:22px;border-radius:var(--radius);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--accent) inset}
+.card .ico{width:38px;height:38px;border:1px solid #000;display:grid;place-items:center;background:#1c1426;color:var(--accent2);font-size:18px;margin-bottom:14px}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+.step{background:var(--panel2);border:1px solid #000;padding:20px;position:relative}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:16px;width:28px;height:28px;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:700;border:1px solid #000}
+.step p{margin:6px 0 0;color:var(--muted);font-size:14px}
+code{background:#1b1622;border:1px solid #000;padding:1px 6px;border-radius:3px;font-size:.9em;color:#e3d2fa}
+
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid #000}
+td{padding:12px 16px;border-bottom:1px solid #000}
+td:first-child{width:260px}
+tr:last-child td{border-bottom:0}
+td:last-child{color:var(--muted)}
+
+.faq details{background:var(--panel);border:1px solid #000;margin-bottom:8px;padding:14px 18px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{color:var(--muted);margin:10px 0 0}
+
+footer{padding:40px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid #1d1726;margin-top:30px}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr;row-gap:28px}
+  .meter{margin:0 auto 22px}
+}
+@media (max-width:560px){
+  .cards,.steps{grid-template-columns:1fr}
+  nav .links{display:none}
+  .mock{padding:18px 10px}
+  .row{gap:5px}
+  .uf .por{width:26px}
+  .uf .body{width:88px}
+  .uf .hp{font-size:9px}
+  .mid{width:96px}
+  .bar i{width:26px;height:26px}
+  .xp{width:180px}
+  td:first-child{width:auto}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#">PHANTOM<span>UI</span></a>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/Phantom2796/PhantomUI">GitHub</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Addon for Azeroth Survivors</span>
+      <h1>Your run.<br><span>Your interface.</span></h1>
+      <p class="lead">One addon instead of five: dark, flat frames with crisp borders, a damage meter that knows every spell, compact floating numbers and an ability plan – all movable, all in one menu.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/Phantom2796/PhantomUI/raw/main/download/PhantomUI.zip">⬇ Download latest</a>
+        <a class="btn ghost" href="#features">See what's inside</a>
+      </div>
+      <div class="meta">Free · all 10 game languages · no other UI addon needed</div>
+    </div>
+
+    <div class="mock" aria-hidden="true">
+      <div class="meter">
+        <header><span>‹</span>Damage<span>›</span></header>
+        <div class="l" style="--w:92%"><i class="ic" style="--c:linear-gradient(135deg,#ff9b3d,#a02010)"></i><span>Rampage</span><span class="v">48.2K</span></div>
+        <div class="l" style="--w:64%"><i class="ic" style="--c:linear-gradient(135deg,#d6d6d6,#4b4b4b)"></i><span>Whirlwind</span><span class="v">33.5K</span></div>
+        <div class="l" style="--w:40%"><i class="ic" style="--c:linear-gradient(135deg,#7ad0ff,#1a4f8a)"></i><span>Thunder Clap</span><span class="v">20.9K</span></div>
+        <div class="l" style="--w:22%"><i class="ic" style="--c:linear-gradient(135deg,#c08af5,#3a1767)"></i><span>Execute</span><span class="v">11.4K</span></div>
+      </div>
+      <div class="row">
+        <div class="uf"><div class="por"></div><div class="body"><div class="name"><span>Phantom</span><span>12</span></div><div class="hp" style="--w:86%;--c:var(--hp)"><i></i><b>412 / 478</b></div></div></div>
+        <div class="mid">
+          <div class="tally"><span>🪙 225</span><span>📦 20</span></div>
+        </div>
+        <div class="tgt">
+          <div class="boss"><i style="--w:56%"></i><span>Champion der Qiraji</span><b>17.2K 56%</b></div>
+          <div class="uf"><div class="body"><div class="name"><span>12</span><span>Hogger</span></div><div class="hp" style="--w:33%;--c:#c9232b"><i></i><b>115 / 351</b></div></div><div class="por" style="background:linear-gradient(135deg,#6b5a3a,#20180c)"></div></div>
+        </div>
+      </div>
+      <div class="bar">
+        <i style="--a:#ffb347;--b:#7a1f0a"></i><i style="--a:#e6e6e6;--b:#3c3c3c"></i><i style="--a:#7ad0ff;--b:#183c6e"></i><i style="--a:#c08af5;--b:#30125a"></i><i style="--a:#9be37a;--b:#1d4a12"></i><i style="--a:#ff6b6b;--b:#5a0d0d"></i><i style="--a:#f3e3b0;--b:#6b5320"></i>
+      </div>
+      <div class="xp"><i></i></div>
+      <span class="float" style="left:22%;top:12%">1054</span>
+      <span class="float crit" style="left:34%;top:6%;animation-delay:.8s">2483!</span>
+      <span class="float" style="left:12%;top:24%;animation-delay:1.6s">527</span>
+    </div>
+  </header>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Everything in one addon</h2>
+    <p class="sub">Interface, minimap, damage meter and floating numbers share one style, one settings window and one anchor mode.</p>
+    <div class="cards">
+      <div class="card"><div class="ico">▣</div><h3>Complete interface</h3><p>Player and target frames, flush action bar, run timer with boss skulls, boss and guardian bars, XP bar, square minimap, game menu, nameplates.</p></div>
+      <div class="card"><div class="ico">◆</div><h3>Alerts &amp; run stats</h3><p>Boss and guardian alerts small under the chat instead of big banners, and your run stats always visible next to the minimap – with the game's own tooltips.</p></div>
+      <div class="card"><div class="ico">◎</div><h3>Retail-style buffs</h3><p>Cooldown clock and countdown inside the icon, stacks in the corner, debuff borders in their type color, no blinking.</p></div>
+      <div class="card"><div class="ico">≡</div><h3>Damage meter</h3><p>Per-ability damage, DPS and share. Flip with the arrows between damage, boss damage only and healing. The right icon for every spell, proc and jewel in all languages.</p></div>
+      <div class="card"><div class="ico">✦</div><h3>Floating numbers</h3><p>Compact damage numbers with the spell icon above your enemies, red crits, merged hits and a minimum size so the screen stays readable.</p></div>
+      <div class="card"><div class="ico">❖</div><h3>Ability &amp; item plan</h3><p>Click your abilities, necklace, rings and trinkets in the order you want them. Saved per class, shown during the run, taken abilities turn green; tooltips show each item's base effect.</p></div>
+      <div class="card"><div class="ico">✥</div><h3>Anchor mode</h3><p>Drag any frame, pull edges for width and height, the corner scales. A grid with black center lines and mirrored colors makes symmetric layouts easy.</p></div>
+      <div class="card"><div class="ico">✎</div><h3>Clean chat</h3><p>Transparent and movable, a modern font, a flat input line and old lines fade out after 10 seconds. Mouse wheel scrolls, Shift jumps to the top or bottom.</p></div>
+      <div class="card"><div class="ico">⚙</div><h3>One settings window</h3><p><code>/pui</code> opens every option in tabs: textures, fonts, sizes, colors and an on/off switch for each part.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install in a minute</h2>
+    <p class="sub">PhantomUI is a complete UI on its own.</p>
+    <div class="steps">
+      <div class="step"><strong>Download</strong><p>Grab the zip from the <a href="https://github.com/Phantom2796/PhantomUI/raw/main/download/PhantomUI.zip">download link</a> – always the newest version.</p></div>
+      <div class="step"><strong>Unzip</strong><p>Place the <code>PhantomUI</code> folder in <code>benilla-config/AddOns/</code>.</p></div>
+      <div class="step"><strong>Clean up</strong><p>Disable SurvivorsDragonUi; delete old CompactSCT / AZS Spell Meter folders – they are built in now.</p></div>
+      <div class="step"><strong>Play</strong><p>Start the game and type <code>/pui</code> to make it yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="commands">
+  <div class="wrap">
+    <h2>Commands</h2>
+    <p class="sub">Most things also sit on the button strip under the minimap.</p>
+    <table>
+      <tr><td><code>/pui</code></td><td>settings window</td></tr>
+      <tr><td><code>/pui unlock</code> · <code>/pui lock</code></td><td>anchor mode on / off</td></tr>
+      <tr><td><code>/pui reset</code></td><td>every frame back to the default layout</td></tr>
+      <tr><td><code>/plan</code></td><td>ability &amp; item plan editor</td></tr>
+      <tr><td><code>/azsm</code></td><td>damage meter: show, hide, reset, resetpos</td></tr>
+      <tr><td><code>/csct</code></td><td>floating numbers settings</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <h2>Good to know</h2>
+    <p class="sub">&nbsp;</p>
+    <details><summary>Can the plan show up in the main menu?</summary><p>No. The main menu is drawn by the game itself before the addon interface loads. Plan once with <code>/plan</code> during any run – it is saved per class and shows up in every run after that.</p></details>
+    <details><summary>Can PhantomUI pick the level-up cards for me?</summary><p>No. The choice cards are drawn by the game and there is no way for an addon to choose them. The plan window is there so you know at a glance what to take.</p></details>
+    <details><summary>Where are my settings stored?</summary><p>In <code>benilla-config/saved/PhantomUI.lua</code>. Updating the addon folder keeps them.</p></details>
+    <details><summary>Something looks off after a game update?</summary><p>Open an issue on GitHub with a screenshot – the addon reads the game's own data, so most updates need no change at all.</p></details>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    PhantomUI by Nobby · made for <strong>Azeroth Survivors</strong> · chat font Roboto (Apache License 2.0) ·
+    <a href="https://github.com/Phantom2796/PhantomUI">Source on GitHub</a>
+  </footer>
+</div>
+</body>
+</html>

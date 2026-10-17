@@ -1,0 +1,553 @@
+-- PhantomUI: Faehigkeiten-Plan. Vor dem Lauf im Editor anklicken, welche
+-- Faehigkeiten man in welcher Reihenfolge nehmen will; das wird je Klasse
+-- gespeichert und im Spiel als kleines Fenster angezeigt. Schon genommene
+-- Faehigkeiten werden darin gruen markiert (aus AZS_SPELLS).
+
+local P = PhantomUI
+
+local CLASS_ORDER = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" }
+local CLASS_COORDS = {
+	WARRIOR = { 0, 0.25, 0, 0.25 },
+	MAGE = { 0.25, 0.5, 0, 0.25 },
+	ROGUE = { 0.5, 0.75, 0, 0.25 },
+	DRUID = { 0.75, 1, 0, 0.25 },
+	HUNTER = { 0, 0.25, 0.25, 0.5 },
+	SHAMAN = { 0.25, 0.5, 0.25, 0.5 },
+	PRIEST = { 0.5, 0.75, 0.25, 0.5 },
+	WARLOCK = { 0.75, 1, 0.25, 0.5 },
+	PALADIN = { 0, 0.25, 0.5, 0.75 },
+}
+local GREEN = { 0.2, 0.9, 0.3 }
+-- Reiter im Editor und Zeilen im Fenster: Faehigkeiten, dann Gegenstaende
+local CATS = { "ABILITY", "NECK", "RING", "TRINKET" }
+
+local L = {
+	enUS = { ABILITY = "Abilities", NECK = "Neck", RING = "Ring", TRINKET = "Trinket", editItems = "Click items in the order you want them.", base = "Base value - higher rarity raises it", title = "Ability plan", edit = "Click abilities in the order you want to take them.", clear = "Clear", done = "Done", empty = "Plan: click to choose abilities", owned = "already taken", hint = "Left click: edit  -  Right click: hide" },
+	deDE = { ABILITY = "Fähigkeiten", NECK = "Hals", RING = "Ring", TRINKET = "Schmuck", editItems = "Gegenstände in der Reihenfolge anklicken, in der du sie willst.", base = "Grundwert – höhere Seltenheit verstärkt ihn", title = "Fähigkeiten-Plan", edit = "Fähigkeiten in der Reihenfolge anklicken, in der du sie nehmen willst.", clear = "Leeren", done = "Fertig", empty = "Plan: klicken zum Auswählen", owned = "schon genommen", hint = "Linksklick: bearbeiten  -  Rechtsklick: ausblenden" },
+}
+local function T(key)
+	local lang = PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+	local t = L[lang] or L.enUS
+	return t[key] or L.enUS[key]
+end
+
+local function Lang()
+	return PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+end
+
+local function PlayerClass()
+	local _, class = UnitClass("player")
+	return class or "WARRIOR"
+end
+
+-- Auswahl je Reiter: Faehigkeiten der Klasse oder Gegenstaende eines Platzes
+local function Choices(class, cat)
+	if cat == "ABILITY" then
+		return PhantomUI_PlanData and PhantomUI_PlanData[class] or {}
+	end
+	return PhantomUI_PlanItems and PhantomUI_PlanItems[cat] or {}
+end
+
+local function Ability(class, id, cat)
+	local list = Choices(class, cat or "ABILITY")
+	if not list then
+		return nil
+	end
+	for i = 1, table.getn(list) do
+		if list[i].id == id then
+			return list[i]
+		end
+	end
+	return nil
+end
+
+local function NameOf(a)
+	return a.names[Lang()] or a.names.enUS or a.id
+end
+
+-- Wirkung eines Gegenstands (Faehigkeiten haben keine)
+local function DescOf(a)
+	if not a or not a.desc then
+		return nil
+	end
+	return a.desc[Lang()] or a.desc.enUS
+end
+
+-- Plan je Klasse; Gegenstaende unter "KLASSE:PLATZ"
+local function Plan(class, cat)
+	local db = P.DB().plan
+	local key = class
+	if cat and cat ~= "ABILITY" then
+		key = class .. ":" .. cat
+	end
+	db.data[key] = db.data[key] or {}
+	return db.data[key]
+end
+
+local function IndexIn(list, id)
+	for i = 1, table.getn(list) do
+		if list[i] == id then
+			return i
+		end
+	end
+	return nil
+end
+
+-- Faehigkeiten, die der Held in diesem Lauf schon hat.
+local function Owned()
+	local owned = {}
+	local spells = AZS_SPELLS
+	if type(spells) == "table" then
+		for i = 1, table.getn(spells) do
+			local s = spells[i]
+			if type(s) == "table" and s.key then
+				owned[s.key] = true
+			end
+		end
+	end
+	return owned
+end
+
+------------------------------------------------------------------------
+-- Knopf mit Symbol (fuer Fenster und Editor)
+------------------------------------------------------------------------
+
+local function IconButton(parent, size)
+	local b = CreateFrame("Button", nil, parent)
+	b:SetWidth(size)
+	b:SetHeight(size)
+	b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	b.edge = b:CreateTexture(nil, "BACKGROUND")
+	b.edge:SetTexture(P.FLAT)
+	b.edge:SetAllPoints(b)
+	b.edge:SetVertexColor(0, 0, 0, 1)
+	b.icon = b:CreateTexture(nil, "ARTWORK")
+	b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	b.icon:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+	b.icon:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
+	b.shade = b:CreateTexture(nil, "OVERLAY")
+	b.shade:SetTexture(P.FLAT)
+	b.shade:SetAllPoints(b.icon)
+	b.shade:SetVertexColor(0, 0, 0, 0.55)
+	b.shade:Hide()
+	b.num = b:CreateFontString(nil, "OVERLAY")
+	b.num:SetFont(P.Font(), math.max(9, math.floor(size * 0.38)), "OUTLINE")
+	b.num:SetPoint("TOPLEFT", b, "TOPLEFT", 2, -1)
+	b:SetHighlightTexture(P.FLAT)
+	local hl = b:GetHighlightTexture()
+	hl:SetVertexColor(1, 1, 1, 0.18)
+	hl:SetAllPoints(b.icon)
+	return b
+end
+
+------------------------------------------------------------------------
+-- Editor
+------------------------------------------------------------------------
+
+local editor, editorClass
+local editorCat = "ABILITY"
+local editorButtons, classTabs, catTabs = {}, {}, {}
+local SIZE, GAP, COLS = 36, 4, 7
+local GRID_TOP = -110
+local window
+local RefreshWindow
+
+local function RefreshEditor()
+	if not editor or not editor:IsShown() then
+		return
+	end
+	local list = Choices(editorClass, editorCat)
+	local plan = Plan(editorClass, editorCat)
+	for i = 1, table.getn(list) do
+		local a = list[i]
+		local b = editorButtons[i]
+		if not b then
+			b = IconButton(editor, SIZE)
+			editorButtons[i] = b
+			b:SetScript("OnClick", function()
+				local p = Plan(editorClass, editorCat)
+				local idx = IndexIn(p, this.id)
+				if idx then
+					table.remove(p, idx)
+				else
+					table.insert(p, this.id)
+				end
+				RefreshEditor()
+				RefreshWindow()
+			end)
+			b:SetScript("OnEnter", function()
+				GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+				GameTooltip:SetText(this.name)
+				if this.desc then
+					GameTooltip:AddLine(this.desc, 0.12, 1, 0.12, 1)
+					GameTooltip:AddLine(T("base"), 0.6, 0.6, 0.65)
+				end
+				GameTooltip:Show()
+			end)
+			b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		end
+		local col = math.mod(i - 1, COLS)
+		local row = math.floor((i - 1) / COLS)
+		b:ClearAllPoints()
+		b:SetPoint("TOPLEFT", editor, "TOPLEFT", 16 + col * (SIZE + GAP), GRID_TOP - row * (SIZE + GAP))
+		b.id = a.id
+		b.name = NameOf(a)
+		b.desc = DescOf(a)
+		b.icon:SetTexture("Interface\\Icons\\" .. a.icon)
+		local idx = IndexIn(plan, a.id)
+		if idx then
+			b.edge:SetVertexColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
+			b.num:SetText(idx)
+			b.shade:Hide()
+		else
+			b.edge:SetVertexColor(0, 0, 0, 1)
+			b.num:SetText("")
+			b.shade:Show()
+		end
+		b:Show()
+	end
+	for i = table.getn(list) + 1, table.getn(editorButtons) do
+		editorButtons[i]:Hide()
+	end
+	local rows = math.ceil(table.getn(list) / COLS)
+	editor:SetHeight(-GRID_TOP + rows * (SIZE + GAP) + 44)
+	for i = 1, table.getn(classTabs) do
+		local tab = classTabs[i]
+		if tab.class == editorClass then
+			tab.edge:SetVertexColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
+			tab.shade:Hide()
+		else
+			tab.edge:SetVertexColor(0, 0, 0, 1)
+			tab.shade:Show()
+		end
+	end
+	for i = 1, table.getn(catTabs) do
+		local tab = catTabs[i]
+		tab.text:SetText(T(tab.cat))
+		if tab.cat == editorCat then
+			tab:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
+			tab:SetBackdropColor(0.25, 0.12, 0.38, 1)
+		else
+			tab:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
+			tab:SetBackdropColor(0.12, 0.06, 0.18, 1)
+		end
+	end
+	editor.title:SetText(T("title"))
+	editor.help:SetText(editorCat == "ABILITY" and T("edit") or T("editItems"))
+	editor.clear.text:SetText(T("clear"))
+	editor.done.text:SetText(T("done"))
+end
+
+local function SmallButton(parent, width, onClick)
+	local b = CreateFrame("Button", nil, parent)
+	b:SetWidth(width)
+	b:SetHeight(22)
+	b:SetBackdrop({ bgFile = P.FLAT, edgeFile = P.FLAT, edgeSize = 1 })
+	b:SetBackdropColor(0.12, 0.06, 0.18, 1)
+	b:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
+	b.text = b:CreateFontString(nil, "OVERLAY")
+	b.text:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
+	b.text:SetPoint("CENTER", b, "CENTER", 0, 0)
+	b.text:SetTextColor(P.ACCENT[1] + 0.2, P.ACCENT[2] + 0.25, P.ACCENT[3] + 0.08)
+	b:SetScript("OnEnter", function() this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1) end)
+	b:SetScript("OnLeave", function() this:SetBackdropBorderColor(0.4, 0.2, 0.6, 1) end)
+	b:SetScript("OnClick", onClick)
+	return b
+end
+
+local function BuildEditor()
+	editor = CreateFrame("Frame", "PhantomUI_PlanEditor", UIParent)
+	editor:SetWidth(16 * 2 + COLS * SIZE + (COLS - 1) * GAP)
+	editor:SetFrameStrata("DIALOG")
+	editor:SetPoint("CENTER", UIParent, "CENTER", 0, 60)
+	P.Box(editor, 0.97)
+	editor:EnableMouse(true)
+	editor:SetMovable(true)
+	editor:RegisterForDrag("LeftButton")
+	editor:SetScript("OnDragStart", function() this:StartMoving() end)
+	editor:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
+	if UISpecialFrames then
+		table.insert(UISpecialFrames, "PhantomUI_PlanEditor")
+	end
+
+	editor.title = editor:CreateFontString(nil, "OVERLAY")
+	editor.title:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+	editor.title:SetTextColor(P.ACCENT[1] + 0.1, P.ACCENT[2] + 0.1, P.ACCENT[3])
+	editor.title:SetPoint("TOPLEFT", editor, "TOPLEFT", 16, -12)
+
+	-- Klassen zum Umschalten (Plan je Klasse)
+	for i = 1, table.getn(CLASS_ORDER) do
+		local class = CLASS_ORDER[i]
+		local tab = IconButton(editor, 22)
+		tab:SetPoint("TOPLEFT", editor, "TOPLEFT", 16 + (i - 1) * 25, -34)
+		tab.icon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+		local c = CLASS_COORDS[class]
+		tab.icon:SetTexCoord(c[1] + 0.02, c[2] - 0.02, c[3] + 0.02, c[4] - 0.02)
+		tab.class = class
+		tab:SetScript("OnClick", function()
+			editorClass = this.class
+			RefreshEditor()
+		end)
+		classTabs[i] = tab
+	end
+
+	-- Reiter: Faehigkeiten / Hals / Ring / Schmuck
+	local catW = (editor:GetWidth() - 32 - 3 * 2) / 4
+	for i = 1, table.getn(CATS) do
+		local tab = SmallButton(editor, catW, function()
+			editorCat = this.cat
+			RefreshEditor()
+		end)
+		tab:SetHeight(20)
+		tab:SetPoint("TOPLEFT", editor, "TOPLEFT", 16 + (i - 1) * (catW + 2), -62)
+		tab.text:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+		tab.cat = CATS[i]
+		tab:SetScript("OnLeave", function()
+			if this.cat ~= editorCat then
+				this:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
+			end
+		end)
+		catTabs[i] = tab
+	end
+
+	editor.help = editor:CreateFontString(nil, "OVERLAY")
+	editor.help:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
+	editor.help:SetTextColor(0.6, 0.6, 0.65)
+	editor.help:SetPoint("TOPLEFT", editor, "TOPLEFT", 16, -88)
+	editor.help:SetWidth(editor:GetWidth() - 32)
+	editor.help:SetJustifyH("LEFT")
+
+	local half = (editor:GetWidth() - 38) / 2
+	editor.clear = SmallButton(editor, half, function()
+		local p = Plan(editorClass, editorCat)
+		for i = table.getn(p), 1, -1 do
+			table.remove(p, i)
+		end
+		RefreshEditor()
+		RefreshWindow()
+	end)
+	editor.clear:SetPoint("BOTTOMLEFT", editor, "BOTTOMLEFT", 16, 12)
+	editor.done = SmallButton(editor, half, function() editor:Hide() end)
+	editor.done:SetPoint("BOTTOMRIGHT", editor, "BOTTOMRIGHT", -16, 12)
+	editor:SetScript("OnShow", RefreshEditor)
+	editor:Hide()
+end
+
+function P.TogglePlanEditor()
+	if not editor then
+		BuildEditor()
+	end
+	if editor:IsShown() then
+		editor:Hide()
+	else
+		editorClass = PlayerClass()
+		if not editorCat then
+			editorCat = "ABILITY"
+		end
+		editor:Show()
+		RefreshEditor()
+	end
+end
+
+------------------------------------------------------------------------
+-- Kleines Fenster im Spiel
+------------------------------------------------------------------------
+
+local windowButtons = {}
+
+function RefreshWindow()
+	if not window then
+		return
+	end
+	local db = P.DB().plan
+	local class = PlayerClass()
+	local size = db.size
+	local step = size - 1
+	if not db.enabled and not P.unlocked then
+		window:Hide()
+		return
+	end
+	window:Show()
+	local owned = Owned()
+	local used, rows, widest = 0, 0, 0
+	for c = 1, table.getn(CATS) do
+		local cat = CATS[c]
+		local plan = Plan(class, cat)
+		local n = table.getn(plan)
+		if n > 0 then
+			for i = 1, n do
+				used = used + 1
+				local a = Ability(class, plan[i], cat)
+				local b = windowButtons[used]
+				if not b then
+					b = IconButton(window, size)
+					windowButtons[used] = b
+					b:SetScript("OnClick", function()
+						if arg1 == "RightButton" then
+							P.DB().plan.enabled = false
+							RefreshWindow()
+						else
+							editorCat = this.cat or "ABILITY"
+							P.TogglePlanEditor()
+						end
+					end)
+					b:SetScript("OnEnter", function()
+						GameTooltip:SetOwner(this, "ANCHOR_TOP")
+						GameTooltip:SetText(this.name or "")
+						if this.cat ~= "ABILITY" then
+							GameTooltip:AddLine(T(this.cat), 0.75, 0.6, 1)
+						end
+						if this.desc then
+							GameTooltip:AddLine(this.desc, 0.12, 1, 0.12, 1)
+							GameTooltip:AddLine(T("base"), 0.6, 0.6, 0.65)
+						end
+						if this.owned then
+							GameTooltip:AddLine(T("owned"), GREEN[1], GREEN[2], GREEN[3])
+						end
+						GameTooltip:AddLine(T("hint"), 0.7, 0.7, 0.7)
+						GameTooltip:Show()
+					end)
+					b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+				end
+				b.cat = cat
+				-- Groesse/Schrift/Platz nur bei Aenderung (einmal pro Sekunde neu
+				-- setzen war unnoetige Arbeit fuer das Spiel)
+				local font = P.Font()
+				local key = size .. ":" .. font .. ":" .. i .. ":" .. rows
+				if b.layoutKey ~= key then
+					b.layoutKey = key
+					b:SetWidth(size)
+					b:SetHeight(size)
+					b.num:SetFont(font, math.max(9, math.floor(size * 0.38)), "OUTLINE")
+					b:ClearAllPoints()
+					b:SetPoint("TOPLEFT", window, "TOPLEFT", (i - 1) * step, -rows * step)
+				end
+				local iconPath = a and ("Interface\\Icons\\" .. a.icon) or "Interface\\Icons\\INV_Misc_QuestionMark"
+				if b.iconPath ~= iconPath then
+					b.iconPath = iconPath
+					b.icon:SetTexture(iconPath)
+				end
+				if a then
+					b.name = NameOf(a)
+					b.desc = DescOf(a)
+				else
+					b.desc = nil
+					b.name = plan[i]
+				end
+				b.num:SetText(i)
+				-- Gegenstaende: ob schon getragen, verraet AZS (noch) nicht
+				b.owned = cat == "ABILITY" and owned[plan[i]] and true or false
+				if b.owned then
+					b.edge:SetVertexColor(GREEN[1], GREEN[2], GREEN[3], 1)
+					b.shade:Show()
+					b.num:SetTextColor(GREEN[1], GREEN[2], GREEN[3])
+				elseif cat == "ABILITY" then
+					b.edge:SetVertexColor(0, 0, 0, 1)
+					b.shade:Hide()
+					b.num:SetTextColor(1, 1, 1)
+				else
+					b.edge:SetVertexColor(0, 0, 0, 1)
+					b.shade:Hide()
+					b.num:SetTextColor(0.8, 0.65, 1)
+				end
+				b:Show()
+			end
+			rows = rows + 1
+			if n > widest then
+				widest = n
+			end
+		end
+	end
+	for i = used + 1, table.getn(windowButtons) do
+		windowButtons[i]:Hide()
+	end
+	-- Leerer Plan: Hinweis-Feld, das den Editor oeffnet
+	if used == 0 then
+		window.empty:Show()
+		window.emptyText:SetText(T("empty"))
+		window:SetWidth(math.max(120, (window.emptyText:GetStringWidth() or 104) + 16))
+		window:SetHeight(size)
+	else
+		window.empty:Hide()
+		-- Nur die erste Zeile zaehlt fuer Platz und Anker: weitere Zeilen
+		-- (Hals, Ring, Schmuck) haengen darunter und klappen nach unten auf.
+		window:SetWidth(widest * step + 1)
+		window:SetHeight(size)
+		window.rowsShown = rows
+	end
+end
+
+local function Init()
+	local db = P.DB().plan
+	window = CreateFrame("Frame", "PhantomUI_Plan", UIParent)
+	window:SetFrameStrata("LOW")
+	window.empty = CreateFrame("Button", nil, window)
+	window.empty:SetAllPoints(window)
+	P.Box(window.empty, 0.85)
+	window.emptyText = window.empty:CreateFontString(nil, "OVERLAY")
+	window.emptyText:SetFont(P.Font(), 10, "OUTLINE")
+	window.emptyText:SetTextColor(0.75, 0.75, 0.8)
+	window.emptyText:SetPoint("CENTER", window.empty, "CENTER", 0, 0)
+	window.empty:SetScript("OnClick", function() P.TogglePlanEditor() end)
+
+	RefreshWindow()
+	P.RegisterMover("plan", window, "Plan", function(f)
+		f:SetPoint("CENTER", UIParent, "CENTER", 0, -270)
+	end, {
+		uniform = true,
+		get = function()
+			local d = P.DB().plan
+			return d.size, d.size
+		end,
+		set = function(w, h)
+			P.DB().plan.size = P.Clamp(h, 16, 56)
+		end,
+	})
+
+	-- Waehrend der Kartenauswahl: Plan groesser unten in der Mitte, auf der
+	-- obersten Ebene (der Auswahlbildschirm des Spiels liegt sonst darueber).
+	local choosing = false
+	local function ChoiceMode(on)
+		if on == choosing then
+			return
+		end
+		choosing = on
+		if on then
+			local scale = 1.35
+			local rows = window.rowsShown or 1
+			window:SetFrameStrata("TOOLTIP")
+			window:SetScale(scale)
+			window:ClearAllPoints()
+			window:SetPoint("TOP", UIParent, "BOTTOM", 0, rows * (P.DB().plan.size - 1) + 70 / scale)
+		else
+			window:SetFrameStrata("LOW")
+			window:SetScale(1)
+			P.Place("plan")
+		end
+	end
+
+	-- AZS_SPELLS aendert sich beim Waehlen: einmal pro Sekunde nachsehen.
+	local t, c = 0, 0
+	local ticker = CreateFrame("Frame")
+	ticker:SetScript("OnUpdate", function()
+		t = t + arg1
+		c = c + arg1
+		if c > 0.2 then
+			c = 0
+			local phase = AZS_GetPhase and AZS_GetPhase()
+			ChoiceMode(P.DB().plan.choice and phase == "choosing" and not P.unlocked)
+		end
+		if t > 1 then
+			t = 0
+			RefreshWindow()
+		end
+	end)
+	P.OnApply(RefreshWindow)
+end
+
+P.OnInit(Init)
+
+SLASH_PHANTOMPLAN1 = "/plan"
+SlashCmdList["PHANTOMPLAN"] = function()
+	P.TogglePlanEditor()
+end

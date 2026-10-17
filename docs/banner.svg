@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0" stop-color="#9e4deb" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#9e4deb" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bar" x1="0" x2="1">
+      <stop offset="0" stop-color="#7a35c4"/>
+      <stop offset="1" stop-color="#b57af2"/>
+    </linearGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#2a1840" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="300" fill="#0b0a0e"/>
+  <rect width="1200" height="300" fill="url(#grid)" opacity="0.6"/>
+  <rect width="1200" height="300" fill="url(#glow)"/>
+  <line x1="600" y1="0" x2="600" y2="300" stroke="#000" stroke-width="3" opacity="0.7"/>
+  <line x1="0" y1="150" x2="1200" y2="150" stroke="#000" stroke-width="3" opacity="0.7"/>
+
+  <!-- kleine UI-Andeutungen -->
+  <g opacity="0.9">
+    <rect x="80" y="196" width="230" height="30" fill="#111014" stroke="#000" stroke-width="2"/>
+    <rect x="82" y="198" width="160" height="26" fill="#3fbf55"/>
+    <rect x="890" y="196" width="230" height="30" fill="#111014" stroke="#000" stroke-width="2"/>
+    <rect x="892" y="198" width="120" height="26" fill="#c9232b"/>
+    <g transform="translate(470 238)">
+      <rect width="260" height="22" fill="#000"/>
+      <rect x="2" y="2" width="50" height="18" fill="#f2401a"/>
+      <rect x="54" y="2" width="50" height="18" fill="#f2401a"/>
+      <rect x="106" y="2" width="50" height="18" fill="#f2401a"/>
+      <rect x="158" y="2" width="50" height="18" fill="#141217"/>
+      <rect x="210" y="2" width="48" height="18" fill="#141217"/>
+    </g>
+  </g>
+
+  <text x="600" y="128" text-anchor="middle" font-family="Cinzel, Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" letter-spacing="6" fill="#f3e9ff">PHANTOM<tspan fill="#b57af2">UI</tspan></text>
+  <text x="600" y="182" text-anchor="middle" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="22" letter-spacing="5" fill="#c8b8dc">THE COMPLETE INTERFACE FOR AZEROTH SURVIVORS</text>
+  <rect x="510" y="198" width="180" height="3" fill="url(#bar)"/>
+</svg>
