@@ -347,11 +347,8 @@ end
 local function PagePower(page)
 	local y = -10
 	local half = 16 + INNER / 2 + 6
-	y = Heading(page, y, "Ressource unter dem Charakter")
+	y = Heading(page, y, "Wutleiste (nur Krieger)")
 	Check(page, 16, y, "Zahl anzeigen", { "power", "text" })
-	Check(page, half, y, "Seelensplitter (Hexer)", { "power", "shards" })
-	y = y - ROW
-	Check(page, 16, y, "Mana-Leiste zeigen", { "power", "showMana" })
 	y = y - ROW - 6
 	y = Slider(page, y, "Breite", { "power", "width" }, 60, 400, 2, "%d px")
 	y = Slider(page, y, "Höhe", { "power", "height" }, 6, 30, 1, "%d px")
@@ -408,7 +405,7 @@ local function PageGeneral(page)
 	Check(page, 16, y, "Aktionsleiste", { "bar", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Spieler / Ziel", { "unit", "enabled" })
 	y = y - ROW
-	Check(page, 16, y, "Ressource", { "power", "enabled" })
+	Check(page, 16, y, "Wutleiste (Krieger)", { "power", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Gold / Kiste", { "tally", "enabled" })
 	y = y - ROW
 	Check(page, 16, y, "Laufuhr und Bosse", { "run", "enabled" })

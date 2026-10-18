@@ -8,7 +8,7 @@ local SEGMENTS = 5
 -- Farben wie im aktuellen WoW
 local COLORS = {
 	[0] = { 0, 0.55, 1 }, -- Mana
-	[1] = { 0.9, 0.1, 0.1 }, -- Wut
+	[1] = { 1, 0, 0 }, -- Wut (WoW-Rot)
 	[2] = { 1, 0.5, 0.25 }, -- Fokus
 	[3] = { 1, 0.96, 0.41 }, -- Energie
 }
@@ -45,18 +45,10 @@ end
 
 -- Welche Leiste: "bar" (Wut/Energie/Fokus), "combo", "shards" oder nil
 local function Mode()
-	local db = P.DB().power
+	-- Nur der Krieger bekommt eine Leiste (Wut). Mana braucht in Azeroth
+	-- Survivors keiner, Kombopunkte zeigt das Spiel selbst (siehe UnitFrames).
 	local _, class = UnitClass("player")
-	local ptype = UnitPowerType("player") or 0
-	if class == "WARLOCK" then
-		if db.shards then
-			return "shards"
-		end
-	elseif class == "ROGUE" or (class == "DRUID" and ptype == 3) then
-		-- Kombopunkte zeigt die Anzeige des Spiels selbst (verschiebbar, siehe UnitFrames)
-		return nil
-	end
-	if ptype ~= 0 or db.showMana then
+	if class == "WARRIOR" then
 		return "bar"
 	end
 	return nil

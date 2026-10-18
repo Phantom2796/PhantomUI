@@ -21,7 +21,7 @@
 - **Player & target frames** – name, health as current/max with the bar running into the % field, portrait, level, class or enemy type (**B** boss · **W** guardian · **E** elite)
 - **Action bar** – flush buttons without background, crisp icons, cooldown sweep only when a spell is really on cooldown
 - **Alerts under the chat** – boss approaches, boss defeated, guardian slain, lair reclaimed and the game's error lines, small and colour-coded instead of big banners
-- **Combo points** use the game's own display, movable in anchor mode; an optional resource bar (rage) can be switched on in the settings
+- **Combo points** use the game's own display, movable in anchor mode; warriors get a red rage bar, every other class none
 - **Run timer** – time above the bar, boss skulls on it (red = alive, green = dead), next boss with name and countdown below; follows the real run length (16 *and* 20 minute zones)
 - **Boss & guardian health bars** – docked above the target frame (same width), more bosses stack upwards; in anchor mode freely movable with their own width, height and scale
 - **Run stats next to the minimap** – the numbers from the character pane (damage, haste, crit, echo, lifesteal, gold, luck …), always visible

@@ -66,7 +66,7 @@ local DEFAULTS = {
 		fontSize = 11,
 	},
 	power = {
-		enabled = false,
+		enabled = true,
 		width = 197,
 		height = 17,
 		text = true,
@@ -130,7 +130,7 @@ local DEFAULTS = {
 	},
 }
 
-local DB_VERSION = 14
+local DB_VERSION = 15
 
 local function Merge(target, source)
 	for key, value in pairs(source) do
@@ -837,6 +837,10 @@ boot:SetScript("OnEvent", function()
 		if (db.version or 1) < 9 and db.stats then
 			-- Laufwerte: ganz durchsichtig
 			db.stats.bgAlpha = 0
+		end
+		if (db.version or 1) < 15 and db.power then
+			-- Wutleiste wieder an (zeigt sich nur beim Krieger)
+			db.power.enabled = true
 		end
 		if (db.version or 1) < 14 and db.run and db.bosses then
 			-- Boss-Leisten haben eigene Groesse (vorher mit der Laufuhr geteilt)
