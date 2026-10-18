@@ -33,14 +33,18 @@ local COLORS = {
 local function Layout()
 	local db = P.DB().alerts
 	frame:SetScale(db.scale or 1)
+	local width = db.width or 360
 	for i = 1, MAX_LINES do
 		local l = labels[i]
 		l:SetFont(P.Font(), db.size or 13, "OUTLINE")
 		l:SetShadowOffset(1, -1)
 		l:ClearAllPoints()
 		l:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -(i - 1) * ((db.size or 13) + 5))
+		-- feste Breite und eine Zeile Hoehe: zu lange Meldungen werden gekuerzt
+		l:SetWidth(width)
+		l:SetHeight((db.size or 13) + 4)
 	end
-	frame:SetWidth(360)
+	frame:SetWidth(width)
 	frame:SetHeight(MAX_LINES * ((db.size or 13) + 5))
 end
 
@@ -200,13 +204,19 @@ local function Init()
 			f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 32, 60)
 		end
 	end, {
+		-- Seitenkanten: Breite; obere/untere Kante, Ecke und Mausrad: Schriftgroesse
 		uniform = true,
 		get = function()
-			local s = P.DB().alerts.size or 13
-			return s, s
+			local d = P.DB().alerts
+			return d.width or 360, d.size or 13
 		end,
-		set = function(w, h)
-			P.DB().alerts.size = P.Clamp(h, 9, 24)
+		set = function(w, h, mode)
+			local d = P.DB().alerts
+			if mode == "w" then
+				d.width = P.Clamp(w, 120, 900)
+				return
+			end
+			d.size = P.Clamp(h, 9, 24)
 		end,
 	})
 	local w, a = 0, 0

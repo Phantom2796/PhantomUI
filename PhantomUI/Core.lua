@@ -118,7 +118,7 @@ local DEFAULTS = {
 		rotate = true,
 	},
 	stats = { enabled = true, scale = 1, bgAlpha = 0 },
-	alerts = { enabled = true, hideNative = true, errors = true, size = 13, scale = 1 },
+	alerts = { enabled = true, hideNative = true, errors = true, size = 13, scale = 1, width = 360 },
 	-- Speicherbereinigung steuern: im Kampf aufschieben (MB Puffer), in ruhigen Momenten aufraeumen
 	gc = { enabled = true, budget = 48 },
 	tally = {
