@@ -423,6 +423,8 @@ local function PageGeneral(page)
 	Check(page, 16, y, "Laufwerte neben der Minimap", { "stats", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Plan bei Kartenwahl unten", { "plan", "choice" })
 	y = y - ROW
+	Check(page, 16, y, "Ruckler-Schutz (Speicher)", { "gc", "enabled" })
+	y = y - ROW
 	Check(page, 16, y, "Eigene Einblendungen", { "alerts", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })
 	y = y - ROW

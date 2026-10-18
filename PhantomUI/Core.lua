@@ -113,6 +113,8 @@ local DEFAULTS = {
 	},
 	stats = { enabled = true, scale = 1, bgAlpha = 0 },
 	alerts = { enabled = true, hideNative = true, errors = true, size = 13, scale = 1 },
+	-- Speicherbereinigung steuern: im Kampf aufschieben (MB Puffer), in ruhigen Momenten aufraeumen
+	gc = { enabled = true, budget = 48 },
 	tally = {
 		enabled = true,
 		width = 170,
@@ -961,6 +963,11 @@ local function Report()
 	Say(string.format("Speicher: %d KB Abfall/s, %d Bereinigungen (alle %.1f s), jetzt %d KB",
 		math.floor((gcFreed + gcinfo() - startMem) / secs), gcCount,
 		gcCount > 0 and secs / gcCount or 0, gcinfo()))
+	if not list[1] or list[1].ms <= 0 then
+		Say("(Zeit je Teil misst dieser Client nicht.)")
+		stats, wrapped = {}, {}
+		return
+	end
 	Say("Teuerste Teile (ms pro Sekunde | laengster Aufruf):")
 	for i = 1, math.min(10, table.getn(list)) do
 		local e = list[i]
@@ -1019,3 +1026,64 @@ function P.Perf(seconds)
 	end)
 	Say("Messung laeuft " .. duration .. " Sekunden – spiel ganz normal weiter (am besten mit vielen Gegnern).")
 end
+
+------------------------------------------------------------------------
+-- Speicherbereinigung steuern (gegen Ruckler)
+-- Der Client raeumt den Lua-Speicher sonst mehrmals pro Sekunde auf und haelt
+-- dabei jedes Mal das ganze Spiel an (gemessen: alle 0,2 s bei 20 MB). Wir
+-- schieben die Grenze im Kampf weit nach oben und raeumen lieber dann auf, wenn
+-- ohnehin Ruhe ist: Kartenwahl, Pause, Tod, ausserhalb des Kampfes. Wird der
+-- Puffer trotzdem voll, wird sofort aufgeraeumt.
+------------------------------------------------------------------------
+
+local gcFrame = CreateFrame("Frame", "PhantomUI_GCManager")
+local gcBase = 0          -- Speicher direkt nach der letzten Bereinigung (KB)
+local gcTick = 0
+local calmSince = 0
+local CALM_PHASES = { choosing = true, paused = true, ready = true, dead = true, victory = true }
+
+local function CollectNow()
+	collectgarbage(0) -- Grenze 0: sofort aufraeumen
+	gcBase = gcinfo()
+end
+
+gcFrame:SetScript("OnUpdate", function()
+	gcTick = gcTick + arg1
+	if gcTick < 0.1 then
+		return
+	end
+	local dt = gcTick
+	gcTick = 0
+	local db = PhantomUIDB and PhantomUIDB.gc
+	if not db or not db.enabled or not collectgarbage or not gcinfo then
+		return
+	end
+	local used, threshold = gcinfo()
+	if gcBase == 0 or used < gcBase then
+		gcBase = used
+	end
+	local budget = (db.budget or 48) * 1024
+	local grown = used - gcBase
+
+	-- Ruhige Momente erkennen
+	local phase = AZS_GetPhase and AZS_GetPhase()
+	local inCombat = UnitAffectingCombat and UnitAffectingCombat("player")
+	if CALM_PHASES[phase or ""] or not inCombat then
+		calmSince = calmSince + dt
+	else
+		calmSince = 0
+	end
+	if (CALM_PHASES[phase or ""] and grown > 2048) or (calmSince > 2 and grown > 8192) then
+		CollectNow()
+		return
+	end
+	if grown > budget then
+		-- Puffer voll: lieber einmal jetzt als staendig
+		CollectNow()
+		return
+	end
+	-- Grenze immer ein gutes Stueck ueber dem aktuellen Stand halten
+	if threshold and threshold < used + 4096 then
+		collectgarbage(gcBase + budget + 4096)
+	end
+end)
