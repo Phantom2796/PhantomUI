@@ -44,7 +44,6 @@
 - `/plan` – click your class's abilities, then necklace, rings and trinkets in the order you want them
 - Saved per class; a small window shows the plan during the run, abilities you already took turn green
 - Tooltips show each item's effect with its base value
-- While the level-up cards are open the plan moves to the bottom centre, bigger
 
 ### 🧭 Layout & settings
 - `/pui` – one settings window with tabs for everything

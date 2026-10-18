@@ -94,7 +94,7 @@ local DEFAULTS = {
 	plates = { enabled = true },
 	plan = {
 		enabled = true,
-		choice = true,
+		choice = false,
 		size = 28,
 		data = {},
 	},
@@ -122,7 +122,7 @@ local DEFAULTS = {
 	},
 }
 
-local DB_VERSION = 12
+local DB_VERSION = 13
 
 local function Merge(target, source)
 	for key, value in pairs(source) do
@@ -809,6 +809,10 @@ boot:SetScript("OnEvent", function()
 			end
 			-- Boss-Leisten: neuer Standardplatz weiter unten
 			db.pos.bosses = nil
+		end
+		if (db.version or 1) < 13 and db.plan then
+			-- Kartenwahl: das Spiel zeichnet darueber, der Plan bleibt an seinem Platz
+			db.plan.choice = false
 		end
 		if (db.version or 1) < 12 and db.power then
 			-- Ressourcenleiste bei allen Klassen aus (in Allgemein wieder einschaltbar)
