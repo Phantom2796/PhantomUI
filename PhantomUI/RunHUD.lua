@@ -225,6 +225,10 @@ local function UpdateBosses()
 			p.bg:SetTexture(tex)
 			p.name:SetFont(font, math.max(9, h - 6), "OUTLINE")
 			p.pct:SetFont(font, math.max(9, h - 6), "OUTLINE")
+			-- Name begrenzen: lange Namen werden gekuerzt statt in die Zahlen zu laufen
+			p.name:SetJustifyH("LEFT")
+			p.name:SetHeight(h)
+			p.name:SetWidth(math.max(40, width - 105))
 		end
 		local max = tonumber(b.hpm) or 1
 		if max <= 0 then

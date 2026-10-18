@@ -472,6 +472,135 @@ local function Silence(frame)
 	frame.Show = function() end
 end
 
+------------------------------------------------------------------------
+-- Debuffs am Ziel (zeigte vorher das ausgeblendete Zielfenster des Spiels)
+------------------------------------------------------------------------
+
+local MAX_DEBUFFS = 16
+local DEBUFF_COLORS = {
+	Magic = { 0.2, 0.6, 1 }, Curse = { 0.6, 0, 1 }, Disease = { 0.6, 0.4, 0 }, Poison = { 0, 0.6, 0 },
+}
+
+-- Restzeit aus den Laufdaten, wenn das Spiel sie fuer dieses Ziel mitschickt
+local function AzsTimes(target)
+	local t = AZS_TARGET
+	if type(t) ~= "table" or not t.id or type(AZS_GetDebuffs) ~= "function" then
+		return nil
+	end
+	local ok, list = pcall(AZS_GetDebuffs, t.id)
+	if not ok or type(list) ~= "table" or table.getn(list) == 0 then
+		return nil
+	end
+	local byIcon = {}
+	for i = 1, table.getn(list) do
+		local d = list[i]
+		if d.icon and d.remaining then
+			local _, _, short = string.find(string.lower(d.icon), "([^\\]+)$")
+			byIcon[short or string.lower(d.icon)] = d.remaining
+		end
+	end
+	return byIcon
+end
+
+local function BuildTargetDebuffs(target)
+	local row = CreateFrame("Frame", "PhantomUI_TargetDebuffs", target)
+	row:SetPoint("TOPLEFT", target, "BOTTOMLEFT", 0, -3)
+	row:SetWidth(1)
+	row:SetHeight(1)
+	local icons = {}
+	local function Icon(i)
+		local b = icons[i]
+		if b then
+			return b
+		end
+		b = CreateFrame("Frame", nil, row)
+		b.edge = b:CreateTexture(nil, "BACKGROUND")
+		b.edge:SetTexture(P.FLAT)
+		b.edge:SetAllPoints(b)
+		b.tex = b:CreateTexture(nil, "ARTWORK")
+		b.tex:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+		b.tex:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+		b.tex:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
+		b.count = b:CreateFontString(nil, "OVERLAY")
+		b.count:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 0, 1)
+		b.time = b:CreateFontString(nil, "OVERLAY")
+		b.time:SetPoint("CENTER", b, "CENTER", 0, 0)
+		icons[i] = b
+		return b
+	end
+	local function Refresh()
+		if not UnitExists("target") then
+			row:Hide()
+			return
+		end
+		row:Show()
+		local size = math.max(16, P.DB().unit.debuffSize or 22)
+		local font = P.Font()
+		local times = AzsTimes()
+		local n = 0
+		for i = 1, MAX_DEBUFFS do
+			local texture, count, kind = UnitDebuff("target", i)
+			if not texture then
+				break
+			end
+			n = n + 1
+			local b = Icon(n)
+			if b.size ~= size or b.font ~= font then
+				b.size, b.font = size, font
+				b:SetWidth(size)
+				b:SetHeight(size)
+				b:ClearAllPoints()
+				b:SetPoint("TOPLEFT", row, "TOPLEFT", (n - 1) * (size + 1), 0)
+				b.count:SetFont(font, math.max(8, math.floor(size * 0.42)), "OUTLINE")
+				b.time:SetFont(font, math.max(8, math.floor(size * 0.45)), "OUTLINE")
+			end
+			if b.texture ~= texture then
+				b.texture = texture
+				b.tex:SetTexture(texture)
+			end
+			local c = DEBUFF_COLORS[kind or ""]
+			if c then
+				b.edge:SetVertexColor(c[1], c[2], c[3], 1)
+			else
+				b.edge:SetVertexColor(0, 0, 0, 1)
+			end
+			b.count:SetText((count and count > 1) and count or "")
+			local left
+			if times then
+				local _, _, short = string.find(string.lower(texture), "([^\\]+)$")
+				left = times[short or ""]
+			end
+			if left and left > 0 then
+				b.time:SetText(left >= 60 and (math.floor(left / 60) .. "m") or math.floor(left + 0.5))
+			else
+				b.time:SetText("")
+			end
+			b:Show()
+		end
+		for i = n + 1, table.getn(icons) do
+			icons[i]:Hide()
+		end
+	end
+	local ev = CreateFrame("Frame")
+	ev:RegisterEvent("UNIT_AURA")
+	ev:RegisterEvent("PLAYER_TARGET_CHANGED")
+	ev:SetScript("OnEvent", function()
+		if event == "UNIT_AURA" and arg1 ~= "target" then
+			return
+		end
+		Refresh()
+	end)
+	local t = 0
+	ev:SetScript("OnUpdate", function()
+		t = t + arg1
+		if t > 0.5 then
+			t = 0
+			Refresh()
+		end
+	end)
+	Refresh()
+end
+
 local function Init()
 	if not P.DB().unit.enabled then
 		return
@@ -577,6 +706,7 @@ local function Init()
 		UpdateAll()
 	end)
 	UpdateAll()
+	BuildTargetDebuffs(target)
 end
 
 P.OnInit(Init)
