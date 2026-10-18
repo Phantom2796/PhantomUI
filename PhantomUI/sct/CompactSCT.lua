@@ -1196,16 +1196,20 @@ local function HandleCombat(eventName, message)
 	if (db.minPercent or 0) > 0 and info.amount < peak * db.minPercent / 100 then
 		return
 	end
-	info.mergeKey = (info.spell or info.kind or "") .. "\031" .. (info.target or "") .. (info.crit and "\031c" or "")
+	-- Zusammenfassen ohne neuen Text-Schluessel: Felder direkt vergleichen
 	if db.merge then
 		for i = 1, table.getn(pending) do
 			local other = pending[i]
-			if other.mergeKey == info.mergeKey then
+			if other.spell == info.spell and other.kind == info.kind and other.target == info.target
+				and other.crit == info.crit then
 				other.amount = other.amount + info.amount
 				return
 			end
 		end
 	end
+	-- Erst jetzt ein eigener Datensatz: nur fuer Zahlen, die auch erscheinen
+	info = CompactSCT.Keep(info)
+	info.mergeKey = (info.spell or info.kind or "") .. "\031" .. (info.target or "") .. (info.crit and "\031c" or "")
 	-- Bei einem Hagel aus Treffern nicht unbegrenzt stauen: die aeltesten fallen weg.
 	if table.getn(pending) >= 40 then
 		table.remove(pending, 1)

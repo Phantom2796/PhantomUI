@@ -74,6 +74,22 @@ local function Compile(globalName)
 	return p
 end
 
+local CAPS = {}
+local SCRATCH = {}
+-- Feldlisten einmal anlegen statt bei jedem Treffer
+local F1 = { "target", "amount" }
+local F2 = { "spell", "target", "amount" }
+local F3 = { "source", "target", "amount" }
+local F4 = { "target", "amount", "school" }
+local F5 = { "amount", "school", "target" }
+local F6 = { "spell", "target", "amount", "school" }
+local F7 = { "source", "spell", "target", "amount" }
+local F8 = { "target", "amount", "school", "spell" }
+local F9 = { "source", "amount", "school", "target" }
+local F10 = { "source", "target", "amount", "school" }
+local F11 = { "target", "amount", "school", "source", "spell" }
+local F12 = { "source", "spell", "target", "amount", "school" }
+
 -- fields: Namen der Format-Argumente in ihrer Reihenfolge im englischen Original.
 local function Capture(message, globalName, fields)
 	local p = Compile(globalName)
@@ -84,8 +100,13 @@ local function Capture(message, globalName, fields)
 	if not s then
 		return nil
 	end
-	local caps = { c1, c2, c3, c4, c5, c6 }
-	local result = {}
+	-- Wiederverwendete Listen statt neuer pro Treffer (weniger Abfall = weniger Ruckler).
+	-- Das Ergebnis ist ein Notizzettel: wer es behalten will, kopiert es (CompactSCT.Keep).
+	local caps = CAPS
+	caps[1], caps[2], caps[3], caps[4], caps[5], caps[6] = c1, c2, c3, c4, c5, c6
+	local result = SCRATCH
+	result.target, result.amount, result.school, result.spell, result.source = nil, nil, nil, nil, nil
+	result.kind, result.crit, result.mergeKey, result.time = nil, nil, nil, nil
 	for n = 1, table.getn(fields) do
 		local value = caps[p.map[n] or n]
 		if fields[n] == "amount" then
@@ -98,7 +119,8 @@ end
 
 local SCHOOLS = { "Physical", "Holy", "Fire", "Nature", "Frost", "Shadow", "Arcane" }
 
-local function School(localized)
+local schoolCache = {}
+local function SchoolLookup(localized)
 	if not localized or localized == "" then
 		return "Physical"
 	end
@@ -116,6 +138,19 @@ local function School(localized)
 		end
 	end
 	return "Physical"
+end
+
+-- Ergebnis je Schreibweise merken: kein string.lower mehr pro Treffer
+local function School(localized)
+	if not localized then
+		return "Physical"
+	end
+	local cached = schoolCache[localized]
+	if not cached then
+		cached = SchoolLookup(localized)
+		schoolCache[localized] = cached
+	end
+	return cached
 end
 
 local function Hit(data, kind, crit, school)
@@ -137,69 +172,69 @@ end
 
 -- Nahkampf (eigene Treffer)
 local function SelfMelee(msg)
-	local d = Capture(msg, "COMBATHITCRITSCHOOLSELFOTHER", { "target", "amount", "school" })
+	local d = Capture(msg, "COMBATHITCRITSCHOOLSELFOTHER", F4)
 	if d then return Hit(d, "melee", true) end
-	d = Capture(msg, "COMBATHITSCHOOLSELFOTHER", { "target", "amount", "school" })
+	d = Capture(msg, "COMBATHITSCHOOLSELFOTHER", F4)
 	if d then return Hit(d, "melee", false) end
-	d = Capture(msg, "COMBATHITCRITSELFOTHER", { "target", "amount" })
+	d = Capture(msg, "COMBATHITCRITSELFOTHER", F1)
 	if d then return Hit(d, "melee", true, "Physical") end
-	d = Capture(msg, "COMBATHITSELFOTHER", { "target", "amount" })
+	d = Capture(msg, "COMBATHITSELFOTHER", F1)
 	if d then return Hit(d, "melee", false, "Physical") end
 	return nil
 end
 
 -- Zauber und Faehigkeiten (eigene)
 local function SelfSpell(msg)
-	local d = Capture(msg, "SPELLLOGCRITSCHOOLSELFOTHER", { "spell", "target", "amount", "school" })
+	local d = Capture(msg, "SPELLLOGCRITSCHOOLSELFOTHER", F6)
 	if d then return Hit(d, "spell", true) end
-	d = Capture(msg, "SPELLLOGSCHOOLSELFOTHER", { "spell", "target", "amount", "school" })
+	d = Capture(msg, "SPELLLOGSCHOOLSELFOTHER", F6)
 	if d then return Hit(d, "spell", false) end
-	d = Capture(msg, "SPELLLOGCRITSELFOTHER", { "spell", "target", "amount" })
+	d = Capture(msg, "SPELLLOGCRITSELFOTHER", F2)
 	if d then return Hit(d, "spell", true, "Physical") end
-	d = Capture(msg, "SPELLLOGSELFOTHER", { "spell", "target", "amount" })
+	d = Capture(msg, "SPELLLOGSELFOTHER", F2)
 	if d then return Hit(d, "spell", false, "Physical") end
 	return nil
 end
 
 -- Begleiter (Pet, Totem, Diener): Saetze mit Quelle vorne.
 local function PetMelee(msg)
-	local d = Capture(msg, "COMBATHITCRITSCHOOLOTHEROTHER", { "source", "target", "amount", "school" })
+	local d = Capture(msg, "COMBATHITCRITSCHOOLOTHEROTHER", F10)
 	if d then return Hit(d, "pet", true) end
-	d = Capture(msg, "COMBATHITSCHOOLOTHEROTHER", { "source", "target", "amount", "school" })
+	d = Capture(msg, "COMBATHITSCHOOLOTHEROTHER", F10)
 	if d then return Hit(d, "pet", false) end
-	d = Capture(msg, "COMBATHITCRITOTHEROTHER", { "source", "target", "amount" })
+	d = Capture(msg, "COMBATHITCRITOTHEROTHER", F3)
 	if d then return Hit(d, "pet", true, "Physical") end
-	d = Capture(msg, "COMBATHITOTHEROTHER", { "source", "target", "amount" })
+	d = Capture(msg, "COMBATHITOTHEROTHER", F3)
 	if d then return Hit(d, "pet", false, "Physical") end
 	return nil
 end
 
 local function PetSpell(msg)
-	local d = Capture(msg, "SPELLLOGCRITSCHOOLOTHEROTHER", { "source", "spell", "target", "amount", "school" })
+	local d = Capture(msg, "SPELLLOGCRITSCHOOLOTHEROTHER", F12)
 	if d then return Hit(d, "spell", true) end
-	d = Capture(msg, "SPELLLOGSCHOOLOTHEROTHER", { "source", "spell", "target", "amount", "school" })
+	d = Capture(msg, "SPELLLOGSCHOOLOTHEROTHER", F12)
 	if d then return Hit(d, "spell", false) end
-	d = Capture(msg, "SPELLLOGCRITOTHEROTHER", { "source", "spell", "target", "amount" })
+	d = Capture(msg, "SPELLLOGCRITOTHEROTHER", F7)
 	if d then return Hit(d, "spell", true, "Physical") end
-	d = Capture(msg, "SPELLLOGOTHEROTHER", { "source", "spell", "target", "amount" })
+	d = Capture(msg, "SPELLLOGOTHEROTHER", F7)
 	if d then return Hit(d, "spell", false, "Physical") end
 	return nil
 end
 
 -- Schaden ueber Zeit: der Satz beschreibt das Opfer, also Quelle pruefen.
 local function Periodic(msg)
-	local d = Capture(msg, "PERIODICAURADAMAGESELFOTHER", { "target", "amount", "school", "spell" })
+	local d = Capture(msg, "PERIODICAURADAMAGESELFOTHER", F8)
 	if d then return Hit(d, "dot", false) end
-	d = Capture(msg, "PERIODICAURADAMAGEOTHEROTHER", { "target", "amount", "school", "source", "spell" })
+	d = Capture(msg, "PERIODICAURADAMAGEOTHEROTHER", F11)
 	if d and IsMine(d.source) then return Hit(d, "dot", false) end
 	return nil
 end
 
 -- Dornen, Blitzschlagschild und Co.
 local function Shield(msg)
-	local d = Capture(msg, "DAMAGESHIELDSELFOTHER", { "amount", "school", "target" })
+	local d = Capture(msg, "DAMAGESHIELDSELFOTHER", F5)
 	if d then return Hit(d, "shield", false) end
-	d = Capture(msg, "DAMAGESHIELDOTHEROTHER", { "source", "amount", "school", "target" })
+	d = Capture(msg, "DAMAGESHIELDOTHEROTHER", F9)
 	if d and IsMine(d.source) then return Hit(d, "shield", false) end
 	return nil
 end
@@ -224,4 +259,12 @@ function CompactSCT.Parse(eventName, message)
 		return handler(message)
 	end
 	return nil
+end
+
+-- Dauerhafte Kopie eines Treffers (nur fuer Zahlen, die wirklich angezeigt werden)
+function CompactSCT.Keep(d)
+	return {
+		target = d.target, amount = d.amount, school = d.school, spell = d.spell,
+		source = d.source, kind = d.kind, crit = d.crit,
+	}
 end
