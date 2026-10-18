@@ -113,13 +113,13 @@ end
 -- aus den Ausruestungsplaetzen. Liefert das Spiel dort nichts, bleibt die Liste
 -- leer und die Gegenstaende bleiben einfach im Plan stehen.
 local GEAR_SLOTS = { NECK = { 2 }, RING = { 11, 12 }, TRINKET = { 13, 14 } }
--- Aufwertungen haengen eine roemische Stufe an ("... II", "... III"):
+-- Aufwertungen haengen eine roemische Stufe an ("... II", "... X", "... X+"):
 -- fuer den Vergleich weglassen
 local function BaseName(name)
 	if not name then
 		return nil
 	end
-	local base = string.gsub(name, "%s+[IVX]+$", "")
+	local base = string.gsub(name, "%s+[IVXL]+%+*$", "")
 	return base
 end
 local function Worn(cat)
