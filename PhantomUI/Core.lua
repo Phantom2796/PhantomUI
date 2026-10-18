@@ -1067,7 +1067,10 @@ gcFrame:SetScript("OnUpdate", function()
 
 	-- Ruhige Momente erkennen
 	local phase = AZS_GetPhase and AZS_GetPhase()
-	local inCombat = UnitAffectingCombat and UnitAffectingCombat("player")
+	-- "Im Kampf" = in den letzten 3 Sekunden eigene Treffer im Kampflog (die
+	-- Kampf-Markierung des Spiels ist in AZS kaum gesetzt)
+	local lastHit = CompactSCT and CompactSCT.lastHit or 0
+	local inCombat = (GetTime() - lastHit) < 3 or (UnitAffectingCombat and UnitAffectingCombat("player"))
 	if CALM_PHASES[phase or ""] or not inCombat then
 		calmSince = calmSince + dt
 	else

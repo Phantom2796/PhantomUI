@@ -855,14 +855,29 @@ local function FontPath()
 	return FONTS[db.font] or FONTS.arial
 end
 
-local function ApplyFont(t)
-	if t.fontVersion ~= fontVersion then
+-- Drei feste Groessen (normal, Krit, Schaden ueber Zeit) statt Skalieren pro Bild:
+-- jede neue Groesse zwingt das Spiel, die Schrift neu zu zeichnen (das war teuer).
+local function SizeFor(variant)
+	if variant == "crit" then
+		return math.floor(db.size * (db.critScale or 1.6) + 0.5)
+	elseif variant == "dot" then
+		return math.floor(db.size * 0.85 + 0.5)
+	end
+	return db.size
+end
+
+local function ApplyFont(t, variant)
+	variant = variant or "normal"
+	if t.fontVersion ~= fontVersion or t.variant ~= variant then
 		t.fontVersion = fontVersion
-		t.label:SetFont(FontPath(), db.size, "THICKOUTLINE")
-		t.icon:SetWidth(db.size)
-		t.icon:SetHeight(db.size)
-		t.iconBack:SetWidth(db.size + 2)
-		t.iconBack:SetHeight(db.size + 2)
+		t.variant = variant
+		local size = SizeFor(variant)
+		t.label:SetFont(FontPath(), size, "THICKOUTLINE")
+		t.icon:SetWidth(size)
+		t.icon:SetHeight(size)
+		t.iconBack:SetWidth(size + 2)
+		t.iconBack:SetHeight(size + 2)
+		t.size = size
 	end
 end
 
@@ -921,7 +936,7 @@ local function Show(info, x, y, origin)
 		Release(1)
 	end
 	local t = table.remove(pool) or NewText()
-	ApplyFont(t)
+	ApplyFont(t, info.crit and "crit" or (info.kind == "dot" and "dot" or "normal"))
 
 	local color = ColorFor(info)
 	t.label:SetText(Format(info.amount))
@@ -931,7 +946,7 @@ local function Show(info, x, y, origin)
 	t.label:ClearAllPoints()
 	t.icon:ClearAllPoints()
 	if texture then
-		local shift = (db.size + 4) / 2
+		local shift = ((t.size or db.size) + 4) / 2
 		t.label:SetPoint("CENTER", t.frame, "CENTER", shift, 0)
 		t.icon:SetPoint("RIGHT", t.label, "LEFT", -4, 0)
 		t.icon:SetTexture(texture)
@@ -954,8 +969,7 @@ local function Show(info, x, y, origin)
 	t.age = 0
 	t.life = info.crit and db.duration * 1.25 or db.duration
 	t.frame:SetAlpha((t.dot and 0.85 or 1) * db.opacity)
-	t.frame:SetScale(1)
-	t.lastScale, t.lastAlpha = 1, nil
+	t.lastAlpha, t.lastX, t.lastY = nil, nil, nil
 	t.amount = info.amount
 	t.mergeKey = info.mergeKey
 	t.frame:ClearAllPoints()
@@ -981,23 +995,16 @@ local function UpdateTexts(elapsed)
 				t.baseY = t.baseY + (o.y - t.baseY) * 0.35
 			end
 			local eased = 1 - (1 - p) * (1 - p)
-			local scale = t.dot and 0.85 or 1
-			if t.crit then
-				scale = db.critScale
-				if t.age < POP_TIME then
-					scale = scale * (1 + 0.5 * (1 - t.age / POP_TIME))
-				end
-			end
 			local x = t.baseX + t.jitterX + t.drift * eased
 			local y = t.baseY + db.offsetY + t.jitterY + db.rise * eased
-			-- Nur aendern, was sich wirklich aendert: jeder Aufruf geht an die Engine.
-			if t.lastScale ~= scale then
-				t.frame:SetScale(scale)
-				t.lastScale = scale
+			-- Nur die Position aendern (ganze Pixel): die Groesse steht fest, seit die
+			-- Zahl erschienen ist. Derselbe Ankerpunkt ersetzt den alten.
+			x = math.floor(x + 0.5)
+			y = math.floor(y + 0.5)
+			if t.lastX ~= x or t.lastY ~= y then
+				t.lastX, t.lastY = x, y
+				t.frame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y)
 			end
-			-- Ankerabstaende gelten im Massstab des Rahmens selbst. Derselbe Ankerpunkt
-			-- ersetzt den alten, ClearAllPoints ist dafuer nicht noetig.
-			t.frame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / scale, y / scale)
 			if p > 0.6 then
 				local alpha = (1 - p) / 0.4
 				if t.dot then
@@ -1168,6 +1175,8 @@ local peak, peakAt = 0, 0
 local PEAK_DECAY = 0.966
 
 local function HandleCombat(eventName, message)
+	-- Fuer den Ruckler-Schutz: wann zuletzt gekaempft wurde
+	CompactSCT.lastHit = GetTime()
 	if not db or not db.enabled then
 		return
 	end
