@@ -351,7 +351,7 @@ local function Init()
 	})
 
 	local t, h = 0, 0
-	local ticker = CreateFrame("Frame")
+	local ticker = CreateFrame("Frame", "PhantomUI_RunTicker")
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1
 		h = h + arg1

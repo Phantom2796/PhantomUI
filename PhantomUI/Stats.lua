@@ -190,7 +190,7 @@ local function Init()
 		end,
 	})
 	local last, t = nil, 0
-	local ticker = CreateFrame("Frame")
+	local ticker = CreateFrame("Frame", "PhantomUI_StatsTicker")
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1
 		if t < 0.5 then

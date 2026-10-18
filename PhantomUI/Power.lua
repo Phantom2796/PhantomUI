@@ -319,7 +319,7 @@ local function Init()
 		end,
 	})
 
-	local events = CreateFrame("Frame")
+	local events = CreateFrame("Frame", "PhantomUI_PowerEvents")
 	for _, e in ipairs({
 		"PLAYER_ENTERING_WORLD",
 		"UNIT_MANA",

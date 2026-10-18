@@ -122,7 +122,7 @@ local function Init()
 		end
 	end)
 	-- Versteckter Rahmen bekommt kein OnUpdate: eigener Taktgeber.
-	local ticker = CreateFrame("Frame")
+	local ticker = CreateFrame("Frame", "PhantomUI_TallyTicker")
 	local t = 0
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1

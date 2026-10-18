@@ -1314,9 +1314,18 @@ frame:SetScript("OnUpdate", function()
 	local now = GetTime()
 	-- Plaketten 30-mal pro Sekunde abfragen statt in jedem Bild: reicht fuer
 	-- fluessiges Mitlaufen und halbiert bei hohen FPS die Arbeit.
-	if now - lastSample >= 0.033 then
-		lastSample = now
-		Sample(now)
+	-- Plaketten nur abfragen, wenn sie ueberhaupt da sind (eigene oder "ueber den Mobs");
+	-- sonst gibt es nichts zu verfolgen und die Zahlen erscheinen um den Helden.
+	if userPlates or WantBacking() then
+		if now - lastSample >= 0.033 then
+			lastSample = now
+			Sample(now)
+		end
+	elseif table.getn(origins) > 0 then
+		-- Plaketten aus: alte Positionen verwerfen
+		for i = table.getn(origins), 1, -1 do
+			table.remove(origins, i)
+		end
 	end
 	FeedSpellMeter(now)
 	CompactSCT.ScanIfDue(now)

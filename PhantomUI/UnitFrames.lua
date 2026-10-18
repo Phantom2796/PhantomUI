@@ -581,7 +581,7 @@ local function BuildTargetDebuffs(target)
 			icons[i]:Hide()
 		end
 	end
-	local ev = CreateFrame("Frame")
+	local ev = CreateFrame("Frame", "PhantomUI_TargetDebuffEvents")
 	ev:RegisterEvent("UNIT_AURA")
 	ev:RegisterEvent("PLAYER_TARGET_CHANGED")
 	ev:SetScript("OnEvent", function()
@@ -661,7 +661,7 @@ local function Init()
 		frame:SetPoint("CENTER", UIParent, "CENTER", 260, -150)
 	end, sizer)
 
-	local events = CreateFrame("Frame")
+	local events = CreateFrame("Frame", "PhantomUI_UnitEvents")
 	for _, e in ipairs({
 		"PLAYER_ENTERING_WORLD",
 		"PLAYER_TARGET_CHANGED",

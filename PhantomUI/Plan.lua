@@ -528,7 +528,7 @@ local function Init()
 
 	-- AZS_SPELLS aendert sich beim Waehlen: einmal pro Sekunde nachsehen.
 	local t, c = 0, 0
-	local ticker = CreateFrame("Frame")
+	local ticker = CreateFrame("Frame", "PhantomUI_PlanTicker")
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1
 		c = c + arg1

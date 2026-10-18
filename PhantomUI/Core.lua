@@ -864,6 +864,11 @@ SLASH_PHANTOMUI1 = "/pui"
 SLASH_PHANTOMUI2 = "/phantom"
 SlashCmdList["PHANTOMUI"] = function(msg)
 	msg = string.lower(msg or "")
+	local _, _, perfArg = string.find(msg, "^perf%s*(%d*)")
+	if string.find(msg, "^perf") then
+		P.Perf(perfArg)
+		return
+	end
 	if msg == "combo" then
 		if P.ComboDebug then
 			P.ComboDebug()
@@ -881,4 +886,136 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 	elseif P.ToggleOptions then
 		P.ToggleOptions()
 	end
+end
+
+------------------------------------------------------------------------
+-- PhantomUI: Messung, was im Spiel Zeit kostet. /pui perf [Sekunden]
+-- Misst fuer jeden Rahmen mit Skript (Addons und Spiel) die Zeit in OnEvent und
+-- OnUpdate, dazu Speicher-Abfall, Speicherbereinigungen und Bild-Haenger.
+-- Am Ende steht eine kurze Auswertung im Chat; danach laeuft alles wie vorher.
+
+
+local running = false
+local stats, wrapped = {}, {}
+local gcCount, gcFreed, lastMem, startMem = 0, 0, 0, 0
+local spikes, worst, frames, elapsedTotal = 0, 0, 0, 0
+local duration = 30
+local probe
+
+local function Say(text)
+	DEFAULT_CHAT_FRAME:AddMessage("|cff9d4de8PhantomUI|r " .. text)
+end
+
+local function Label(f)
+	local name = f:GetName()
+	if name then
+		return name
+	end
+	local parent = f:GetParent()
+	local pname = parent and parent:GetName()
+	if pname then
+		return pname .. " (Kind)"
+	end
+	return "ohne Namen"
+end
+
+local function Wrap(f, script)
+	local orig = f:GetScript(script)
+	if not orig then
+		return
+	end
+	local key = Label(f) .. " " .. script
+	local s = stats[key]
+	if not s then
+		s = { ms = 0, calls = 0, max = 0 }
+		stats[key] = s
+	end
+	f:SetScript(script, function()
+		local t = debugprofilestop()
+		orig()
+		local d = debugprofilestop() - t
+		s.ms = s.ms + d
+		s.calls = s.calls + 1
+		if d > s.max then
+			s.max = d
+		end
+	end)
+	table.insert(wrapped, { f = f, script = script, orig = orig })
+end
+
+local function Report()
+	running = false
+	for i = 1, table.getn(wrapped) do
+		local w = wrapped[i]
+		w.f:SetScript(w.script, w.orig)
+	end
+	probe:SetScript("OnUpdate", nil)
+	local list = {}
+	for key, s in pairs(stats) do
+		table.insert(list, { key = key, ms = s.ms, calls = s.calls, max = s.max })
+	end
+	table.sort(list, function(a, b) return a.ms > b.ms end)
+	local secs = math.max(1, elapsedTotal)
+	Say(string.format("Messung %ds: %.0f Bilder/s, %d Haenger > 50 ms (laengster %.0f ms)",
+		secs, frames / secs, spikes, worst * 1000))
+	Say(string.format("Speicher: %d KB Abfall/s, %d Bereinigungen (alle %.1f s), jetzt %d KB",
+		math.floor((gcFreed + gcinfo() - startMem) / secs), gcCount,
+		gcCount > 0 and secs / gcCount or 0, gcinfo()))
+	Say("Teuerste Teile (ms pro Sekunde | laengster Aufruf):")
+	for i = 1, math.min(10, table.getn(list)) do
+		local e = list[i]
+		Say(string.format("  %2d. %s: %.2f ms/s | %.1f ms", i, e.key, e.ms / secs, e.max))
+	end
+	stats, wrapped = {}, {}
+end
+
+function P.Perf(seconds)
+	if running then
+		Say("Messung laeuft schon.")
+		return
+	end
+	if not debugprofilestop or not EnumerateFrames then
+		Say("Dieser Client bietet keine Zeitmessung.")
+		return
+	end
+	duration = tonumber(seconds) or 30
+	running = true
+	stats, wrapped = {}, {}
+	gcCount, gcFreed, spikes, worst, frames, elapsedTotal = 0, 0, 0, 0, 0, 0
+	if debugprofilestart then
+		debugprofilestart()
+	end
+	local f = EnumerateFrames()
+	while f do
+		Wrap(f, "OnEvent")
+		Wrap(f, "OnUpdate")
+		f = EnumerateFrames(f)
+	end
+	startMem = gcinfo()
+	lastMem = startMem
+	if not probe then
+		probe = CreateFrame("Frame")
+	end
+	probe:SetScript("OnUpdate", function()
+		local dt = arg1 or 0
+		frames = frames + 1
+		elapsedTotal = elapsedTotal + dt
+		if dt > 0.05 then
+			spikes = spikes + 1
+		end
+		if dt > worst then
+			worst = dt
+		end
+		local mem = gcinfo()
+		if mem < lastMem then
+			-- Speicher ist geschrumpft: eine Bereinigung lief
+			gcCount = gcCount + 1
+			gcFreed = gcFreed + (lastMem - mem)
+		end
+		lastMem = mem
+		if elapsedTotal >= duration then
+			Report()
+		end
+	end)
+	Say("Messung laeuft " .. duration .. " Sekunden – spiel ganz normal weiter (am besten mit vielen Gegnern).")
 end

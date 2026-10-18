@@ -2,7 +2,7 @@
 ## Title: PhantomUI
 ## Notes: Komplette Oberfläche für Azeroth Survivors: Leisten, Spieler/Ziel, Laufuhr, Bosse, Minimap, Chat, Schadensmeter, Schadenszahlen, Fähigkeiten- und Gegenstands-Plan. /pui
 ## Author: Nobby
-## Version: 0.9.21
+## Version: 0.9.22
 ## SavedVariables: PhantomUIDB, CompactSCTDB, AZSSpellMeterDB
 ## OptionalDeps: SurvivorsDragonUi
 

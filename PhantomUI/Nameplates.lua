@@ -95,7 +95,7 @@ local function Init()
 		return
 	end
 	local t = 0
-	local ticker = CreateFrame("Frame")
+	local ticker = CreateFrame("Frame", "PhantomUI_PlatesTicker")
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1
 		if t > 0.2 then

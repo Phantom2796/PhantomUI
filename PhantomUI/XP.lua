@@ -86,7 +86,7 @@ local function Init()
 			d.height = P.Clamp(h, 3, 20)
 		end,
 	})
-	local events = CreateFrame("Frame")
+	local events = CreateFrame("Frame", "PhantomUI_XPEvents")
 	events:RegisterEvent("PLAYER_XP_UPDATE")
 	events:RegisterEvent("PLAYER_LEVEL_UP")
 	events:RegisterEvent("PLAYER_ENTERING_WORLD")
