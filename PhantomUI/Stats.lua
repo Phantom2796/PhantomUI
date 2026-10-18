@@ -19,6 +19,32 @@ local function Pct(v)
 	return string.format("%+.0f%%", (v or 0) * 100)
 end
 
+-- Typische WoW-Farben fuer die Werte (Klassen-, Qualitaets- und Kampftextfarben)
+local VALUE_COLORS = {
+	["Health"] = { 0.15, 0.72, 0.15 },     -- Lebensbalken-Gruen (dunkler)
+	["Damage"] = { 1, 0.5, 0 },            -- Legendaer-Orange
+	["Haste"] = { 0.35, 1, 0.35 },         -- Gruen
+	["Crit"] = { 1, 0.25, 0.25 },          -- Rot
+	["Crit Dmg"] = { 0.78, 0.12, 0.12 },   -- dunkleres Rot
+	["Armor"] = { 0.78, 0.61, 0.43 },      -- Krieger-Braun
+	["Area"] = { 0.41, 0.8, 0.94 },        -- Magier-Blau
+	["Targets"] = { 0.25, 0.6, 1 },        -- Selten-Blau
+	["Echo"] = { 0.75, 0.45, 1 },          -- Episch-Lila
+	["Speed"] = { 1, 0.96, 0.41 },         -- Schurken-Gelb
+	["Regen"] = { 0.67, 0.83, 0.45 },      -- Jaeger-Gruen
+	["Pickup"] = { 0.85, 0.85, 0.85 },     -- Grau-Weiss
+	["Lifesteal"] = { 0.86, 0.2, 0.45 },   -- Blut-Rot
+	["Kill Heal"] = { 0.3, 0.9, 0.7 },     -- Heilung (Tuerkis)
+	["Thorns"] = { 1, 0.49, 0.04 },        -- Druiden-Orange
+	["Lives"] = { 1, 1, 1 },               -- Priester-Weiss
+	["Experience"] = { 0.58, 0.35, 1 },    -- EP-Leiste
+	["Gold"] = { 1, 0.82, 0 },             -- Gold
+	["Luck"] = { 0.12, 1, 0 },             -- Ungewoehnlich-Gruen
+	["Buff Power"] = { 0.96, 0.55, 0.73 }, -- Paladin-Rosa
+	["DoT Stacks"] = { 0.58, 0.51, 0.79 }, -- Hexenmeister-Lila
+	["DoT Haste"] = { 0.7, 0.45, 0.9 },    -- Schatten-Lila
+}
+
 -- { Beschriftung, Wert, immer zeigen? }
 local function Lines(s)
 	local left = {
@@ -135,7 +161,12 @@ local function Update()
 			r.label:SetText(Label(list[i][1]))
 			r.label:SetTextColor(0.75, 0.68, 0.85)
 			r.value:SetText(list[i][2])
-			r.value:SetTextColor(1, 1, 1)
+			local c = VALUE_COLORS[list[i][1]]
+			if c then
+				r.value:SetTextColor(c[1], c[2], c[3])
+			else
+				r.value:SetTextColor(1, 1, 1)
+			end
 			r.hover:ClearAllPoints()
 			r.hover:SetPoint("TOPLEFT", frame, "TOPLEFT", x, y + 1)
 			r.hover.key = list[i][1]
