@@ -161,6 +161,10 @@ local function Pill(i)
 	p.name:SetPoint("LEFT", p, "LEFT", 5, 0)
 	p.pct = holder:CreateFontString(nil, "OVERLAY")
 	p.pct:SetPoint("RIGHT", p, "RIGHT", -5, 0)
+	-- Symbol schlicht links neben der Leiste (ohne Hintergrund): Fahne fuer
+	-- Waechter, die man selbst anlockt, Totenkopf fuer Bosse nach Zeitplan
+	p.icon = holder:CreateTexture(nil, "OVERLAY")
+	p.icon:SetPoint("RIGHT", p, "LEFT", -3, 0)
 	pills[i] = p
 	return p
 end
@@ -242,6 +246,8 @@ local function UpdateBosses()
 			p.name:SetJustifyH("LEFT")
 			p.name:SetHeight(h)
 			p.name:SetWidth(math.max(40, width - 105))
+			p.icon:SetWidth(h + 4)
+			p.icon:SetHeight(h + 4)
 		end
 		local max = tonumber(b.hpm) or 1
 		if max <= 0 then
@@ -255,6 +261,19 @@ local function UpdateBosses()
 			r, g, bl = 0.62, 0.3, 0.92
 		elseif b.enraged then
 			r, g, bl = 1, 0.45, 0.1
+		end
+		local kind = b.guardian and "flag" or "skull"
+		if p.kind ~= kind then
+			p.kind = kind
+			if kind == "flag" then
+				-- dieselbe rote Fahne wie auf der Minimap (POIIcons, Feld 6)
+				p.icon:SetTexture("Interface\\Minimap\\POIIcons")
+				p.icon:SetTexCoord(0.75, 0.875, 0, 0.125)
+			else
+				-- derselbe Totenkopf wie auf der Laufuhr
+				p.icon:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Skull")
+				p.icon:SetTexCoord(0, 1, 0, 1)
+			end
 		end
 		if p.r ~= r or p.g ~= g or p.b ~= bl then
 			p.r, p.g, p.b = r, g, bl
