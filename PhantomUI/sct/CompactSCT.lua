@@ -83,9 +83,8 @@ local function LoadSettings()
 		CompactSCTDB.minAmount = 0
 		CompactSCTDB.version = DB_VERSION
 	end
-	-- Alte Eintraege reparieren: "...Ring_51Naxxramas" ist kein Symbol (Fragezeichen),
-	-- und Seelenfeuer hatte frueher das Symbol von Zorn. Namen, die die Tabelle aus
-	-- den Spieldaten kennt, braucht der Zwischenspeicher nicht (sie gehen vor).
+	-- Namen, die die Tabelle aus den Spieldaten kennt, braucht der Zwischenspeicher
+	-- nicht (sie gehen vor; z. B. hatte Seelenfeuer frueher das Symbol von Zorn).
 	if type(CompactSCTDB.iconCache) == "table" and AZSSpellMeterLocaleIcons then
 		local drop = {}
 		local n
@@ -96,17 +95,6 @@ local function LoadSettings()
 		end
 		for i = 1, table.getn(drop) do
 			CompactSCTDB.iconCache[drop[i]] = nil
-		end
-	end
-	if type(CompactSCTDB.iconCache) == "table" then
-		local name, path
-		for name, path in pairs(CompactSCTDB.iconCache) do
-			if type(path) == "string" then
-				local fixed = string.gsub(path, "(%d)Naxxramas$", "%1")
-				if fixed ~= path then
-					CompactSCTDB.iconCache[name] = fixed
-				end
-			end
 		end
 	end
 	db = CompactSCTDB
