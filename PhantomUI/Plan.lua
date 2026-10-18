@@ -298,8 +298,14 @@ local function BuildEditor()
 	editor = CreateFrame("Frame", "PhantomUI_PlanEditor", UIParent)
 	editor:SetWidth(16 * 2 + COLS * SIZE + (COLS - 1) * GAP)
 	editor:SetFrameStrata("DIALOG")
-	-- oeffnet unten rechts (freie Flaeche neben dem Zielfenster)
-	editor:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -40, 24)
+	-- oeffnet direkt unter dem Zielfenster (freie Flaeche unten rechts)
+	editor:SetClampedToScreen(true)
+	local target = getglobal("PhantomUI_Target")
+	if target then
+		editor:SetPoint("TOP", target, "BOTTOM", 0, -30)
+	else
+		editor:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -320, 40)
+	end
 	P.Box(editor, 0.97)
 	editor:EnableMouse(true)
 	editor:SetMovable(true)
