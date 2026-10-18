@@ -1,7 +1,8 @@
 -- PhantomUI: Faehigkeiten-Plan. Vor dem Lauf im Editor anklicken, welche
 -- Faehigkeiten man in welcher Reihenfolge nehmen will; das wird je Klasse
 -- gespeichert und im Spiel als kleines Fenster angezeigt. Schon genommene
--- Faehigkeiten werden darin gruen markiert (aus AZS_SPELLS).
+-- Faehigkeiten verschwinden aus dem Fenster, sobald man sie hat (AZS_SPELLS),
+-- Gegenstaende, sobald man sie traegt.
 
 local P = PhantomUI
 
@@ -106,6 +107,44 @@ local function Owned()
 		end
 	end
 	return owned
+end
+
+-- Getragene Gegenstaende (Hals 2, Ringe 11/12, Schmuck 13/14): Symbol und Name
+-- aus den Ausruestungsplaetzen. Liefert das Spiel dort nichts, bleibt die Liste
+-- leer und die Gegenstaende bleiben einfach im Plan stehen.
+local GEAR_SLOTS = { NECK = { 2 }, RING = { 11, 12 }, TRINKET = { 13, 14 } }
+local function Worn(cat)
+	local worn = { icons = {}, names = {} }
+	local slots = GEAR_SLOTS[cat]
+	if not slots then
+		return worn
+	end
+	for i = 1, table.getn(slots) do
+		local tex = GetInventoryItemTexture and GetInventoryItemTexture("player", slots[i])
+		if tex then
+			local _, _, file = string.find(string.lower(tex), "([^\\]+)$")
+			worn.icons[file or string.lower(tex)] = true
+		end
+		local link = GetInventoryItemLink and GetInventoryItemLink("player", slots[i])
+		if link then
+			local _, _, name = string.find(link, "%[(.-)%]")
+			if name then
+				worn.names[name] = true
+			end
+		end
+	end
+	return worn
+end
+
+local function IsWorn(worn, a)
+	if not a then
+		return false
+	end
+	-- Name ist eindeutig; das Symbol nur, wenn das Spiel keine Namen liefert
+	if next(worn.names) then
+		return worn.names[NameOf(a)] and true or false
+	end
+	return a.icon and worn.icons[string.lower(a.icon)] and true or false
 end
 
 ------------------------------------------------------------------------
@@ -370,15 +409,27 @@ function RefreshWindow()
 	end
 	window:Show()
 	local owned = Owned()
-	local used, rows, widest = 0, 0, 0
+	local used, rows, widest, planned = 0, 0, 0, 0
 	for c = 1, table.getn(CATS) do
 		local cat = CATS[c]
 		local plan = Plan(class, cat)
 		local n = table.getn(plan)
-		if n > 0 then
-			for i = 1, n do
+		planned = planned + n
+		local worn = cat ~= "ABILITY" and Worn(cat) or nil
+		local col = 0
+		for i = 1, n do
+			local a = Ability(class, plan[i], cat)
+			-- Schon genommen bzw. getragen: verschwindet aus dem Fenster,
+			-- die uebrigen ruecken auf (Nummer bleibt die aus dem Plan)
+			local have
+			if cat == "ABILITY" then
+				have = owned[plan[i]] and true or false
+			else
+				have = IsWorn(worn, a)
+			end
+			if not have then
 				used = used + 1
-				local a = Ability(class, plan[i], cat)
+				col = col + 1
 				local b = windowButtons[used]
 				if not b then
 					b = IconButton(window, size)
@@ -414,14 +465,14 @@ function RefreshWindow()
 				-- Groesse/Schrift/Platz nur bei Aenderung (einmal pro Sekunde neu
 				-- setzen war unnoetige Arbeit fuer das Spiel)
 				local font = P.Font()
-				local key = size .. ":" .. font .. ":" .. i .. ":" .. rows
+				local key = size .. ":" .. font .. ":" .. col .. ":" .. rows
 				if b.layoutKey ~= key then
 					b.layoutKey = key
 					b:SetWidth(size)
 					b:SetHeight(size)
 					b.num:SetFont(font, math.max(9, math.floor(size * 0.38)), "OUTLINE")
 					b:ClearAllPoints()
-					b:SetPoint("TOPLEFT", window, "TOPLEFT", (i - 1) * step, -rows * step)
+					b:SetPoint("TOPLEFT", window, "TOPLEFT", (col - 1) * step, -rows * step)
 				end
 				local iconPath = a and ("Interface\\Icons\\" .. a.icon) or "Interface\\Icons\\INV_Misc_QuestionMark"
 				if b.iconPath ~= iconPath then
@@ -436,13 +487,10 @@ function RefreshWindow()
 					b.name = plan[i]
 				end
 				b.num:SetText(i)
-				-- Gegenstaende: ob schon getragen, verraet AZS (noch) nicht
-				b.owned = cat == "ABILITY" and owned[plan[i]] and true or false
-				if b.owned then
-					b.edge:SetVertexColor(GREEN[1], GREEN[2], GREEN[3], 1)
-					b.shade:Show()
-					b.num:SetTextColor(GREEN[1], GREEN[2], GREEN[3])
-				elseif cat == "ABILITY" then
+				b.owned = false
+				b.edge:SetVertexColor(0, 0, 0, 1)
+				b.shade:Hide()
+				if cat == "ABILITY" then
 					b.edge:SetVertexColor(0, 0, 0, 1)
 					b.shade:Hide()
 					b.num:SetTextColor(1, 1, 1)
@@ -453,9 +501,11 @@ function RefreshWindow()
 				end
 				b:Show()
 			end
+		end
+		if col > 0 then
 			rows = rows + 1
-			if n > widest then
-				widest = n
+			if col > widest then
+				widest = col
 			end
 		end
 	end
@@ -463,7 +513,12 @@ function RefreshWindow()
 		windowButtons[i]:Hide()
 	end
 	-- Leerer Plan: Hinweis-Feld, das den Editor oeffnet
-	if used == 0 then
+	if used == 0 and planned > 0 and not P.unlocked then
+		-- alles aus dem Plan genommen: Fenster weg (der Plan-Knopf bleibt)
+		window.empty:Hide()
+		window:Hide()
+		return
+	elseif used == 0 then
 		window.empty:Show()
 		window.emptyText:SetText(T("empty"))
 		window:SetWidth(math.max(120, (window.emptyText:GetStringWidth() or 104) + 16))
@@ -490,6 +545,46 @@ local function Init()
 	window.emptyText:SetTextColor(0.75, 0.75, 0.8)
 	window.emptyText:SetPoint("CENTER", window.empty, "CENTER", 0, 0)
 	window.empty:SetScript("OnClick", function() P.TogglePlanEditor() end)
+
+	-- Kleiner "Plan"-Knopf unter Aktionsleiste/EP-Leiste: oeffnet immer den
+	-- Editor, auch wenn das Fenster leer ist (alles schon genommen)
+	local pb = CreateFrame("Button", "PhantomUI_PlanButton", UIParent)
+	pb:SetFrameStrata("LOW")
+	pb:SetWidth(44)
+	pb:SetHeight(14)
+	P.Box(pb, 0.85)
+	pb.text = pb:CreateFontString(nil, "OVERLAY")
+	pb.text:SetPoint("CENTER", pb, "CENTER", 0, 0)
+	pb.text:SetText("Plan")
+	pb.text:SetTextColor(0.85, 0.75, 1)
+	pb:RegisterForClicks("LeftButtonUp")
+	pb:SetScript("OnClick", function() P.TogglePlanEditor() end)
+	pb:SetScript("OnEnter", function()
+		this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
+		GameTooltip:SetOwner(this, "ANCHOR_TOP")
+		GameTooltip:SetText(T("title"))
+		GameTooltip:Show()
+	end)
+	pb:SetScript("OnLeave", function()
+		this:SetBackdropBorderColor(0, 0, 0, 1)
+		GameTooltip:Hide()
+	end)
+	local function StylePlanButton()
+		pb.text:SetFont(P.Font(), 9, "OUTLINE")
+	end
+	StylePlanButton()
+	P.OnApply(StylePlanButton)
+	P.RegisterMover("planbutton", pb, "Plan-Knopf", function(f)
+		local xp = getglobal("PhantomUI_XP")
+		local bar = getglobal("PhantomUI_ActionBar")
+		if xp and P.DB().xp.enabled then
+			f:SetPoint("TOP", xp, "BOTTOM", 0, -3)
+		elseif bar then
+			f:SetPoint("TOP", bar, "BOTTOM", 0, -3)
+		else
+			f:SetPoint("CENTER", UIParent, "CENTER", 0, -250)
+		end
+	end)
 
 	RefreshWindow()
 	P.RegisterMover("plan", window, "Plan", function(f)

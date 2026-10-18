@@ -42,7 +42,7 @@
 
 ### 📜 Ability & item plan
 - `/plan` – click your class's abilities, then necklace, rings and trinkets in the order you want them
-- Saved per class; a small window shows the plan during the run, abilities you already took turn green
+- Saved per class; a small window shows the plan during the run, abilities you took and items you wear disappear from it; a small "Plan" button under the XP bar opens the editor
 - Tooltips show each item's effect with its base value
 
 ### 🧭 Layout & settings
