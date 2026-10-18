@@ -113,6 +113,15 @@ end
 -- aus den Ausruestungsplaetzen. Liefert das Spiel dort nichts, bleibt die Liste
 -- leer und die Gegenstaende bleiben einfach im Plan stehen.
 local GEAR_SLOTS = { NECK = { 2 }, RING = { 11, 12 }, TRINKET = { 13, 14 } }
+-- Aufwertungen haengen eine roemische Stufe an ("... II", "... III"):
+-- fuer den Vergleich weglassen
+local function BaseName(name)
+	if not name then
+		return nil
+	end
+	local base = string.gsub(name, "%s+[IVX]+$", "")
+	return base
+end
 local function Worn(cat)
 	local worn = { icons = {}, names = {} }
 	local slots = GEAR_SLOTS[cat]
@@ -129,7 +138,7 @@ local function Worn(cat)
 		if link then
 			local _, _, name = string.find(link, "%[(.-)%]")
 			if name then
-				worn.names[name] = true
+				worn.names[BaseName(name)] = true
 			end
 		end
 	end
@@ -142,7 +151,7 @@ local function IsWorn(worn, a)
 	end
 	-- Name ist eindeutig; das Symbol nur, wenn das Spiel keine Namen liefert
 	if next(worn.names) then
-		return worn.names[NameOf(a)] and true or false
+		return worn.names[BaseName(NameOf(a))] and true or false
 	end
 	return a.icon and worn.icons[string.lower(a.icon)] and true or false
 end
