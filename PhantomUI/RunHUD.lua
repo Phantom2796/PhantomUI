@@ -184,22 +184,35 @@ local function UpdateBosses()
 		end
 	end
 	if P.unlocked and table.getn(list) == 0 then
-		list = { { name = "Boss", hp = 7, hpm = 10 } }
+		-- Vorschau im Ankermodus: zwei Leisten, damit man das Stapeln sieht
+		list = { { name = "Boss", hp = 7, hpm = 10 }, { name = "Wächter", hp = 4, hpm = 10, guardian = true } }
 	end
 	local tex = P.Texture()
-	local h = db.bossHeight
-	-- Am Zielfenster angedockt: genau so breit wie das Ziel (beide Ecken verankert)
+	local bdb = P.DB().bosses
+	local h = bdb.height
+	-- Am Zielfenster angedockt: genau so breit wie das Ziel (beide Ecken verankert).
+	-- Frei verschoben: eigene Breite und Skalierung (Ankermodus: Kanten / Ecke).
 	local docked = bossFrame.docked
-	local wantScale = docked and 1 or db.scale
+	local wantScale = docked and 1 or bdb.scale
 	if bossFrame.lastScale ~= wantScale then
 		bossFrame.lastScale = wantScale
 		bossFrame:SetScale(wantScale)
 	end
-	if not docked and bossFrame.lastWidth ~= db.width then
-		bossFrame.lastWidth = db.width
-		bossFrame:SetWidth(db.width)
+	local width
+	if docked then
+		width = bossFrame:GetWidth()
+		if width and width > 0 then
+			bossFrame.dockWidth = math.floor(width + 0.5)
+		end
+		width = bossFrame.dockWidth or 260
+		bossFrame.lastWidth = nil
+	else
+		width = (bdb.width and bdb.width > 0) and bdb.width or bossFrame.dockWidth or 260
+		if bossFrame.lastWidth ~= width then
+			bossFrame.lastWidth = width
+			bossFrame:SetWidth(width)
+		end
 	end
-	local width = docked and bossFrame:GetWidth() or db.width
 	-- Nur die unterste Leiste zaehlt fuer Platz und Anker; weitere Bosse
 	-- stapeln sich darueber (die Leiste waechst nach oben).
 	if bossFrame.lastH ~= h then
@@ -338,15 +351,19 @@ local function Init()
 			f:SetPoint("CENTER", UIParent, "CENTER", 229, -100)
 		end
 	end, {
-		scale = "run",
+		scale = "bosses",
 		get = function()
-			local d = P.DB().run
-			return d.width, d.bossHeight
+			local d = P.DB().bosses
+			local w = d.width
+			if not w or w <= 0 then
+				w = bossFrame.dockWidth or 260
+			end
+			return w, d.height
 		end,
 		set = function(w, h)
-			local d = P.DB().run
-			d.width = P.Clamp(w, 120, 600)
-			d.bossHeight = P.Clamp(h, 12, 32)
+			local d = P.DB().bosses
+			d.width = P.Clamp(w, 120, 700)
+			d.height = P.Clamp(h, 12, 40)
 		end,
 	})
 

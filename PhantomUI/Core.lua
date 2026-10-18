@@ -83,6 +83,12 @@ local DEFAULTS = {
 		bossHeight = 18,
 		scale = 1,
 	},
+	-- Boss-Leisten: eigene Breite (0 = so breit wie das Zielfenster), Hoehe, Skalierung
+	bosses = {
+		width = 0,
+		height = 18,
+		scale = 1,
+	},
 	xp = {
 		enabled = true,
 		width = 232,
@@ -124,7 +130,7 @@ local DEFAULTS = {
 	},
 }
 
-local DB_VERSION = 13
+local DB_VERSION = 14
 
 local function Merge(target, source)
 	for key, value in pairs(source) do
@@ -323,7 +329,9 @@ end
 local function MakeOverlay(key)
 	local m = movers[key]
 	local overlay = CreateFrame("Button", nil, UIParent)
-	overlay:SetFrameStrata("DIALOG")
+	-- ueber allen Rahmen, auch ueber den Boss-Leisten (FULLSCREEN_DIALOG)
+	overlay:SetFrameStrata("FULLSCREEN_DIALOG")
+	overlay:SetFrameLevel(60)
 	overlay:SetAllPoints(m.frame)
 	overlay:SetBackdrop({ bgFile = P.FLAT, edgeFile = P.FLAT, edgeSize = 1 })
 	overlay:SetBackdropColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 0.35)
@@ -477,12 +485,13 @@ local function MakeOverlay(key)
 		if m.sizer.get then
 			local l = Grip("left", "Breite ziehen")
 			l:SetWidth(T)
-			l:SetPoint("TOPLEFT", overlay, "TOPLEFT", 0, -12)
-			l:SetPoint("BOTTOMLEFT", overlay, "BOTTOMLEFT", 0, 12)
+			-- kleine Randabstaende, damit die Griffe auch bei schmalen Leisten bleiben
+			l:SetPoint("TOPLEFT", overlay, "TOPLEFT", 0, -3)
+			l:SetPoint("BOTTOMLEFT", overlay, "BOTTOMLEFT", 0, 3)
 			local r = Grip("right", "Breite ziehen")
 			r:SetWidth(T)
-			r:SetPoint("TOPRIGHT", overlay, "TOPRIGHT", 0, -12)
-			r:SetPoint("BOTTOMRIGHT", overlay, "BOTTOMRIGHT", 0, 12)
+			r:SetPoint("TOPRIGHT", overlay, "TOPRIGHT", 0, -3)
+			r:SetPoint("BOTTOMRIGHT", overlay, "BOTTOMRIGHT", 0, 3)
 			local t = Grip("top", "Höhe ziehen")
 			t:SetHeight(T)
 			t:SetPoint("TOPLEFT", overlay, "TOPLEFT", 12, 0)
@@ -494,6 +503,7 @@ local function MakeOverlay(key)
 		end
 		if m.sizer.scale or m.sizer.uniform then
 			local c = Grip("corner", "Alles größer/kleiner skalieren")
+			c:SetFrameLevel(overlay:GetFrameLevel() + 3)
 			c:SetWidth(12)
 			c:SetHeight(12)
 			c:SetPoint("BOTTOMRIGHT", overlay, "BOTTOMRIGHT", 0, 0)
@@ -827,6 +837,10 @@ boot:SetScript("OnEvent", function()
 		if (db.version or 1) < 9 and db.stats then
 			-- Laufwerte: ganz durchsichtig
 			db.stats.bgAlpha = 0
+		end
+		if (db.version or 1) < 14 and db.run and db.bosses then
+			-- Boss-Leisten haben eigene Groesse (vorher mit der Laufuhr geteilt)
+			db.bosses.height = db.run.bossHeight or db.bosses.height
 		end
 		if (db.version or 1) < 7 and db.run and db.run.height == 16 then
 			-- Laufuhr: schmale Leiste, Zeit steht jetzt darueber
