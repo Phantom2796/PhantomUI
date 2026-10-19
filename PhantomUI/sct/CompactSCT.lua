@@ -55,6 +55,17 @@ local DB_VERSION = 11
 
 local db
 
+-- Deutsch oder Englisch, je nach PhantomUI-Sprache
+local function L(de, en)
+	if PhantomUI and PhantomUI.L then
+		return PhantomUI.L(de, en)
+	end
+	return en
+end
+local function OnOff(on)
+	return on and L("an", "on") or L("aus", "off")
+end
+
 local function Print(text)
 	if DEFAULT_CHAT_FRAME then
 		DEFAULT_CHAT_FRAME:AddMessage("|cff66ccffCompactSCT|r: " .. text)
@@ -1353,7 +1364,7 @@ end)
 
 local function Test()
 	if not db.enabled then
-		Print("ist aus. Erst |cffffff00/csct on|r.")
+		Print(L("ist aus. Erst |cffffff00/csct on|r.", "is off. Use |cffffff00/csct on|r first."))
 		return
 	end
 	local spells = {}
@@ -1395,42 +1406,42 @@ local function Test()
 end
 
 local function Status()
-	Print("Status: " .. (db.enabled and "|cff00ff00an|r" or "|cffff4040aus|r")
-		.. ", Groesse " .. db.size
+	Print("Status: " .. (db.enabled and "|cff00ff00" .. OnOff(true) .. "|r" or "|cffff4040" .. OnOff(false) .. "|r")
+		.. L(", Groesse ", ", size ") .. db.size
 		.. ", Crit x" .. db.critScale
-		.. ", Symbole " .. (db.icons and "an" or "aus")
-		.. ", Farben " .. db.color
-		.. ", Schrift " .. db.font
-		.. ", DoTs " .. (db.dots and "an" or "aus")
-		.. ", Mindestwert " .. db.minAmount .. " / " .. (db.minPercent or 0) .. "%"
+		.. L(", Symbole ", ", icons ") .. OnOff(db.icons)
+		.. L(", Farben ", ", colours ") .. db.color
+		.. L(", Schrift ", ", font ") .. db.font
+		.. ", DoTs " .. OnOff(db.dots)
+		.. L(", Mindestwert ", ", minimum ") .. db.minAmount .. " / " .. (db.minPercent or 0) .. "%"
 		.. ", max " .. db.maxTexts
-		.. ", Dauer " .. db.duration .. "s"
-		.. ", Sichtbarkeit " .. db.opacity
-		.. ", Verfolgung " .. (db.track and "an" or "aus"))
+		.. L(", Dauer ", ", duration ") .. db.duration .. "s"
+		.. L(", Sichtbarkeit ", ", opacity ") .. db.opacity
+		.. L(", Verfolgung ", ", tracking ") .. OnOff(db.track))
 end
 
 local function Help()
-	Print("Befehle:")
+	Print(L("Befehle:", "Commands:"))
 	local lines = {
-		"/csct  - Einstellungsfenster",
-		"/csct on | off  - Addon an/aus (aus = Zahlen des Spiels zurueck)",
-		"/csct test  - Beispielzahlen anzeigen",
-		"/csct size 8-30  - Schriftgroesse",
-		"/csct crit 1-2  - Crit-Vergroesserung (z. B. 1.35)",
-		"/csct icons  - Symbole an/aus",
-		"/csct color school|white|gold  - Farben",
+		L("/csct  - Einstellungsfenster", "/csct  - settings window"),
+		L("/csct on | off  - Addon an/aus (aus = Zahlen des Spiels zurueck)", "/csct on | off  - addon on/off (off = the game's own numbers)"),
+		L("/csct test  - Beispielzahlen anzeigen", "/csct test  - show sample numbers"),
+		L("/csct size 8-30  - Schriftgroesse", "/csct size 8-30  - font size"),
+		L("/csct crit 1-2  - Crit-Vergroesserung (z. B. 1.35)", "/csct crit 1-2  - crit enlargement (e.g. 1.35)"),
+		L("/csct icons  - Symbole an/aus", "/csct icons  - icons on/off"),
+		L("/csct color school|white|gold  - Farben", "/csct color school|white|gold  - colours"),
 		"/csct font arial|friz|skurri|morpheus",
-		"/csct short  - grosse Zahlen kuerzen (12.3k) an/aus",
-		"/csct dots  - Schaden ueber Zeit an/aus",
-		"/csct min Zahl  - kleinere Treffer ausblenden",
-		"/csct max Zahl  - hoechstens so viele Zahlen gleichzeitig",
-		"/csct time Sekunden  - Anzeigedauer (z. B. 0.9)",
-		"/csct rise Pixel  - wie weit sie steigen",
-		"/csct alpha 0.1-1  - Sichtbarkeit (z. B. 0.8)",
-		"/csct spread 0.5-4  - wie weit die Zahlen auseinander liegen",
-		"/csct merge  - gleiche Treffer zusammenfassen an/aus",
-		"/csct track  - Positionen auch bei ausgeblendeten Plaketten",
-		"/csct missing  - Faehigkeiten ohne Symbol auflisten",
+		L("/csct short  - grosse Zahlen kuerzen (12.3k) an/aus", "/csct short  - shorten big numbers (12.3k) on/off"),
+		L("/csct dots  - Schaden ueber Zeit an/aus", "/csct dots  - damage over time on/off"),
+		L("/csct min Zahl  - kleinere Treffer ausblenden", "/csct min number  - hide smaller hits"),
+		L("/csct max Zahl  - hoechstens so viele Zahlen gleichzeitig", "/csct max number  - at most this many numbers at once"),
+		L("/csct time Sekunden  - Anzeigedauer (z. B. 0.9)", "/csct time seconds  - display time (e.g. 0.9)"),
+		L("/csct rise Pixel  - wie weit sie steigen", "/csct rise pixels  - how far they rise"),
+		L("/csct alpha 0.1-1  - Sichtbarkeit (z. B. 0.8)", "/csct alpha 0.1-1  - opacity (e.g. 0.8)"),
+		L("/csct spread 0.5-4  - wie weit die Zahlen auseinander liegen", "/csct spread 0.5-4  - how far apart the numbers are"),
+		L("/csct merge  - gleiche Treffer zusammenfassen an/aus", "/csct merge  - merge identical hits on/off"),
+		L("/csct track  - Positionen auch bei ausgeblendeten Plaketten", "/csct track  - positions even with hidden nameplates"),
+		L("/csct missing  - Faehigkeiten ohne Symbol auflisten", "/csct missing  - list abilities without an icon"),
 		"/csct status | reset",
 	}
 	for i = 1, table.getn(lines) do
@@ -1501,10 +1512,10 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 		Status()
 	elseif cmd == "on" or cmd == "an" then
 		Enable()
-		Print("an. Die gelben Zahlen des Spiels sind aus.")
+		Print(L("an. Die gelben Zahlen des Spiels sind aus.", "on. The game's yellow numbers are off."))
 	elseif cmd == "off" or cmd == "aus" then
 		Disable()
-		Print("aus. Die Zahlen des Spiels sind zurueck.")
+		Print(L("aus. Die Zahlen des Spiels sind zurueck.", "off. The game's numbers are back."))
 	elseif cmd == "test" then
 		Test()
 	elseif cmd == "size" then
@@ -1513,14 +1524,14 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 			db.size = math.floor(n + 0.5)
 			fontVersion = fontVersion + 1
 		end
-		Print("Schriftgroesse " .. db.size)
+		Print(L("Schriftgroesse ", "Font size ") .. db.size)
 	elseif cmd == "crit" then
 		local n = Number(rest, 1, 2)
 		if n then db.critScale = n end
 		Print("Crits x" .. db.critScale)
 	elseif cmd == "icons" then
 		db.icons = not db.icons
-		Print("Symbole " .. (db.icons and "an" or "aus"))
+		Print(L("Symbole ", "Icons ") .. OnOff(db.icons))
 	elseif cmd == "color" or cmd == "farbe" then
 		if rest == "school" or rest == "white" or rest == "gold" then
 			db.color = rest
@@ -1531,50 +1542,50 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 		else
 			db.color = "school"
 		end
-		Print("Farben: " .. db.color)
+		Print(L("Farben: ", "Colours: ") .. db.color)
 	elseif cmd == "font" then
 		if FONTS[rest] then
 			db.font = rest
 			fontVersion = fontVersion + 1
 		end
-		Print("Schrift: " .. db.font)
+		Print(L("Schrift: ", "Font: ") .. db.font)
 	elseif cmd == "short" then
 		db.short = not db.short
-		Print("Kurze Zahlen " .. (db.short and "an" or "aus"))
+		Print(L("Kurze Zahlen ", "Short numbers ") .. OnOff(db.short))
 	elseif cmd == "dots" then
 		db.dots = not db.dots
-		Print("Schaden ueber Zeit " .. (db.dots and "an" or "aus"))
+		Print(L("Schaden ueber Zeit ", "Damage over time ") .. OnOff(db.dots))
 	elseif cmd == "minp" then
 		local n = Number(rest, 0, 50)
 		if n then db.minPercent = math.floor(n) end
-		Print("Mindestschaden " .. db.minPercent .. "% vom Spitzentreffer")
+		Print(L("Mindestschaden ", "Minimum damage ") .. db.minPercent .. L("% vom Spitzentreffer", "% of the top hit"))
 	elseif cmd == "min" then
 		local n = Number(rest, 0, 1000000)
 		if n then db.minAmount = math.floor(n) end
-		Print("Mindestwert " .. db.minAmount)
+		Print(L("Mindestwert ", "Minimum ") .. db.minAmount)
 	elseif cmd == "max" then
 		local n = Number(rest, 5, 200)
 		if n then db.maxTexts = math.floor(n) end
-		Print("Hoechstens " .. db.maxTexts .. " Zahlen")
+		Print(L("Hoechstens ", "At most ") .. db.maxTexts .. L(" Zahlen", " numbers"))
 	elseif cmd == "time" then
 		local n = Number(rest, 0.3, 3)
 		if n then db.duration = n end
-		Print("Anzeigedauer " .. db.duration .. "s")
+		Print(L("Anzeigedauer ", "Display time ") .. db.duration .. "s")
 	elseif cmd == "alpha" then
 		local n = Number(rest, 0.1, 1)
 		if n then db.opacity = n end
-		Print("Sichtbarkeit " .. db.opacity)
+		Print(L("Sichtbarkeit ", "Opacity ") .. db.opacity)
 	elseif cmd == "merge" then
 		db.merge = not db.merge
-		Print("Zusammenfassen " .. (db.merge and "an" or "aus"))
+		Print(L("Zusammenfassen ", "Merge ") .. OnOff(db.merge))
 	elseif cmd == "spread" or cmd == "abstand" then
 		local n = Number(rest, 0.5, 4)
 		if n then db.spread = n end
-		Print("Abstand x" .. db.spread)
+		Print(L("Abstand x", "Spread x") .. db.spread)
 	elseif cmd == "rise" then
 		local n = Number(rest, 0, 120)
 		if n then db.rise = n end
-		Print("Steigen " .. db.rise .. " Pixel")
+		Print(L("Steigen ", "Rise ") .. db.rise .. " px")
 	elseif cmd == "track" then
 		db.track = not db.track
 		ApplyBacking()
@@ -1583,13 +1594,13 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 				Mask(plate, data, false, GetTime())
 			end
 		end
-		Print("Verfolgung " .. (db.track and "an" or "aus (Zahlen nur bei sichtbaren Plaketten ueber den Mobs)"))
+		Print(L("Verfolgung ", "Tracking ") .. (db.track and OnOff(true) or L("aus (Zahlen nur bei sichtbaren Plaketten ueber den Mobs)", "off (numbers only above visible nameplates)")))
 	elseif cmd == "missing" or cmd == "fehlt" then
 		local list = CompactSCT.Unresolved()
 		if table.getn(list) == 0 then
-			Print("Alle bisher gesehenen Faehigkeiten haben ein Symbol.")
+			Print(L("Alle bisher gesehenen Faehigkeiten haben ein Symbol.", "Every ability seen so far has an icon."))
 		else
-			Print("Ohne Symbol (" .. table.getn(list) .. "):")
+			Print(L("Ohne Symbol (", "Without icon (") .. table.getn(list) .. "):")
 			for i = 1, table.getn(list) do
 				Print("  " .. list[i])
 			end
@@ -1605,7 +1616,7 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 		db.native = native
 		fontVersion = fontVersion + 1
 		Enable()
-		Print("Einstellungen zurueckgesetzt.")
+		Print(L("Einstellungen zurueckgesetzt.", "Settings reset."))
 	else
 		Help()
 	end

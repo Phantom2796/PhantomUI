@@ -58,12 +58,12 @@ local function MakeButton(def)
 	end)
 	b:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
-		GameTooltip:SetText(this.def.title)
+		GameTooltip:SetText(P.T(this.def.title))
 		if this.def.leftText then
-			GameTooltip:AddLine("Linksklick: " .. this.def.leftText, 1, 1, 1)
+			GameTooltip:AddLine(P.L("Linksklick: ", "Left click: ") .. P.T(this.def.leftText), 1, 1, 1)
 		end
 		if this.def.rightText then
-			GameTooltip:AddLine("Rechtsklick: " .. this.def.rightText, 1, 1, 1)
+			GameTooltip:AddLine(P.L("Rechtsklick: ", "Right click: ") .. P.T(this.def.rightText), 1, 1, 1)
 		end
 		GameTooltip:Show()
 	end)

@@ -89,7 +89,7 @@ local function Init()
 		f.key = def.key -- fehlte: ohne Schluessel blieb jedes Feld auf "-"
 		f:SetScript("OnEnter", function()
 			GameTooltip:SetOwner(this, "ANCHOR_TOP")
-			GameTooltip:SetText(this.tip)
+			GameTooltip:SetText(P.T(this.tip))
 			GameTooltip:Show()
 		end)
 		f:SetScript("OnLeave", function() GameTooltip:Hide() end)

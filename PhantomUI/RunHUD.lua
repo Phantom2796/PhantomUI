@@ -8,7 +8,8 @@ local L = {
 	deDE = { next = "Nächster Boss", endless = "Endlos", won = "Sieg" },
 }
 local function T(key)
-	local lang = PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	local lang = P.UILang()
 	return (L[lang] or L.enUS)[key] or L.enUS[key]
 end
 
@@ -189,7 +190,7 @@ local function UpdateBosses()
 	end
 	if P.unlocked and table.getn(list) == 0 then
 		-- Vorschau im Ankermodus: zwei Leisten, damit man das Stapeln sieht
-		list = { { name = "Boss", hp = 7, hpm = 10 }, { name = "Wächter", hp = 4, hpm = 10, guardian = true } }
+		list = { { name = "Boss", hp = 7, hpm = 10 }, { name = P.T("Wächter"), hp = 4, hpm = 10, guardian = true } }
 	end
 	local tex = P.Texture()
 	local bdb = P.DB().bosses

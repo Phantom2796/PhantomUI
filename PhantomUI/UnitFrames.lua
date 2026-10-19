@@ -367,7 +367,7 @@ local function Update(f)
 		if P.unlocked then
 			-- Vorschau, damit man das Zielfenster auch ohne Ziel verschieben kann.
 			f:Show()
-			f.name:SetText("Ziel")
+			f.name:SetText(P.T("Ziel"))
 			f.hp:SetText("")
 			f.pct:SetText("")
 			f.level:SetText("")
@@ -406,7 +406,7 @@ local function Update(f)
 	f.bar:SetStatusBarColor(c[1], c[2], c[3])
 	f.barBg:SetVertexColor(c[1] * 0.2, c[2] * 0.2, c[3] * 0.2, 0.9)
 	if UnitIsDead(unit) or UnitIsGhost(unit) then
-		f.hp:SetText("Tot")
+		f.hp:SetText(P.T("Tot"))
 		f.pct:SetText("0%")
 	else
 		if db.short then

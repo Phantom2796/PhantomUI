@@ -52,6 +52,11 @@ local function Text(parent, size, color)
 	local text = parent:CreateFontString(nil, "OVERLAY")
 	text:SetFont(FONT, size, "OUTLINE")
 	text:SetTextColor(color[1], color[2], color[3])
+	-- Alle Texte im Fenster laufen durch die Uebersetzung (Deutsch/Englisch)
+	local setText = text.SetText
+	text.SetText = function(self, value)
+		setText(self, P.T(value))
+	end
 	return text
 end
 
@@ -355,8 +360,7 @@ local function PagePower(page)
 	y = Slider(page, y, "Rahmen", { "power", "border" }, 1, 4, 1, "%d px")
 	y = Slider(page, y, "Hintergrund", { "power", "bgAlpha" }, 0, 1, 0.05, "%.2f")
 	y = Slider(page, y, "Skalierung", { "power", "scale" }, 0.5, 2, 0.05, "x%.2f")
-	y = Note(page, y + 2, "Immer nur eine Leiste: Wut (Krieger, Bär), Kombopunkte (Schurke, Katze),")
-	y = Note(page, y, "Seelensplitter (Hexer). Mana ist in AZS ohne Nutzen und daher aus.")
+	y = Note(page, y + 2, "Nur der Krieger hat eine Leiste (Wut). Kombopunkte zeigt das Spiel selbst.")
 	y = y - 4
 	y = Heading(page, y, "Gold / Kiste")
 	y = Slider(page, y, "Breite", { "tally", "width" }, 80, 400, 2, "%d px")
@@ -378,6 +382,16 @@ end
 
 local function PageGeneral(page)
 	local y = -10
+	y = Heading(page, y, "Sprache")
+	y = Cycle(page, y, "Sprache", {
+		get = function() return P.DB().uiLang or "auto" end,
+		set = function(value)
+			P.DB().uiLang = value
+			ReloadUI()
+		end,
+	}, { "auto", "deDE", "enUS" }, { "Automatisch (Spielsprache)", "Deutsch", "English" })
+	y = Note(page, y + 2, "Gilt für die PhantomUI-Texte; die Oberfläche lädt dafür neu.")
+	y = y - 6
 	y = Heading(page, y, "Aussehen")
 	local tv, tn = TextureLists()
 	y = Cycle(page, y, "Leisten-Textur", { "texture" }, tv, tn)
@@ -417,7 +431,7 @@ local function PageGeneral(page)
 	Check(page, 16, y, "Namensplaketten-Stil", { "plates", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Buffs", { "auras", "enabled" })
 	y = y - ROW
-	Check(page, 16, y, "Laufwerte neben der Minimap", { "stats", "enabled" })
+	Check(page, 16, y, "Laufwerte", { "stats", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Plan bei Kartenwahl unten", { "plan", "choice" })
 	y = y - ROW
 	Check(page, 16, y, "Ruckler-Schutz (Speicher)", { "gc", "enabled" })

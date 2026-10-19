@@ -1,4 +1,4 @@
-PhantomUI 0.9.43 - UI for Azeroth Survivors
+PhantomUI 0.9.44 - UI for Azeroth Survivors
 ==========================================
 
 Install
@@ -14,6 +14,7 @@ Commands
 /pui           settings window
 /pui unlock    anchor mode (move & resize everything), /pui lock to finish
 /pui reset     all frames back to the default layout
+/pui lang de|en|auto   language of PhantomUI's own texts (auto = game language)
 /csct          damage numbers settings
 /azsm          damage meter (show, hide, reset, resetpos)
 

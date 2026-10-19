@@ -8,7 +8,8 @@ local L = {
 	deDE = { resume = "Weiterspielen", options = "Optionen", ui = "PhantomUI", quit = "Spiel beenden", character = "Charakter", talents = "Talente", menu = "Spielmenü" },
 }
 local function T(key)
-	local lang = PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	local lang = P.UILang()
 	return (L[lang] or L.enUS)[key] or L.enUS[key]
 end
 
@@ -136,7 +137,7 @@ P.OnInit(Init)
 -- Knoepfe an der Minimap (sie ersetzen das Mikromenue des Spiels)
 P.OnInit(function()
 	P.AddMinimapButton({
-		title = "Charakter / Character",
+		title = "Charakter",
 		icon = "Interface\\Icons\\INV_Chest_Plate04",
 		left = function()
 			if ToggleCharacter then ToggleCharacter("PaperDollFrame") end
@@ -144,7 +145,7 @@ P.OnInit(function()
 		leftText = "Charakterfenster",
 	})
 	P.AddMinimapButton({
-		title = "Spielmenü / Game menu",
+		title = "Spielmenü",
 		icon = "Interface\\Icons\\INV_Misc_Gear_01",
 		left = function() ToggleGameMenu(true) end,
 		leftText = "Menü",

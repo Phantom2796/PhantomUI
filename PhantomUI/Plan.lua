@@ -27,7 +27,8 @@ local L = {
 	deDE = { ABILITY = "Fähigkeiten", NECK = "Hals", RING = "Ring", TRINKET = "Schmuck", editItems = "Gegenstände in der Reihenfolge anklicken, in der du sie willst.", base = "Grundwert – höhere Seltenheit verstärkt ihn", title = "Fähigkeiten-Plan", edit = "Fähigkeiten in der Reihenfolge anklicken, in der du sie nehmen willst.", clear = "Leeren", done = "Fertig", empty = "Plan: klicken zum Auswählen", owned = "schon genommen", hint = "Linksklick: bearbeiten  -  Rechtsklick: ausblenden" },
 }
 local function T(key)
-	local lang = PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	local lang = P.UILang()
 	local t = L[lang] or L.enUS
 	return t[key] or L.enUS[key]
 end

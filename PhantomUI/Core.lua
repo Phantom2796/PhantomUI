@@ -23,6 +23,42 @@ P.FONTS = {
 	{ key = "roboto", name = "Roboto (modern)", path = "Interface\\AddOns\\PhantomUI\\media\\Roboto.ttf" },
 }
 
+-- Sprache der eigenen Texte (Menues, Ankermodus, Meldungen): Deutsch oder
+-- Englisch. "auto" folgt der Spielsprache (aus den Spieldaten erkannt), sonst
+-- der Client-Sprache; alles ausser Deutsch zeigt Englisch.
+P.EN = P.EN or {}
+function P.UILang()
+	local db = PhantomUIDB
+	local set = db and db.uiLang
+	if set == "deDE" or set == "enUS" then
+		return set
+	end
+	local game = db and db.lang
+	if not game and GetLocale then
+		game = GetLocale()
+	end
+	if game == "deDE" then
+		return "deDE"
+	end
+	return "enUS"
+end
+
+-- Deutschen Text uebersetzen (Schluessel = deutscher Text, siehe Locale.lua)
+function P.T(text)
+	if type(text) ~= "string" or P.UILang() == "deDE" then
+		return text
+	end
+	return P.EN[text] or text
+end
+
+-- Fuer zusammengesetzte Texte: beide Fassungen direkt angeben
+function P.L(de, en)
+	if P.UILang() == "deDE" then
+		return de
+	end
+	return en
+end
+
 function P.FontPath(key)
 	for i = 1, table.getn(P.FONTS) do
 		if P.FONTS[i].key == key then
@@ -33,6 +69,7 @@ function P.FontPath(key)
 end
 
 local DEFAULTS = {
+	uiLang = "auto",
 	texture = "phantom",
 	font = "friz",
 	grid = true,
@@ -190,7 +227,7 @@ function P.Clamp(value, low, high)
 end
 
 function P.Print(message)
-	DEFAULT_CHAT_FRAME:AddMessage("|cff9d4de8PhantomUI|r: " .. message)
+	DEFAULT_CHAT_FRAME:AddMessage("|cff9d4de8PhantomUI|r: " .. P.T(message))
 end
 
 function P.Texture()
@@ -343,7 +380,7 @@ local function MakeOverlay(key)
 	local label = overlay:CreateFontString(nil, "OVERLAY")
 	label:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
 	label:SetPoint("CENTER", overlay, "CENTER", 0, 0)
-	label:SetText(m.label)
+	label:SetText(P.T(m.label))
 	overlay:SetScript("OnDragStart", function()
 		m.frame:SetMovable(true)
 		m.frame:StartMoving()
@@ -365,17 +402,17 @@ local function MakeOverlay(key)
 	end)
 	overlay:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText(m.label)
-		GameTooltip:AddLine("Ziehen: verschieben", 1, 1, 1)
-		GameTooltip:AddLine("Rechtsklick: Standardplatz", 1, 1, 1)
+		GameTooltip:SetText(P.T(m.label))
+		GameTooltip:AddLine(P.T("Ziehen: verschieben"), 1, 1, 1)
+		GameTooltip:AddLine(P.T("Rechtsklick: Standardplatz"), 1, 1, 1)
 		if m.sizer and m.sizer.get then
-			GameTooltip:AddLine("Kanten ziehen: Breite / Höhe", 1, 1, 1)
+			GameTooltip:AddLine(P.T("Kanten ziehen: Breite / Höhe"), 1, 1, 1)
 		end
 		if m.sizer and m.sizer.scale then
-			GameTooltip:AddLine("Ecke unten rechts: alles skalieren", 1, 1, 1)
+			GameTooltip:AddLine(P.T("Ecke unten rechts: alles skalieren"), 1, 1, 1)
 		end
 		if m.sizer and m.sizer.scale then
-			GameTooltip:AddLine("Mausrad: Skalierung", 1, 1, 1)
+			GameTooltip:AddLine(P.T("Mausrad: Skalierung"), 1, 1, 1)
 		end
 		GameTooltip:Show()
 	end)
@@ -455,7 +492,7 @@ local function MakeOverlay(key)
 			grip:SetScript("OnEnter", function()
 				tex:SetVertexColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
 				GameTooltip:SetOwner(this, "ANCHOR_TOP")
-				GameTooltip:SetText(tip)
+				GameTooltip:SetText(P.T(tip))
 				GameTooltip:Show()
 			end)
 			grip:SetScript("OnLeave", function()
@@ -662,7 +699,7 @@ local function LockBar()
 	title:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE")
 	title:SetTextColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3])
 	title:SetPoint("TOP", lockBar, "TOP", 0, -7)
-	title:SetText("Ankerpunkte")
+	title:SetText(P.T("Ankerpunkte"))
 	-- Gitter: an/aus und Abstand
 	local function Small(text, width, x, onClick)
 		local b = CreateFrame("Button", nil, lockBar)
@@ -687,7 +724,7 @@ local function LockBar()
 	value:SetPoint("TOPLEFT", lockBar, "TOPLEFT", 160, -29)
 	value:SetWidth(50)
 	local function Refresh()
-		toggle.label:SetText(P.DB().grid and "Gitter: an" or "Gitter: aus")
+		toggle.label:SetText(P.T(P.DB().grid and "Gitter: an" or "Gitter: aus"))
 		value:SetText(P.DB().gridSize .. " px")
 		P.DrawGrid()
 	end
@@ -723,7 +760,7 @@ local function LockBar()
 	local label = button:CreateFontString(nil, "OVERLAY")
 	label:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
 	label:SetPoint("CENTER", button, "CENTER", 0, 0)
-	label:SetText("Sperren")
+	label:SetText(P.T("Sperren"))
 	button:SetScript("OnEnter", function() this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1) end)
 	button:SetScript("OnLeave", function() this:SetBackdropBorderColor(0.4, 0.2, 0.6, 1) end)
 	button:SetScript("OnClick", function()
@@ -875,7 +912,7 @@ boot:SetScript("OnUpdate", function()
 		for i = 1, table.getn(inits) do
 			local ok, err = pcall(inits[i])
 			if not ok then
-				P.Print("Fehler beim Start: " .. tostring(err))
+				P.Print(P.L("Fehler beim Start: ", "Error while starting: ") .. tostring(err))
 			end
 		end
 	end
@@ -889,6 +926,18 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 	local _, _, perfArg = string.find(msg, "^perf%s*(%d*)")
 	if string.find(msg, "^perf") then
 		P.Perf(perfArg)
+		return
+	end
+	-- /pui lang de | en | auto: Sprache der PhantomUI-Texte
+	local _, _, langArg = string.find(msg, "^lang%s*(%a*)")
+	if langArg then
+		local map = { de = "deDE", deutsch = "deDE", german = "deDE", en = "enUS", english = "enUS", auto = "auto" }
+		if map[langArg] then
+			P.DB().uiLang = map[langArg]
+			ReloadUI()
+		else
+			P.Print(P.L("Sprache: /pui lang de | en | auto", "Language: /pui lang de | en | auto"))
+		end
 		return
 	end
 	if msg == "combo" then
@@ -978,17 +1027,17 @@ local function Report()
 	end
 	table.sort(list, function(a, b) return a.ms > b.ms end)
 	local secs = math.max(1, elapsedTotal)
-	Say(string.format("Messung %ds: %.0f Bilder/s, %d Haenger > 50 ms (laengster %.0f ms)",
+	Say(string.format(P.L("Messung %ds: %.0f Bilder/s, %d Haenger > 50 ms (laengster %.0f ms)", "Run %ds: %.0f fps, %d hitches > 50 ms (longest %.0f ms)"),
 		secs, frames / secs, spikes, worst * 1000))
-	Say(string.format("Speicher: %d KB Abfall/s, %d Bereinigungen (alle %.1f s), jetzt %d KB",
+	Say(string.format(P.L("Speicher: %d KB Abfall/s, %d Bereinigungen (alle %.1f s), jetzt %d KB", "Memory: %d KB garbage/s, %d collections (every %.1f s), now %d KB"),
 		math.floor((gcFreed + gcinfo() - startMem) / secs), gcCount,
 		gcCount > 0 and secs / gcCount or 0, gcinfo()))
 	if not list[1] or list[1].ms <= 0 then
-		Say("(Zeit je Teil misst dieser Client nicht.)")
+		Say(P.L("(Zeit je Teil misst dieser Client nicht.)", "(This client does not time individual parts.)"))
 		stats, wrapped = {}, {}
 		return
 	end
-	Say("Teuerste Teile (ms pro Sekunde | laengster Aufruf):")
+	Say(P.L("Teuerste Teile (ms pro Sekunde | laengster Aufruf):", "Most expensive parts (ms per second | longest call):"))
 	for i = 1, math.min(10, table.getn(list)) do
 		local e = list[i]
 		Say(string.format("  %2d. %s: %.2f ms/s | %.1f ms", i, e.key, e.ms / secs, e.max))
@@ -998,11 +1047,11 @@ end
 
 function P.Perf(seconds)
 	if running then
-		Say("Messung laeuft schon.")
+		Say(P.L("Messung laeuft schon.", "A measurement is already running."))
 		return
 	end
 	if not debugprofilestop or not EnumerateFrames then
-		Say("Dieser Client bietet keine Zeitmessung.")
+		Say(P.L("Dieser Client bietet keine Zeitmessung.", "This client offers no timing."))
 		return
 	end
 	duration = tonumber(seconds) or 30
@@ -1044,7 +1093,7 @@ function P.Perf(seconds)
 			Report()
 		end
 	end)
-	Say("Messung laeuft " .. duration .. " Sekunden – spiel ganz normal weiter (am besten mit vielen Gegnern).")
+	Say(P.L("Messung laeuft " .. duration .. " Sekunden – spiel ganz normal weiter (am besten mit vielen Gegnern).", "Measuring for " .. duration .. " seconds – just keep playing (ideally with lots of enemies)."))
 end
 
 ------------------------------------------------------------------------

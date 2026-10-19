@@ -2061,8 +2061,8 @@ local function createRow(parent, index)
 		if data and api then
 			local hidden = api.IsHidden(data.name, iconFor(data.name))
 			showTip(this, "RIGHT", data.name, nil, {
-				{ hidden and "Zahlen über den Mobs: aus" or "Zahlen über den Mobs: an", 1, 1, 1 },
-				{ "Klicken zum Umschalten", 0.7, 0.7, 0.7 },
+				{ PhantomUI.T(hidden and "Zahlen über den Mobs: aus" or "Zahlen über den Mobs: an"), 1, 1, 1 },
+				{ PhantomUI.T("Klicken zum Umschalten"), 0.7, 0.7, 0.7 },
 			})
 		end
 	end)
