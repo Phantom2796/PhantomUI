@@ -19,6 +19,8 @@ end
 local function BAR_X()
 	return 33 + RANK_W()
 end
+-- Der Balken beginnt direkt hinter dem Symbol (die Rangzahl liegt darin)
+local FILL_X = 31
 local SOLID = "Interface\\Buttons\\WHITE8X8"
 -- [Nobby] PhantomUI-Stil: dunkel, 1-Pixel-Rand schwarz, Lila als Akzent,
 -- Balken mit der Textur aus PhantomUI.
@@ -1651,7 +1653,7 @@ local function refresh()
 				row.tex = tex
 				row.bar:SetTexture(tex)
 			end
-			row.bar:SetWidth(math.max(2, ((row:GetWidth() or 1) - BAR_X()) * fill))
+			row.bar:SetWidth(math.max(2, ((row:GetWidth() or 1) - FILL_X) * fill))
 			if first + i == 1 then
 				row.bar:SetVertexColor(ACC[1], ACC[2], ACC[3], 0.9)
 			else
@@ -2006,9 +2008,9 @@ local function createRow(parent, index)
 
 	local bar = row:CreateTexture(nil, "BACKGROUND")
 	bar:SetTexture(SOLID)
-	-- [Nobby] Der Balken beginnt erst hinter der Rangzahl (Kaestchen, Symbol
-	-- und Platz bleiben frei).
-	bar:SetPoint("TOPLEFT", row, "TOPLEFT", BAR_X(), 0)
+	-- [Nobby] Der Balken beginnt direkt hinter dem Symbol; Kaestchen und
+	-- Symbol bleiben frei, die Rangzahl steht schon im Balken.
+	bar:SetPoint("TOPLEFT", row, "TOPLEFT", FILL_X, 0)
 	bar:SetHeight(ROW_H)
 	bar:SetWidth(1)
 	bar:SetVertexColor(0.36, 0.2, 0.55, 0.8)
