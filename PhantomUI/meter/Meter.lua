@@ -2220,6 +2220,295 @@ local function createRow(parent, index)
 	return row
 end
 
+-- Teil von createUI (ausgelagert: Lua 5.0 erlaubt nur 32 Upvalues je Funktion)
+local function buildMeterGrip()
+	local grip = CreateFrame("Button", nil, frame)
+	grip:SetWidth(16)
+	grip:SetHeight(16)
+	grip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+	grip:SetFrameLevel((frame:GetFrameLevel() or 1) + 5)
+	local gi
+	for gi = 1, 3 do
+		local mark = grip:CreateTexture(nil, "OVERLAY")
+		mark:SetTexture(SOLID)
+		mark:SetVertexColor(ACC[1], ACC[2], ACC[3], 0.95)
+		mark:SetWidth(gi * 3)
+		mark:SetHeight(1)
+		mark:SetPoint("BOTTOMRIGHT", grip, "BOTTOMRIGHT", -1, 1 + (gi - 1) * 3)
+	end
+	grip:SetScript("OnEnter", function()
+		showTip(this, "RIGHT", "Drag to resize", nil, nil)
+	end)
+	grip:SetScript("OnLeave", function()
+		leaveTip()
+	end)
+	local function finishSize()
+		if not sizing then
+			return
+		end
+		sizing = false
+		if frame.SetClampedToScreen then
+			frame:SetClampedToScreen(true)
+		end
+		if clampIntoView(frame, 120, 20) then
+			noteClamped()
+		end
+		local saved = config()
+		saved.width = frame:GetWidth()
+		saved.height = frame:GetHeight()
+		savePoint()
+		refresh()
+	end
+	grip:SetScript("OnMouseDown", function()
+		if config().locked then
+			return
+		end
+		local scale = uiScale()
+		local cx, cy = GetCursorPosition()
+		sizeX = cx / scale
+		sizeY = cy / scale
+		sizeW = frame:GetWidth()
+		sizeH = frame:GetHeight()
+		sizing = true
+		if frame.SetClampedToScreen then
+			frame:SetClampedToScreen(false)
+		end
+		pinTopLeft()
+	end)
+	grip:SetScript("OnMouseUp", function()
+		finishSize()
+	end)
+	return grip, finishSize
+end
+
+-- Teil von createUI: OnUpdate des Fensters (eigene Funktion wegen der Upvalue-Grenze)
+local function buildMeterUpdate(finishSize)
+	-- Groesse ziehen, im Bild halten, Zeilen anpassen, regelmaessig neu zeichnen
+	frame:SetScript("OnUpdate", function()
+		if sizing then
+			if IsMouseButtonDown and not IsMouseButtonDown("LeftButton") then
+				finishSize()
+			else
+				local scale = uiScale()
+				local cx, cy = GetCursorPosition()
+				cx = cx / scale
+				cy = cy / scale
+				local w = sizeW + (cx - sizeX)
+				local h = sizeH - (cy - sizeY)
+				local minH = HEADER + BOTTOM + 3 * ROW_H
+				local maxH = HEADER + BOTTOM + MAX_ROWS * ROW_H
+				if w < 280 then
+					w = 280
+				elseif w > 760 then
+					w = 760
+				end
+				if h < minH then
+					h = minH
+				elseif h > maxH then
+					h = maxH
+				end
+				frame:SetWidth(w)
+				frame:SetHeight(h)
+			end
+		end
+		if sizing or dragging or not frame:IsShown() then
+			frame.clampWait = 0
+		else
+			frame.clampWait = (frame.clampWait or 0) + (arg1 or 0)
+			if frame.clampWait >= 0.2 and clampIntoView(frame, 120, 20) then
+				savePoint()
+				noteClamped()
+			end
+		end
+		local now = GetTime()
+		if scanAt > 0 and now >= scanAt then
+			scanAt = 0
+			scanIcons()
+		end
+		local w, h = frame:GetWidth(), frame:GetHeight()
+		if w ~= lastW or h ~= lastH then
+			lastW, lastH = w, h
+			local n
+			local rw = rowWidth()
+			for n = 1, ROW_POOL do
+				rows[n]:SetWidth(rw)
+			end
+		end
+		if watchBoot and sameLevelRestart() then
+			watchBoot = false
+			checkLevel()
+			refresh()
+		end
+		frame.tick = (frame.tick or 0) + (arg1 or 0)
+		-- 2x pro Sekunde reicht; jedes Neuzeichnen erzeugt Abfall fuer die Speicherbereinigung
+		if frame.tick >= 0.5 then
+			frame.tick = 0
+			if frame:IsShown() then
+				refresh()
+			end
+		end
+		if tipFill then
+			tipFill()
+		end
+		placeTip()
+	end)
+end
+
+-- Teil von createUI (ausgelagert: Lua 5.0 erlaubt nur 32 Upvalues je Funktion)
+local function buildMeterTip()
+	local tip = CreateFrame("Frame", "AZSSpellMeterTip", UIParent)
+	tip:SetFrameStrata("TOOLTIP")
+	tip:SetWidth(160)
+	tip:SetHeight(40)
+	if tip.SetClampedToScreen then
+		tip:SetClampedToScreen(true)
+	end
+	tip:SetBackdrop(panelBackdrop())
+	tip:SetBackdropColor(0.06, 0.06, 0.07, 0.97)
+	tip:SetBackdropBorderColor(0, 0, 0, 1)
+	local iconBack = tip:CreateTexture(nil, "ARTWORK")
+	iconBack:SetTexture(SOLID)
+	iconBack:SetVertexColor(0, 0, 0, 1)
+	iconBack:SetWidth(24)
+	iconBack:SetHeight(24)
+	iconBack:SetPoint("TOPLEFT", tip, "TOPLEFT", 6, -6)
+	tip.iconBack = iconBack
+	local tipIcon = tip:CreateTexture(nil, "OVERLAY")
+	tipIcon:SetWidth(22)
+	tipIcon:SetHeight(22)
+	tipIcon:SetPoint("CENTER", iconBack, "CENTER", 0, 0)
+	tipIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	tip.icon = tipIcon
+	local tipTitle = tip:CreateFontString(nil, "OVERLAY")
+	tipTitle:SetJustifyH("LEFT")
+	face(tipTitle, 12)
+	tipTitle:SetTextColor(ACC[1] + 0.2, ACC[2] + 0.25, ACC[3] + 0.08)
+	tip.title = tipTitle
+	tip.lines = {}
+	local li
+	for li = 1, 6 do
+		local fs = tip:CreateFontString(nil, "OVERLAY")
+		fs:SetJustifyH("LEFT")
+		face(fs, 11)
+		fs:SetTextColor(1, 1, 1)
+		fs:Hide()
+		tip.lines[li] = fs
+	end
+	tip:EnableMouse(false)
+	tip:Hide()
+	frame.tip = tip
+end
+
+local function finishMeterUI()
+	applyShown()
+	if config().shown == false and not toldHidden then
+		toldHidden = true
+		say("The window is hidden. Type /azsm to show it.")
+	end
+end
+
+-- Teil von createUI (ausgelagert: Lua 5.0 erlaubt nur 32 Upvalues je Funktion)
+local function buildMeterBubble(minBtn)
+	bubble = CreateFrame("Button", "AZSSpellMeterBubble", UIParent)
+	bubble:SetFrameStrata("HIGH")
+	bubble:SetWidth(48)
+	bubble:SetHeight(22)
+	bubble:SetMovable(true)
+	bubble:EnableMouse(true)
+	bubble:RegisterForDrag("LeftButton")
+	bubble:RegisterForClicks("LeftButtonUp")
+	if bubble.SetClampedToScreen then
+		bubble:SetClampedToScreen(true)
+	end
+	bubble:SetBackdrop(panelBackdrop())
+	bubble:SetBackdropColor(0.34, 0.21, 0.06, 0.98)
+	bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
+	bubble:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+	local bubbleText = bubble:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	bubbleText:SetPoint("CENTER", bubble, "CENTER", 0, 0)
+	bubbleText:SetJustifyH("CENTER")
+	bubbleText:SetText("0")
+	face(bubbleText, 11)
+	bubbleText:SetTextColor(1, 0.9, 0.55)
+	frame.bubbleText = bubbleText
+	local bubbleDrag = false
+	bubble:SetScript("OnDragStart", function()
+		if config().locked then
+			return
+		end
+		bubbleDrag = true
+		bubble:StartMoving()
+	end)
+	bubble:SetScript("OnDragStop", function()
+		bubble:StopMovingOrSizing()
+		if clampIntoView(bubble, 36, 18) then
+			noteClamped()
+		end
+	end)
+	bubble:SetScript("OnClick", function()
+		if bubbleDrag then
+			bubbleDrag = false
+			return
+		end
+		config().mini = false
+		applyShown()
+		refresh()
+	end)
+	bubble:SetScript("OnEnter", function()
+		bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
+		showTip(this, "RIGHT", "Spell meter", nil, {
+			{ "Click to open the window.", 1, 1, 1 },
+		})
+	end)
+	bubble:SetScript("OnLeave", function()
+		bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
+		leaveTip()
+	end)
+	bubble:SetScript("OnUpdate", function()
+		if config().mini and not bubble.parked then
+			if not bubble.measuring then
+				frame:Show()
+				bubble.measuring = true
+				return
+			end
+			if clampIntoView(frame, 120, 20) then
+				savePoint()
+				noteClamped()
+			end
+			local x, y = minBtn:GetCenter()
+			frame:Hide()
+			bubble.measuring = nil
+			if x and y then
+				bubble:ClearAllPoints()
+				bubble:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y)
+				bubble.parked = true
+			end
+		end
+		if config().mini and bubble.parked and not bubbleDrag and clampIntoView(bubble, 36, 18) then
+			noteClamped()
+		end
+		if not config().mini then
+			return
+		end
+		bubble.tick = (bubble.tick or 0) + (arg1 or 0)
+		if bubble.tick >= 0.2 then
+			bubble.tick = 0
+			refresh()
+		end
+	end)
+	bubble:Hide()
+	finishMeterUI()
+end
+
+-- Griff, Aktualisierung und Tooltip in einem Aufruf (haelt createUI unter
+-- der Upvalue-Grenze von Lua 5.0)
+local function buildMeterExtras()
+	local grip, finishSize = buildMeterGrip()
+	buildMeterUpdate(finishSize)
+	buildMeterTip()
+	return grip
+end
+
 local function createUI()
 	frame = CreateFrame("Frame", "AZSSpellMeterFrame", UIParent)
 	local cfg = config()
@@ -2555,104 +2844,7 @@ local function createUI()
 	emptyText:Hide()
 	frame.emptyText = emptyText
 
-	local grip = CreateFrame("Button", nil, frame)
-	grip:SetWidth(16)
-	grip:SetHeight(16)
-	grip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-	grip:SetFrameLevel((frame:GetFrameLevel() or 1) + 5)
-	local gi
-	for gi = 1, 3 do
-		local mark = grip:CreateTexture(nil, "OVERLAY")
-		mark:SetTexture(SOLID)
-		mark:SetVertexColor(ACC[1], ACC[2], ACC[3], 0.95)
-		mark:SetWidth(gi * 3)
-		mark:SetHeight(1)
-		mark:SetPoint("BOTTOMRIGHT", grip, "BOTTOMRIGHT", -1, 1 + (gi - 1) * 3)
-	end
-	grip:SetScript("OnEnter", function()
-		showTip(this, "RIGHT", "Drag to resize", nil, nil)
-	end)
-	grip:SetScript("OnLeave", function()
-		leaveTip()
-	end)
-	local function finishSize()
-		if not sizing then
-			return
-		end
-		sizing = false
-		if frame.SetClampedToScreen then
-			frame:SetClampedToScreen(true)
-		end
-		if clampIntoView(frame, 120, 20) then
-			noteClamped()
-		end
-		local saved = config()
-		saved.width = frame:GetWidth()
-		saved.height = frame:GetHeight()
-		savePoint()
-		refresh()
-	end
-	grip:SetScript("OnMouseDown", function()
-		if config().locked then
-			return
-		end
-		local scale = uiScale()
-		local cx, cy = GetCursorPosition()
-		sizeX = cx / scale
-		sizeY = cy / scale
-		sizeW = frame:GetWidth()
-		sizeH = frame:GetHeight()
-		sizing = true
-		if frame.SetClampedToScreen then
-			frame:SetClampedToScreen(false)
-		end
-		pinTopLeft()
-	end)
-	grip:SetScript("OnMouseUp", function()
-		finishSize()
-	end)
-
-	local tip = CreateFrame("Frame", "AZSSpellMeterTip", UIParent)
-	tip:SetFrameStrata("TOOLTIP")
-	tip:SetWidth(160)
-	tip:SetHeight(40)
-	if tip.SetClampedToScreen then
-		tip:SetClampedToScreen(true)
-	end
-	tip:SetBackdrop(panelBackdrop())
-	tip:SetBackdropColor(0.06, 0.06, 0.07, 0.97)
-	tip:SetBackdropBorderColor(0, 0, 0, 1)
-	local iconBack = tip:CreateTexture(nil, "ARTWORK")
-	iconBack:SetTexture(SOLID)
-	iconBack:SetVertexColor(0, 0, 0, 1)
-	iconBack:SetWidth(24)
-	iconBack:SetHeight(24)
-	iconBack:SetPoint("TOPLEFT", tip, "TOPLEFT", 6, -6)
-	tip.iconBack = iconBack
-	local tipIcon = tip:CreateTexture(nil, "OVERLAY")
-	tipIcon:SetWidth(22)
-	tipIcon:SetHeight(22)
-	tipIcon:SetPoint("CENTER", iconBack, "CENTER", 0, 0)
-	tipIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-	tip.icon = tipIcon
-	local tipTitle = tip:CreateFontString(nil, "OVERLAY")
-	tipTitle:SetJustifyH("LEFT")
-	face(tipTitle, 12)
-	tipTitle:SetTextColor(ACC[1] + 0.2, ACC[2] + 0.25, ACC[3] + 0.08)
-	tip.title = tipTitle
-	tip.lines = {}
-	local li
-	for li = 1, 6 do
-		local fs = tip:CreateFontString(nil, "OVERLAY")
-		fs:SetJustifyH("LEFT")
-		face(fs, 11)
-		fs:SetTextColor(1, 1, 1)
-		fs:Hide()
-		tip.lines[li] = fs
-	end
-	tip:EnableMouse(false)
-	tip:Hide()
-	frame.tip = tip
+	local grip = buildMeterExtras()
 
 	local function onWheel(delta)
 		scroll = scroll - (delta or arg1 or 0) * ROW_H
@@ -2688,169 +2880,8 @@ local function createUI()
 	resetBtn:SetScript("OnMouseWheel", onWheel)
 	minBtn:EnableMouseWheel(true)
 	minBtn:SetScript("OnMouseWheel", onWheel)
-	frame:SetScript("OnUpdate", function()
-		if sizing then
-			if IsMouseButtonDown and not IsMouseButtonDown("LeftButton") then
-				finishSize()
-			else
-				local scale = uiScale()
-				local cx, cy = GetCursorPosition()
-				cx = cx / scale
-				cy = cy / scale
-				local w = sizeW + (cx - sizeX)
-				local h = sizeH - (cy - sizeY)
-				local minH = HEADER + BOTTOM + 3 * ROW_H
-				local maxH = HEADER + BOTTOM + MAX_ROWS * ROW_H
-				if w < 280 then
-					w = 280
-				elseif w > 760 then
-					w = 760
-				end
-				if h < minH then
-					h = minH
-				elseif h > maxH then
-					h = maxH
-				end
-				frame:SetWidth(w)
-				frame:SetHeight(h)
-			end
-		end
-		if sizing or dragging or not frame:IsShown() then
-			frame.clampWait = 0
-		else
-			frame.clampWait = (frame.clampWait or 0) + (arg1 or 0)
-			if frame.clampWait >= 0.2 and clampIntoView(frame, 120, 20) then
-				savePoint()
-				noteClamped()
-			end
-		end
-		local now = GetTime()
-		if scanAt > 0 and now >= scanAt then
-			scanAt = 0
-			scanIcons()
-		end
-		local w, h = frame:GetWidth(), frame:GetHeight()
-		if w ~= lastW or h ~= lastH then
-			lastW, lastH = w, h
-			local n
-			local rw = rowWidth()
-			for n = 1, ROW_POOL do
-				rows[n]:SetWidth(rw)
-			end
-		end
-		if watchBoot and sameLevelRestart() then
-			watchBoot = false
-			checkLevel()
-			refresh()
-		end
-		frame.tick = (frame.tick or 0) + (arg1 or 0)
-		-- 2x pro Sekunde reicht; jedes Neuzeichnen erzeugt Abfall fuer die Speicherbereinigung
-		if frame.tick >= 0.5 then
-			frame.tick = 0
-			if frame:IsShown() then
-				refresh()
-			end
-		end
-		if tipFill then
-			tipFill()
-		end
-		placeTip()
-	end)
 
-	bubble = CreateFrame("Button", "AZSSpellMeterBubble", UIParent)
-	bubble:SetFrameStrata("HIGH")
-	bubble:SetWidth(48)
-	bubble:SetHeight(22)
-	bubble:SetMovable(true)
-	bubble:EnableMouse(true)
-	bubble:RegisterForDrag("LeftButton")
-	bubble:RegisterForClicks("LeftButtonUp")
-	if bubble.SetClampedToScreen then
-		bubble:SetClampedToScreen(true)
-	end
-	bubble:SetBackdrop(panelBackdrop())
-	bubble:SetBackdropColor(0.34, 0.21, 0.06, 0.98)
-	bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
-	bubble:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-	local bubbleText = bubble:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-	bubbleText:SetPoint("CENTER", bubble, "CENTER", 0, 0)
-	bubbleText:SetJustifyH("CENTER")
-	bubbleText:SetText("0")
-	face(bubbleText, 11)
-	bubbleText:SetTextColor(1, 0.9, 0.55)
-	frame.bubbleText = bubbleText
-	local bubbleDrag = false
-	bubble:SetScript("OnDragStart", function()
-		if config().locked then
-			return
-		end
-		bubbleDrag = true
-		bubble:StartMoving()
-	end)
-	bubble:SetScript("OnDragStop", function()
-		bubble:StopMovingOrSizing()
-		if clampIntoView(bubble, 36, 18) then
-			noteClamped()
-		end
-	end)
-	bubble:SetScript("OnClick", function()
-		if bubbleDrag then
-			bubbleDrag = false
-			return
-		end
-		config().mini = false
-		applyShown()
-		refresh()
-	end)
-	bubble:SetScript("OnEnter", function()
-		bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
-		showTip(this, "RIGHT", "Spell meter", nil, {
-			{ "Click to open the window.", 1, 1, 1 },
-		})
-	end)
-	bubble:SetScript("OnLeave", function()
-		bubble:SetBackdropBorderColor(ACC[1], ACC[2], ACC[3], 1)
-		leaveTip()
-	end)
-	bubble:SetScript("OnUpdate", function()
-		if config().mini and not bubble.parked then
-			if not bubble.measuring then
-				frame:Show()
-				bubble.measuring = true
-				return
-			end
-			if clampIntoView(frame, 120, 20) then
-				savePoint()
-				noteClamped()
-			end
-			local x, y = minBtn:GetCenter()
-			frame:Hide()
-			bubble.measuring = nil
-			if x and y then
-				bubble:ClearAllPoints()
-				bubble:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y)
-				bubble.parked = true
-			end
-		end
-		if config().mini and bubble.parked and not bubbleDrag and clampIntoView(bubble, 36, 18) then
-			noteClamped()
-		end
-		if not config().mini then
-			return
-		end
-		bubble.tick = (bubble.tick or 0) + (arg1 or 0)
-		if bubble.tick >= 0.2 then
-			bubble.tick = 0
-			refresh()
-		end
-	end)
-	bubble:Hide()
-
-	applyShown()
-	if config().shown == false and not toldHidden then
-		toldHidden = true
-		say("The window is hidden. Type /azsm to show it.")
-	end
+	buildMeterBubble(minBtn)
 end
 
 local function onCreatureDeath(msg)
