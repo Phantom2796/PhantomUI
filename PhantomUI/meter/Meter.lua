@@ -12,6 +12,13 @@ local ADDON = "PhantomUI" -- [Nobby] Teil von PhantomUI
 local MAX_ROWS = 24
 local ROW_POOL = 25
 local ROW_H = 16
+-- Breite der Rangzahl (waechst mit der Zeilenhoehe) und Beginn des Balkens
+local function RANK_W()
+	return math.floor(ROW_H * 1.05 + 0.5)
+end
+local function BAR_X()
+	return 33 + RANK_W()
+end
 local SOLID = "Interface\\Buttons\\WHITE8X8"
 -- [Nobby] PhantomUI-Stil: dunkel, 1-Pixel-Rand schwarz, Lila als Akzent,
 -- Balken mit der Textur aus PhantomUI.
@@ -1626,7 +1633,8 @@ local function refresh()
 			row:SetWidth(rowWidth())
 			row.icon:SetTexture(iconFor(data.name))
 			paintCheck(row, data.name, iconFor(data.name))
-			row.name:SetText(string.format("%d  %s", first + i, label))
+			row.rank:SetText(tostring(first + i))
+			row.name:SetText(label)
 			if (data.kills or 0) > 0 then
 				row.kills:SetText(tostring(data.kills))
 			else
@@ -1643,7 +1651,7 @@ local function refresh()
 				row.tex = tex
 				row.bar:SetTexture(tex)
 			end
-			row.bar:SetWidth(math.max(2, ((row:GetWidth() or 1) - 15) * fill))
+			row.bar:SetWidth(math.max(2, ((row:GetWidth() or 1) - BAR_X()) * fill))
 			if first + i == 1 then
 				row.bar:SetVertexColor(ACC[1], ACC[2], ACC[3], 0.9)
 			else
@@ -1654,7 +1662,7 @@ local function refresh()
 			if row.name.GetStringWidth then
 				textW = row.name:GetStringWidth() or 0
 			end
-			local px = 33 + textW + 4
+			local px = BAR_X() + 2 + textW + 4
 			local limit = (row:GetWidth() or 0) - (COL_KILL + COL_DMG + COL_DPS + 28)
 			if limit < 40 then
 				limit = 40
@@ -1998,8 +2006,9 @@ local function createRow(parent, index)
 
 	local bar = row:CreateTexture(nil, "BACKGROUND")
 	bar:SetTexture(SOLID)
-	-- [Nobby] Der Balken beginnt rechts neben dem Kaestchen, nicht darunter.
-	bar:SetPoint("TOPLEFT", row, "TOPLEFT", 15, 0)
+	-- [Nobby] Der Balken beginnt erst hinter der Rangzahl (Kaestchen, Symbol
+	-- und Platz bleiben frei).
+	bar:SetPoint("TOPLEFT", row, "TOPLEFT", BAR_X(), 0)
 	bar:SetHeight(ROW_H)
 	bar:SetWidth(1)
 	bar:SetVertexColor(0.36, 0.2, 0.55, 0.8)
@@ -2080,8 +2089,17 @@ local function createRow(parent, index)
 	icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 	row.icon = icon
 
+	-- Rangzahl eigene Spalte, damit der Balken danach beginnen kann
+	local rank = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	rank:SetPoint("LEFT", row, "LEFT", 33, 0)
+	rank:SetWidth(RANK_W())
+	rank:SetJustifyH("LEFT")
+	face(rank, 10)
+	rank:SetTextColor(0.95, 0.95, 0.95)
+	row.rank = rank
+
 	local name = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-	name:SetPoint("LEFT", row, "LEFT", 33, 0)
+	name:SetPoint("LEFT", row, "LEFT", BAR_X() + 2, 0)
 	name:SetJustifyH("LEFT")
 	face(name, 10)
 	name:SetTextColor(0.95, 0.95, 0.95)
