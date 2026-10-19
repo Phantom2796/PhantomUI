@@ -494,9 +494,9 @@ local function AzsTimes(target)
 	local byIcon = {}
 	for i = 1, table.getn(list) do
 		local d = list[i]
-		if d.icon and d.remaining then
+		if d.icon then
 			local _, _, short = string.find(string.lower(d.icon), "([^\\]+)$")
-			byIcon[short or string.lower(d.icon)] = d.remaining
+			byIcon[short or string.lower(d.icon)] = d
 		end
 	end
 	return byIcon
@@ -525,6 +525,26 @@ local function BuildTargetDebuffs(target)
 		b.count:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 0, 1)
 		b.time = b:CreateFontString(nil, "OVERLAY")
 		b.time:SetPoint("CENTER", b, "CENTER", 0, 0)
+		-- Tooltip beim Drueberfahren: Text des Spiels, sonst Name aus den Laufdaten
+		b:EnableMouse(true)
+		b:SetScript("OnEnter", function()
+			GameTooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT")
+			local ok = this.index and GameTooltip.SetUnitDebuff
+				and pcall(GameTooltip.SetUnitDebuff, GameTooltip, "target", this.index)
+			local lines = GameTooltip.NumLines and GameTooltip:NumLines() or 0
+			if not ok or lines == 0 then
+				local d = this.info
+				GameTooltip:SetText(d and d.name or "?", 1, 0.82, 0)
+				if d and d.stacks and tonumber(d.stacks) and tonumber(d.stacks) > 1 then
+					GameTooltip:AddLine(d.stacks .. "x", 1, 1, 1)
+				end
+			end
+			if this.left and this.left > 0 then
+				GameTooltip:AddLine(string.format("%.0f s", this.left), 0.75, 0.75, 0.8)
+			end
+			GameTooltip:Show()
+		end)
+		b:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		icons[i] = b
 		return b
 	end
@@ -565,11 +585,15 @@ local function BuildTargetDebuffs(target)
 				b.edge:SetVertexColor(0, 0, 0, 1)
 			end
 			b.count:SetText((count and count > 1) and count or "")
-			local left
+			local left, info
 			if times then
 				local _, _, short = string.find(string.lower(texture), "([^\\]+)$")
-				left = times[short or ""]
+				info = times[short or ""]
+				if info then
+					left = tonumber(info.remaining)
+				end
 			end
+			b.index, b.info, b.left = i, info, left
 			if left and left > 0 then
 				b.time:SetText(left >= 60 and (math.floor(left / 60) .. "m") or math.floor(left + 0.5))
 			else
