@@ -1,4 +1,4 @@
--- PhantomUI: Laufwerte immer sichtbar (neben der Minimap). Dieselben Zahlen wie
+-- PhantomUI: Laufwerte immer sichtbar (unter dem Spielerfenster). Dieselben Zahlen wie
 -- im Charakterfenster (C), aus AZS_STATS; links die Grundwerte, rechts die
 -- Laufwerte. Zeilen fuer Sonderschaden erscheinen erst, wenn sie etwas bringen.
 
@@ -216,8 +216,14 @@ local function Init()
 	frame:SetWidth(16 + 2 * COL_W + 10)
 	frame:SetHeight(180)
 	P.RegisterMover("stats", frame, "Laufwerte", function(f)
-		local map = getglobal("PhantomUI_Minimap") or Minimap
-		f:SetPoint("TOPRIGHT", map, "TOPLEFT", -6, 0)
+		-- unter dem Spielerfenster, rechtsbuendig mit ihm
+		local player = getglobal("PhantomUI_Player")
+		if player then
+			f:SetPoint("TOPRIGHT", player, "BOTTOMRIGHT", 0, -4)
+		else
+			local map = getglobal("PhantomUI_Minimap") or Minimap
+			f:SetPoint("TOPRIGHT", map, "TOPLEFT", -6, 0)
+		end
 	end, {
 		uniform = true,
 		get = function()

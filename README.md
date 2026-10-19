@@ -24,7 +24,7 @@
 - **Combo points** use the game's own display, movable in anchor mode; warriors get a red rage bar, every other class none
 - **Run timer** – time above the bar, boss skulls on it (red = alive, green = dead), next boss with name and countdown below; follows the real run length (16 *and* 20 minute zones)
 - **Boss & guardian health bars** – docked above the target frame (same width), more bosses stack upwards; in anchor mode freely movable with their own width, height and scale
-- **Run stats next to the minimap** – the numbers from the character pane (damage, haste, crit, echo, lifesteal, gold, luck …), always visible
+- **Run stats under the player frame** – the numbers from the character pane (damage, haste, crit, echo, lifesteal, gold, luck …), always visible
 - **Square minimap** that rotates with you, zone text, clock, one button strip for all addons
 - **Retail-style buffs**, XP bar, gold & next-cache counter, compact game menu, styled nameplates
 - **Clean chat** – transparent and movable, modern Roboto font, flat input line, old lines fade after 10 s
