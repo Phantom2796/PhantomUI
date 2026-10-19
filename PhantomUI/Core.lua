@@ -280,6 +280,8 @@ local DEFAULT_POS = {
 	auras = { x = 0, y = -95 },
 	power = { x = 0, y = -143 },
 	tally = { x = 0, y = -172 },
+	-- Laufwerte: Mitte genau auf Gitter X -11 / Y -11 (24 px je Kaestchen)
+	stats = { x = -264, y = -264 },
 	player = { x = -229, y = -148 },
 	target = { x = 229, y = -148 },
 }
