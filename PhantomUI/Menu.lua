@@ -8,9 +8,17 @@ local L = {
 	deDE = { resume = "Weiterspielen", options = "Optionen", ui = "PhantomUI", quit = "Spiel beenden", character = "Charakter", talents = "Talente", menu = "Spielmenü" },
 }
 local function T(key)
-	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	-- eigene Texte in der PhantomUI-Sprache: Deutsch/Englisch hier, alle
+	-- anderen Sprachen ueber die Uebersetzungen in Locale.lua
 	local lang = P.UILang()
-	return (L[lang] or L.enUS)[key] or L.enUS[key]
+	local t = L[lang]
+	if t and t[key] then
+		return t[key]
+	end
+	if L.deDE[key] then
+		return P.T(L.deDE[key])
+	end
+	return L.enUS[key]
 end
 
 local menu
@@ -24,7 +32,7 @@ local function Button(label, y, onClick)
 	b:SetBackdropColor(0.12, 0.06, 0.18, 1)
 	b:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
 	b.text = b:CreateFontString(nil, "OVERLAY")
-	b.text:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE")
+	b.text:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 12, "OUTLINE")
 	b.text:SetPoint("CENTER", b, "CENTER", 0, 0)
 	b.text:SetTextColor(0.85, 0.75, 1)
 	b.label = label
@@ -44,7 +52,7 @@ local function BuildMenu()
 	P.Box(menu, 0.97)
 	menu:EnableMouse(true)
 	local title = menu:CreateFontString(nil, "OVERLAY")
-	title:SetFont("Fonts\\FRIZQT__.TTF", 15, "OUTLINE")
+	title:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 15, "OUTLINE")
 	title:SetTextColor(P.ACCENT[1] + 0.15, P.ACCENT[2] + 0.15, P.ACCENT[3])
 	title:SetPoint("TOP", menu, "TOP", 0, -12)
 	title:SetText("Azeroth Survivors")

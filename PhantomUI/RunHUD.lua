@@ -8,9 +8,17 @@ local L = {
 	deDE = { next = "Nächster Boss", endless = "Endlos", won = "Sieg" },
 }
 local function T(key)
-	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	-- eigene Texte in der PhantomUI-Sprache: Deutsch/Englisch hier, alle
+	-- anderen Sprachen ueber die Uebersetzungen in Locale.lua
 	local lang = P.UILang()
-	return (L[lang] or L.enUS)[key] or L.enUS[key]
+	local t = L[lang]
+	if t and t[key] then
+		return t[key]
+	end
+	if L.deDE[key] then
+		return P.T(L.deDE[key])
+	end
+	return L.enUS[key]
 end
 
 local function Clock(s)

@@ -134,7 +134,7 @@ local function Update()
 		end
 	end
 	frame:Show()
-	local font = STAT_FONT
+	local font = P.ScriptFont(STAT_FONT)
 	-- Stil nur bei Aenderung neu setzen (SetFont/SetBackdrop sind teuer)
 	local styleKey = font .. ":" .. tostring(db.scale) .. ":" .. tostring(db.bgAlpha)
 	local restyle = frame.styleKey ~= styleKey

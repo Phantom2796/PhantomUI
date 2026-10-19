@@ -1851,7 +1851,7 @@ local function face(fs, size)
 	if fs and fs.SetFont then
 		-- Schrift waechst mit der Zeilenhoehe mit
 		size = math.floor(size * ROW_H / 16 + 0.5)
-		fs:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE")
+		fs:SetFont(PhantomUI.ScriptFont("Fonts\\FRIZQT__.TTF"), size, "OUTLINE")
 	end
 end
 

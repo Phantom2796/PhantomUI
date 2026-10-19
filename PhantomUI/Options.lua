@@ -50,7 +50,7 @@ end
 
 local function Text(parent, size, color)
 	local text = parent:CreateFontString(nil, "OVERLAY")
-	text:SetFont(FONT, size, "OUTLINE")
+	text:SetFont(P.ScriptFont(FONT), size, "OUTLINE")
 	text:SetTextColor(color[1], color[2], color[3])
 	-- Alle Texte im Fenster laufen durch die Uebersetzung (Deutsch/Englisch)
 	local setText = text.SetText
@@ -389,7 +389,10 @@ local function PageGeneral(page)
 			P.DB().uiLang = value
 			ReloadUI()
 		end,
-	}, { "auto", "deDE", "enUS" }, { "Automatisch (Spielsprache)", "Deutsch", "English" })
+	}, { "auto", "enUS", "deDE", "frFR", "esES", "ptBR", "plPL", "csCZ", "roRO", "trTR", "ruRU", "ukUA", "zhCN", "jaJP", "koKR" },
+	{ "Automatisch (Spielsprache)", "English", "Deutsch", "Français", "Español", "Português (Brasil)", "Polski",
+		"Cestina (Czech)", "Romana (Romanian)", "Turkce (Turkish)", "Russkiy (Russian)", "Ukrainska (Ukrainian)",
+		"Chinese (Simplified)", "Japanese", "Korean" })
 	y = Note(page, y + 2, "Gilt für die PhantomUI-Texte; die Oberfläche lädt dafür neu.")
 	y = y - 6
 	y = Heading(page, y, "Aussehen")

@@ -9,7 +9,7 @@
   <a href="#commands">Commands</a>
 </p>
 
-**PhantomUI** is a complete, modern interface for **Azeroth Survivors**. One addon replaces the classic look with a dark, flat style – crisp black borders, purple accents – and puts the frames, minimap, damage meter, floating damage numbers and an ability plan under one roof. Everything is movable, everything lives in one settings window, and it works in all 10 game languages. PhantomUI's own menus come in English and German – picked automatically from your game language, or set it under General → Language.
+**PhantomUI** is a complete, modern interface for **Azeroth Survivors**. One addon replaces the classic look with a dark, flat style – crisp black borders, purple accents – and puts the frames, minimap, damage meter, floating damage numbers and an ability plan under one roof. Everything is movable, everything lives in one settings window, and it works in all 10 game languages. PhantomUI's own menus are translated into all 14 game languages (English, Deutsch, Français, Español, Português, Polski, Čeština, Română, Türkçe, Русский, Українська, 简体中文, 日本語, 한국어) – picked automatically from your game language, or set it under General → Language.
 
 > No other UI addon needed. SurvivorsDragonUi, CompactSCT and AZS Spell Meter are all built in.
 
@@ -67,7 +67,7 @@ Your settings live in `benilla-config/saved/PhantomUI.lua` and survive updates.
 | `/pui` | settings window |
 | `/pui unlock` · `/pui lock` | anchor mode on / off |
 | `/pui reset` | every frame back to the default layout |
-| `/pui lang en` · `/pui lang de` · `/pui lang auto` | language of PhantomUI's menus and texts |
+| `/pui lang auto` · `en` · `de` · `fr` · `es` · `pt` · `pl` · `cs` · `ro` · `tr` · `ru` · `uk` · `zh` · `ja` · `ko` | language of PhantomUI's menus and texts |
 | `/pui combo` | shows what the game reports for combo points (for bug reports) |
 | `/plan` | ability & item plan editor |
 | `/azsm` | damage meter: show, hide, reset, resetpos |

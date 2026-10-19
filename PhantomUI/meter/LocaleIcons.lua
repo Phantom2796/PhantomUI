@@ -7134,31 +7134,68 @@ PhantomUI_SpellLocale = {
 }
 
 -- Spielsprache erkennen: Azeroth Survivors hat eine eigene Sprachwahl. Wir schauen,
--- in welcher Sprache die Namen im Schadensmeter des Spiels stehen.
+-- in welcher Sprache die Namen im Schadensmeter des Spiels stehen. Die zuletzt
+-- erkannte Sprache gilt sofort (Menues, Plan); sobald das Meter Namen hat, wird
+-- einmal pro Sitzung neu geprueft – so folgt PhantomUI auch einem Sprachwechsel.
+
+-- Sprachen ohne eigene Namensliste (Tschechisch, Rumaenisch, Ukrainisch,
+-- Japanisch …) an ihren Schriftzeichen erkennen (UTF-8-Bytefolgen).
+local SCRIPT_MARKS = {
+	{ "jaJP", { "\227\129[\128-\191]", "\227\130[\128-\191]", "\227\131[\128-\191]" } }, -- Hiragana/Katakana
+	{ "koKR", { "\234[\176-\191]", "\235", "\236", "\237[\128-\158]" } },                    -- Hangul
+	{ "zhCN", { "\228[\184-\191]", "[\229-\233][\128-\191]" } },                              -- CJK
+	{ "ukUA", { "\209\150", "\209\151", "\209\148", "\210\145", "\208\134", "\208\135", "\208\132" } }, -- і ї є ґ
+	{ "ruRU", { "\208[\144-\191]", "\209[\128-\143]" } },                                       -- Kyrillisch
+	{ "csCZ", { "\197\153", "\196\155", "\197\175", "\197\152", "\196\154" } },           -- ř ě ů
+	{ "roRO", { "\196\131", "\200\153", "\200\155", "\196\130", "\200\152", "\200\154" } }, -- ă ș ț
+	{ "trTR", { "\196\177", "\196\159", "\197\159", "\196\176" } },                          -- ı ğ ş İ
+	{ "plPL", { "\197\130", "\196\133", "\196\153", "\197\155", "\197\186", "\197\188", "\197\132" } }, -- ł ą ę ś ź ż ń
+}
+local function ScriptLang(lines)
+	local text = ""
+	local i
+	for i = 1, table.getn(lines) do
+		if lines[i].name then
+			text = text .. " " .. lines[i].name
+		end
+	end
+	local sched = AZS_SCHEDULE
+	if type(sched) == "table" then
+		for i = 1, table.getn(sched) do
+			if type(sched[i]) == "table" and sched[i].name then
+				text = text .. " " .. sched[i].name
+			end
+		end
+	end
+	for i = 1, table.getn(SCRIPT_MARKS) do
+		local marks = SCRIPT_MARKS[i][2]
+		local j
+		for j = 1, table.getn(marks) do
+			if string.find(text, marks[j]) then
+				return SCRIPT_MARKS[i][1]
+			end
+		end
+	end
+	return nil
+end
+
 local detected
 local lastTry = -100
 function PhantomUI_Lang()
 	if detected then
 		return detected
 	end
-	-- Einmal erkannte Sprache gilt auch vor dem naechsten Lauf (Menues, Plan).
-	if PhantomUIDB and PhantomUIDB.lang then
-		detected = PhantomUIDB.lang
-		if PhantomUI_TrimLanguages then
-			PhantomUI_TrimLanguages(detected)
-		end
-		return detected
-	end
+	local saved = PhantomUIDB and PhantomUIDB.lang
 	local now = GetTime and GetTime() or 0
 	if now - lastTry < 5 then
-		return "enUS"
+		return saved or "enUS"
 	end
 	lastTry = now
 	local lines = AZS_GetMeter and AZS_GetMeter()
 	if type(lines) ~= "table" or table.getn(lines) == 0 then
-		return "enUS"
+		return saved or "enUS"
 	end
-	local best, bestCount, enCount = nil, 0, 0
+	local best, bestCount = nil, 0
 	local lang, map
 	for lang, map in pairs(PhantomUI_SpellLocale) do
 		local values = {}
@@ -7177,18 +7214,26 @@ function PhantomUI_Lang()
 			best, bestCount = lang, count
 		end
 	end
+	local found
 	if best and bestCount >= 2 then
-		detected = best
+		found = best
+	else
+		found = ScriptLang(lines)
+		if not found and table.getn(lines) >= 4 then
+			found = "enUS"
+		end
+	end
+	if found then
+		detected = found
 		if PhantomUIDB then
-			PhantomUIDB.lang = best
+			PhantomUIDB.lang = found
 		end
 		if PhantomUI_TrimLanguages then
-			PhantomUI_TrimLanguages(best)
+			PhantomUI_TrimLanguages(found)
 		end
-	elseif table.getn(lines) >= 4 then
-		detected = "enUS"
+		return found
 	end
-	return detected or "enUS"
+	return saved or "enUS"
 end
 
 function PhantomUI_LocalName(english)

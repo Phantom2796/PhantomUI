@@ -27,10 +27,17 @@ local L = {
 	deDE = { ABILITY = "Fähigkeiten", NECK = "Hals", RING = "Ring", TRINKET = "Schmuck", editItems = "Gegenstände in der Reihenfolge anklicken, in der du sie willst.", base = "Grundwert – höhere Seltenheit verstärkt ihn", title = "Fähigkeiten-Plan", edit = "Fähigkeiten in der Reihenfolge anklicken, in der du sie nehmen willst.", clear = "Leeren", done = "Fertig", empty = "Plan: klicken zum Auswählen", owned = "schon genommen", hint = "Linksklick: bearbeiten  -  Rechtsklick: ausblenden" },
 }
 local function T(key)
-	-- eigene Texte in der PhantomUI-Sprache (Deutsch/Englisch)
+	-- eigene Texte in der PhantomUI-Sprache: Deutsch/Englisch hier, alle
+	-- anderen Sprachen ueber die Uebersetzungen in Locale.lua
 	local lang = P.UILang()
-	local t = L[lang] or L.enUS
-	return t[key] or L.enUS[key]
+	local t = L[lang]
+	if t and t[key] then
+		return t[key]
+	end
+	if L.deDE[key] then
+		return P.T(L.deDE[key])
+	end
+	return L.enUS[key]
 end
 
 local function Lang()
@@ -295,7 +302,7 @@ local function SmallButton(parent, width, onClick)
 	b:SetBackdropColor(0.12, 0.06, 0.18, 1)
 	b:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
 	b.text = b:CreateFontString(nil, "OVERLAY")
-	b.text:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
+	b.text:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 11, "OUTLINE")
 	b.text:SetPoint("CENTER", b, "CENTER", 0, 0)
 	b.text:SetTextColor(P.ACCENT[1] + 0.2, P.ACCENT[2] + 0.25, P.ACCENT[3] + 0.08)
 	b:SetScript("OnEnter", function() this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1) end)
@@ -327,7 +334,7 @@ local function BuildEditor()
 	end
 
 	editor.title = editor:CreateFontString(nil, "OVERLAY")
-	editor.title:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+	editor.title:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 14, "OUTLINE")
 	editor.title:SetTextColor(P.ACCENT[1] + 0.1, P.ACCENT[2] + 0.1, P.ACCENT[3])
 	editor.title:SetPoint("TOPLEFT", editor, "TOPLEFT", 16, -12)
 
@@ -356,7 +363,7 @@ local function BuildEditor()
 		end)
 		tab:SetHeight(20)
 		tab:SetPoint("TOPLEFT", editor, "TOPLEFT", 16 + (i - 1) * (catW + 2), -62)
-		tab.text:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+		tab.text:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 10, "OUTLINE")
 		tab.cat = CATS[i]
 		tab:SetScript("OnLeave", function()
 			if this.cat ~= editorCat then
@@ -367,7 +374,7 @@ local function BuildEditor()
 	end
 
 	editor.help = editor:CreateFontString(nil, "OVERLAY")
-	editor.help:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
+	editor.help:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 9, "OUTLINE")
 	editor.help:SetTextColor(0.6, 0.6, 0.65)
 	editor.help:SetPoint("TOPLEFT", editor, "TOPLEFT", 16, -88)
 	editor.help:SetWidth(editor:GetWidth() - 32)

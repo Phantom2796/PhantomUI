@@ -27,31 +27,41 @@ P.FONTS = {
 -- Englisch. "auto" folgt der Spielsprache (aus den Spieldaten erkannt), sonst
 -- der Client-Sprache; alles ausser Deutsch zeigt Englisch.
 P.EN = P.EN or {}
+P.LOC = P.LOC or {}
+-- Alle Sprachen, die Azeroth Survivors anbietet
+P.LANGS = { "enUS", "deDE", "frFR", "esES", "ptBR", "plPL", "csCZ", "roRO", "trTR", "ruRU", "ukUA", "zhCN", "jaJP", "koKR" }
+local LANG_OK = {}
+for i = 1, table.getn(P.LANGS) do
+	LANG_OK[P.LANGS[i]] = true
+end
 function P.UILang()
 	local db = PhantomUIDB
 	local set = db and db.uiLang
-	if set == "deDE" or set == "enUS" then
+	if set and LANG_OK[set] then
 		return set
 	end
 	local game = db and db.lang
-	if not game and GetLocale then
-		game = GetLocale()
-	end
-	if game == "deDE" then
-		return "deDE"
+	if game and LANG_OK[game] then
+		return game
 	end
 	return "enUS"
 end
 
--- Deutschen Text uebersetzen (Schluessel = deutscher Text, siehe Locale.lua)
+-- Deutschen Text uebersetzen (Schluessel = deutscher Text, siehe Locale.lua).
+-- Fehlt eine Sprache, gilt Englisch.
 function P.T(text)
-	if type(text) ~= "string" or P.UILang() == "deDE" then
+	if type(text) ~= "string" then
 		return text
 	end
-	return P.EN[text] or text
+	local lang = P.UILang()
+	if lang == "deDE" then
+		return text
+	end
+	local t = P.LOC[lang]
+	return (t and t[text]) or P.EN[text] or text
 end
 
--- Fuer zusammengesetzte Texte: beide Fassungen direkt angeben
+-- Fuer zusammengesetzte Texte: deutsche und englische Fassung direkt angeben
 function P.L(de, en)
 	if P.UILang() == "deDE" then
 		return de
@@ -59,13 +69,36 @@ function P.L(de, en)
 	return en
 end
 
+-- Schrift, die die Buchstaben der Sprache auch hat: Friz kennt nur
+-- westeuropaeische Zeichen. Osteuropaeisch, Tuerkisch, Kyrillisch -> Roboto;
+-- Chinesisch/Japanisch und Koreanisch -> die Schriften des Spiels.
+local LATIN_EXT = { plPL = true, csCZ = true, roRO = true, trTR = true, ruRU = true, ukUA = true }
+function P.ScriptFont(path)
+	local db = PhantomUIDB
+	local a = P.UILang()
+	local b = db and db.lang or a
+	if a == "koKR" or b == "koKR" then
+		return "Fonts\\AZS_KR.TTF"
+	end
+	if a == "zhCN" or b == "zhCN" or a == "jaJP" or b == "jaJP" then
+		return "Fonts\\AZS_SC.TTF"
+	end
+	if LATIN_EXT[a] or LATIN_EXT[b] then
+		if path and string.find(path, "Roboto") then
+			return path
+		end
+		return "Interface\\AddOns\\PhantomUI\\media\\Roboto.ttf"
+	end
+	return path
+end
+
 function P.FontPath(key)
 	for i = 1, table.getn(P.FONTS) do
 		if P.FONTS[i].key == key then
-			return P.FONTS[i].path
+			return P.ScriptFont(P.FONTS[i].path)
 		end
 	end
-	return P.FONTS[1].path
+	return P.ScriptFont(P.FONTS[1].path)
 end
 
 local DEFAULTS = {
@@ -241,13 +274,7 @@ function P.Texture()
 end
 
 function P.Font()
-	local key = P.DB().font
-	for i = 1, table.getn(P.FONTS) do
-		if P.FONTS[i].key == key then
-			return P.FONTS[i].path
-		end
-	end
-	return P.FONTS[1].path
+	return P.FontPath(P.DB().font)
 end
 
 -- Dunkle Flaeche mit 1-Pixel-Rand, der Grundbaustein aller Kaesten.
@@ -378,7 +405,7 @@ local function MakeOverlay(key)
 	overlay:RegisterForDrag("LeftButton")
 	overlay:RegisterForClicks("RightButtonUp")
 	local label = overlay:CreateFontString(nil, "OVERLAY")
-	label:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
+	label:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 11, "OUTLINE")
 	label:SetPoint("CENTER", overlay, "CENTER", 0, 0)
 	label:SetText(P.T(m.label))
 	overlay:SetScript("OnDragStart", function()
@@ -585,7 +612,7 @@ local function GridLabel(i)
 	local label = gridLabels[i]
 	if not label then
 		label = grid:CreateFontString(nil, "OVERLAY")
-		label:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+		label:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 10, "OUTLINE")
 		label:SetTextColor(1, 0.82, 0)
 		gridLabels[i] = label
 	end
@@ -696,7 +723,7 @@ local function LockBar()
 	lockBar:SetScript("OnDragStart", function() this:StartMoving() end)
 	lockBar:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
 	local title = lockBar:CreateFontString(nil, "OVERLAY")
-	title:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE")
+	title:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 12, "OUTLINE")
 	title:SetTextColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3])
 	title:SetPoint("TOP", lockBar, "TOP", 0, -7)
 	title:SetText(P.T("Ankerpunkte"))
@@ -710,7 +737,7 @@ local function LockBar()
 		b:SetBackdropColor(0.1, 0.1, 0.13, 1)
 		b:SetBackdropBorderColor(0, 0, 0, 1)
 		b.label = b:CreateFontString(nil, "OVERLAY")
-		b.label:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+		b.label:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 10, "OUTLINE")
 		b.label:SetPoint("CENTER", b, "CENTER", 0, 0)
 		b.label:SetText(text)
 		b:SetScript("OnEnter", function() this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1) end)
@@ -720,7 +747,7 @@ local function LockBar()
 	end
 	local toggle
 	local value = lockBar:CreateFontString(nil, "OVERLAY")
-	value:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+	value:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 10, "OUTLINE")
 	value:SetPoint("TOPLEFT", lockBar, "TOPLEFT", 160, -29)
 	value:SetWidth(50)
 	local function Refresh()
@@ -758,7 +785,7 @@ local function LockBar()
 	button:SetBackdropColor(0.12, 0.06, 0.18, 1)
 	button:SetBackdropBorderColor(0.4, 0.2, 0.6, 1)
 	local label = button:CreateFontString(nil, "OVERLAY")
-	label:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
+	label:SetFont(P.ScriptFont("Fonts\\FRIZQT__.TTF"), 11, "OUTLINE")
 	label:SetPoint("CENTER", button, "CENTER", 0, 0)
 	label:SetText(P.T("Sperren"))
 	button:SetScript("OnEnter", function() this:SetBackdropBorderColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1) end)
@@ -931,12 +958,14 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 	-- /pui lang de | en | auto: Sprache der PhantomUI-Texte
 	local _, _, langArg = string.find(msg, "^lang%s*(%a*)")
 	if langArg then
-		local map = { de = "deDE", deutsch = "deDE", german = "deDE", en = "enUS", english = "enUS", auto = "auto" }
+		local map = { de = "deDE", deutsch = "deDE", german = "deDE", en = "enUS", english = "enUS", auto = "auto",
+			fr = "frFR", es = "esES", pt = "ptBR", br = "ptBR", pl = "plPL", cs = "csCZ", cz = "csCZ", ro = "roRO",
+			tr = "trTR", ru = "ruRU", uk = "ukUA", ua = "ukUA", zh = "zhCN", cn = "zhCN", ja = "jaJP", jp = "jaJP", ko = "koKR", kr = "koKR" }
 		if map[langArg] then
 			P.DB().uiLang = map[langArg]
 			ReloadUI()
 		else
-			P.Print(P.L("Sprache: /pui lang de | en | auto", "Language: /pui lang de | en | auto"))
+			P.Print(P.L("Sprache: /pui lang auto | en | de | fr | es | pt | pl | cs | ro | tr | ru | uk | zh | ja | ko", "Language: /pui lang auto | en | de | fr | es | pt | pl | cs | ro | tr | ru | uk | zh | ja | ko"))
 		end
 		return
 	end
