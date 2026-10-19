@@ -3,8 +3,11 @@
 -- Laufwerte. Zeilen fuer Sonderschaden erscheinen erst, wenn sie etwas bringen.
 
 local P = PhantomUI
-local ROW = 12
-local COL_W = 118
+local ROW = 14
+local COL_W = 130
+-- dieselbe Schrift wie Schadensmeter und Namen in den Rahmen
+local STAT_FONT = "Fonts\\FRIZQT__.TTF"
+local STAT_SIZE = 11
 
 local frame, title
 local rows = {}
@@ -131,7 +134,7 @@ local function Update()
 		end
 	end
 	frame:Show()
-	local font = P.Font()
+	local font = STAT_FONT
 	-- Stil nur bei Aenderung neu setzen (SetFont/SetBackdrop sind teuer)
 	local styleKey = font .. ":" .. tostring(db.scale) .. ":" .. tostring(db.bgAlpha)
 	local restyle = frame.styleKey ~= styleKey
@@ -151,15 +154,20 @@ local function Update()
 			local y = -22 - (i - 1) * ROW
 			if restyle or r.font ~= font then
 				r.font = font
-				r.label:SetFont(font, 10, "OUTLINE")
-				r.value:SetFont(font, 10, "OUTLINE")
+				r.label:SetFont(font, STAT_SIZE, "OUTLINE")
+				r.value:SetFont(font, STAT_SIZE, "OUTLINE")
 			end
 			r.label:ClearAllPoints()
 			r.label:SetPoint("TOPLEFT", frame, "TOPLEFT", x, y)
 			r.value:ClearAllPoints()
 			r.value:SetPoint("TOPRIGHT", frame, "TOPLEFT", x + COL_W, y)
 			r.label:SetText(Label(list[i][1]))
-			r.label:SetTextColor(0.75, 0.68, 0.85)
+			local lc = VALUE_COLORS[list[i][1]]
+			if lc then
+				r.label:SetTextColor(lc[1], lc[2], lc[3])
+			else
+				r.label:SetTextColor(0.75, 0.68, 0.85)
+			end
 			r.value:SetText(list[i][2])
 			local c = VALUE_COLORS[list[i][1]]
 			if c then
