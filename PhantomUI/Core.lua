@@ -983,6 +983,12 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 		end
 		return
 	end
+	if msg == "gear" then
+		if P.GearDebug then
+			P.GearDebug()
+		end
+		return
+	end
 	if msg == "totems" or msg == "totem" then
 		if P.TotemDebug then
 			P.TotemDebug()

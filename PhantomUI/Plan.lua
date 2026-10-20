@@ -223,8 +223,8 @@ local function Worn(cat)
 			end
 			-- Legendaere Kette: orange UND keine der normalen Halsketten (auch
 			-- normale Ketten koennen als legendaere Seltenheit, also orange, fallen)
-			if cat == "NECK" and name and string.find(string.lower(link), "|cffff8000", 1, true)
-				and not KnownNeck(BaseName(name)) then
+			if cat == "NECK" and name and ((PhantomUI_LegendaryNecks and PhantomUI_LegendaryNecks[BaseName(name)])
+				or (string.find(string.lower(link), "|cffff8000", 1, true) and not KnownNeck(BaseName(name)))) then
 				worn.legendary = true
 			end
 		end
@@ -759,4 +759,12 @@ P.OnInit(Init)
 SLASH_PHANTOMPLAN1 = "/plan"
 SlashCmdList["PHANTOMPLAN"] = function()
 	P.TogglePlanEditor()
+end
+
+-- /pui gear: was das Spiel fuer Hals, Ringe und Schmuck meldet (zum Pruefen)
+function PhantomUI.GearDebug()
+	for _, slot in ipairs({ 2, 11, 12, 13, 14 }) do
+		local link = GetInventoryItemLink and GetInventoryItemLink("player", slot)
+		PhantomUI.Print(slot .. ": " .. (link and string.gsub(link, "|", "||") or "-"))
+	end
 end

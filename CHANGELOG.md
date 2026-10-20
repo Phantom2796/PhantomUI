@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.57
+- Plan: a worn legendary necklace is now recognised by its name (all 12, every language), not only by its colour. `/pui gear` shows what the game reports for neck, rings and trinkets.
+
 ## 0.9.56
 - Plan: legendary necklaces always rank above normal ones, whatever their position in the plan; wearing a legendary hides all normal necklaces.
 
