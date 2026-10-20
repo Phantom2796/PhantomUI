@@ -178,7 +178,7 @@ local DEFAULTS = {
 		enabled = true,
 		size = 30,
 	},
-	totems = { enabled = true, size = 24 },
+	totems = { enabled = true, size = 32 },
 	minimap = {
 		enabled = true,
 		size = 180,
@@ -201,7 +201,7 @@ local DEFAULTS = {
 	},
 }
 
-local DB_VERSION = 16
+local DB_VERSION = 17
 
 local function Merge(target, source)
 	for key, value in pairs(source) do
@@ -909,6 +909,10 @@ boot:SetScript("OnEvent", function()
 		if (db.version or 1) < 9 and db.stats then
 			-- Laufwerte: ganz durchsichtig
 			db.stats.bgAlpha = 0
+		end
+		if (db.version or 1) < 17 and db.totems then
+			-- Totem-/Begleiter-Symbole etwas groesser
+			db.totems.size = 32
 		end
 		if (db.version or 1) < 16 and db.unit then
 			-- Klassensymbol / Gegnerart-Kasten standardmaessig weg

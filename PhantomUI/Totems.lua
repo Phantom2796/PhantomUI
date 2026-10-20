@@ -133,8 +133,13 @@ local function Slot(i)
 	s.edge:SetVertexColor(0, 0, 0, 1)
 	s.edge:SetAllPoints(s)
 	-- nur das Symbol und mittendrin die Zahl
+	-- Zahl ueber die ganze Breite und zentriert, auch zweistellig
 	s.count = s:CreateFontString(nil, "OVERLAY")
-	s.count:SetPoint("CENTER", s, "CENTER", 0, 0)
+	s.count:SetPoint("CENTER", s, "CENTER", 1, 0)
+	s.count:SetJustifyH("CENTER")
+	if s.count.SetJustifyV then
+		s.count:SetJustifyV("MIDDLE")
+	end
 	s:EnableMouse(true)
 	s:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
@@ -153,7 +158,7 @@ local function Slot(i)
 end
 
 local function Layout()
-	local size = P.DB().totems.size or 24
+	local size = P.DB().totems.size or 32
 	local font = P.Font()
 	local count = table.getn(TOTEMS) + table.getn(myPets)
 	frame:SetWidth(math.max(1, count) * (size + 3))
@@ -162,13 +167,15 @@ local function Layout()
 		local s = Slot(i)
 		s:SetWidth(size)
 		s:SetHeight(size)
-		s.count:SetFont(font, math.max(10, math.floor(size * 0.6)), "THICKOUTLINE")
+		s.count:SetFont(font, math.max(10, math.floor(size * 0.55)), "THICKOUTLINE")
+		s.count:SetWidth(size + 8)
+		s.count:SetHeight(size)
 	end
 end
 
 -- sichtbare Symbole von rechts nach links aufreihen
 local function Place(s, index)
-	local size = P.DB().totems.size or 24
+	local size = P.DB().totems.size or 32
 	if s.index ~= index then
 		s.index = index
 		s:ClearAllPoints()
@@ -306,7 +313,7 @@ local function Init()
 	end, {
 		uniform = true,
 		get = function()
-			local s = P.DB().totems.size or 24
+			local s = P.DB().totems.size or 32
 			return s, s
 		end,
 		set = function(w, h)
