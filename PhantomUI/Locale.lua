@@ -193,7 +193,7 @@ P.LOC.enUS = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "Fade 0 = never. The mouse wheel brings old lines back.",
 	["Totems"] = "Totems",
 	["Dauer"] = "Duration",
-	["Totem-Zähler (Schamane)"] = "Totem counter (shaman)",
+	["Totems & Begleiter"] = "Totems & pets",
 }
 
 P.LOC.frFR = {
@@ -382,7 +382,7 @@ P.LOC.frFR = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = jamais. La molette rappelle les anciennes lignes.",
 	["Totems"] = "Totems",
 	["Dauer"] = "Durée",
-	["Totem-Zähler (Schamane)"] = "Compteur de totems (chaman)",
+	["Totems & Begleiter"] = "Totems et familiers",
 }
 
 P.LOC.esES = {
@@ -571,7 +571,7 @@ P.LOC.esES = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nunca. La rueda recupera las líneas antiguas.",
 	["Totems"] = "Tótems",
 	["Dauer"] = "Duración",
-	["Totem-Zähler (Schamane)"] = "Contador de tótems (chamán)",
+	["Totems & Begleiter"] = "Tótems y mascotas",
 }
 
 P.LOC.ptBR = {
@@ -760,7 +760,7 @@ P.LOC.ptBR = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nunca. A roda traz as linhas antigas de volta.",
 	["Totems"] = "Totens",
 	["Dauer"] = "Duração",
-	["Totem-Zähler (Schamane)"] = "Contador de totens (xamã)",
+	["Totems & Begleiter"] = "Totens e mascotes",
 }
 
 P.LOC.plPL = {
@@ -949,7 +949,7 @@ P.LOC.plPL = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nigdy. Kółko myszy przywraca stare wiersze.",
 	["Totems"] = "Totemy",
 	["Dauer"] = "Czas trwania",
-	["Totem-Zähler (Schamane)"] = "Licznik totemów (szaman)",
+	["Totems & Begleiter"] = "Totemy i chowańce",
 }
 
 P.LOC.csCZ = {
@@ -1138,7 +1138,7 @@ P.LOC.csCZ = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nikdy. Kolečko vrátí staré řádky.",
 	["Totems"] = "Totemy",
 	["Dauer"] = "Trvání",
-	["Totem-Zähler (Schamane)"] = "Počítadlo totemů (šaman)",
+	["Totems & Begleiter"] = "Totemy a mazlíčci",
 }
 
 P.LOC.roRO = {
@@ -1327,7 +1327,7 @@ P.LOC.roRO = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = niciodată. Rotița readuce rândurile vechi.",
 	["Totems"] = "Totemuri",
 	["Dauer"] = "Durată",
-	["Totem-Zähler (Schamane)"] = "Contor totemuri (șaman)",
+	["Totems & Begleiter"] = "Totemuri și companioni",
 }
 
 P.LOC.trTR = {
@@ -1516,7 +1516,7 @@ P.LOC.trTR = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = asla. Fare tekerleği eski satırları getirir.",
 	["Totems"] = "Totemler",
 	["Dauer"] = "Süre",
-	["Totem-Zähler (Schamane)"] = "Totem sayacı (şaman)",
+	["Totems & Begleiter"] = "Totemler ve evcil hayvanlar",
 }
 
 P.LOC.ruRU = {
@@ -1705,7 +1705,7 @@ P.LOC.ruRU = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = никогда. Колесо мыши возвращает старые строки.",
 	["Totems"] = "Тотемы",
 	["Dauer"] = "Длительность",
-	["Totem-Zähler (Schamane)"] = "Счётчик тотемов (шаман)",
+	["Totems & Begleiter"] = "Тотемы и питомцы",
 }
 
 P.LOC.ukUA = {
@@ -1894,7 +1894,7 @@ P.LOC.ukUA = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = ніколи. Коліщатко повертає старі рядки.",
 	["Totems"] = "Тотеми",
 	["Dauer"] = "Тривалість",
-	["Totem-Zähler (Schamane)"] = "Лічильник тотемів (шаман)",
+	["Totems & Begleiter"] = "Тотеми й вихованці",
 }
 
 P.LOC.zhCN = {
@@ -2083,7 +2083,7 @@ P.LOC.zhCN = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = 永不。滚轮可找回旧消息。",
 	["Totems"] = "图腾",
 	["Dauer"] = "持续时间",
-	["Totem-Zähler (Schamane)"] = "图腾计数（萨满）",
+	["Totems & Begleiter"] = "图腾和宠物",
 }
 
 P.LOC.jaJP = {
@@ -2272,7 +2272,7 @@ P.LOC.jaJP = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = しない。ホイールで古い行を表示。",
 	["Totems"] = "トーテム",
 	["Dauer"] = "持続時間",
-	["Totem-Zähler (Schamane)"] = "トーテム数（シャーマン）",
+	["Totems & Begleiter"] = "トーテムとペット",
 }
 
 P.LOC.koKR = {
@@ -2461,7 +2461,7 @@ P.LOC.koKR = {
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = 안 함. 휠로 이전 줄을 다시 봅니다.",
 	["Totems"] = "토템",
 	["Dauer"] = "지속 시간",
-	["Totem-Zähler (Schamane)"] = "토템 수 (주술사)",
+	["Totems & Begleiter"] = "토템 및 소환수",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

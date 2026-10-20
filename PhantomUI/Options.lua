@@ -438,7 +438,7 @@ local function PageGeneral(page)
 	Check(page, 16 + INNER / 2 + 6, y, "Plan bei Kartenwahl unten", { "plan", "choice" })
 	y = y - ROW
 	Check(page, 16, y, "Ruckler-Schutz (Speicher)", { "gc", "enabled" })
-	Check(page, 16 + INNER / 2 + 6, y, "Totem-Zähler (Schamane)", { "totems", "enabled" })
+	Check(page, 16 + INNER / 2 + 6, y, "Totems & Begleiter", { "totems", "enabled" })
 	y = y - ROW
 	Check(page, 16, y, "Eigene Einblendungen", { "alerts", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })

@@ -1,4 +1,6 @@
--- PhantomUI: Totem-Zaehler fuer Schamanen (neben den Buffs).
+-- PhantomUI: Totems und Begleiter ueber dem Spielerfenster: nur Symbol mit
+-- Anzahl darin. Totems des Schamanen werden gezaehlt, dauerhafte Begleiter aus
+-- Talenten (Woelfe, Wichtel, Teufelswache, Treants, Wasserelementar) angezeigt.
 -- Das Spiel meldet Addons keine Totems. Wir erkennen das Aufstellen daran, dass
 -- die Abklingzeit der Totem-Faehigkeit neu startet (AZS_SPELLS: cd/cdmax, mit
 -- allen Verbesserungen). Die Dauer steht im Tooltip der Faehigkeit; den liest
@@ -14,6 +16,18 @@ local TOTEMS = {
 	{ key = "magma_totem", icon = "Spell_Fire_SelfDestruct", fallback = 20 },
 }
 local AUTO_EVERY = 14
+
+-- Dauerhafte Begleiter aus Talenten: Talent-Schluessel, Symbol, Anzahl
+local PETS = {
+	SHAMAN = { { key = "stormstrike", icon = "Spell_Nature_SpiritWolf", n = 2 } },          -- Wildgeist: zwei Geisterwoelfe
+	HUNTER = { { key = "tame_beast", icon = "Ability_Hunter_Pet_Wolf", n = 1 },              -- Wolf
+		{ key = "bestial_wrath", icon = "Ability_Hunter_Pet_Raptor", n = 1 } },               -- Raptor
+	WARLOCK = { { key = "summon_imp", icon = "Spell_Shadow_SummonImp", n = 1 },
+		{ key = "felguard", icon = "Spell_Shadow_SummonInfernal", n = 1 } },                  -- Teufelswache
+	DRUID = { { key = "force_of_nature", icon = "Spell_Nature_ForceOfNature", n = 2 } },     -- zwei Treants
+	MAGE = { { key = "water_elemental", icon = "Spell_Frost_SummonWaterElemental", n = 1 } },
+}
+local myPets = {}
 
 local frame
 local slots = {}
@@ -118,17 +132,18 @@ local function Slot(i)
 	s.edge:SetTexture(P.FLAT)
 	s.edge:SetVertexColor(0, 0, 0, 1)
 	s.edge:SetAllPoints(s)
+	-- nur das Symbol und mittendrin die Zahl
 	s.count = s:CreateFontString(nil, "OVERLAY")
-	s.count:SetPoint("BOTTOMRIGHT", s, "BOTTOMRIGHT", -1, 2)
-	s.time = s:CreateFontString(nil, "OVERLAY")
-	s.time:SetPoint("TOP", s, "BOTTOM", 0, -2)
+	s.count:SetPoint("CENTER", s, "CENTER", 0, 0)
 	s:EnableMouse(true)
 	s:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
 		GameTooltip:SetText(this.name or "", 1, 1, 1)
 		if this.duration then
-			GameTooltip:AddLine(string.format("%s: %d", P.T("Totems"), this.n or 0), 0.8, 0.8, 0.8)
 			GameTooltip:AddLine(string.format("%s: %.0f s", P.T("Dauer"), this.duration), 0.8, 0.8, 0.8)
+		end
+		if this.soon then
+			GameTooltip:AddLine(string.format("%.0f s", math.max(0, this.soon - GetTime())), 0.8, 0.8, 0.8)
 		end
 		GameTooltip:Show()
 	end)
@@ -138,18 +153,26 @@ local function Slot(i)
 end
 
 local function Layout()
-	local size = P.DB().auras.size or 30
+	local size = P.DB().totems.size or 24
 	local font = P.Font()
-	frame:SetWidth(table.getn(TOTEMS) * (size + 4))
-	frame:SetHeight(size + 14)
-	for i = 1, table.getn(TOTEMS) do
+	local count = table.getn(TOTEMS) + table.getn(myPets)
+	frame:SetWidth(math.max(1, count) * (size + 3))
+	frame:SetHeight(size)
+	for i = 1, count do
 		local s = Slot(i)
 		s:SetWidth(size)
 		s:SetHeight(size)
+		s.count:SetFont(font, math.max(10, math.floor(size * 0.6)), "THICKOUTLINE")
+	end
+end
+
+-- sichtbare Symbole von rechts nach links aufreihen
+local function Place(s, index)
+	local size = P.DB().totems.size or 24
+	if s.index ~= index then
+		s.index = index
 		s:ClearAllPoints()
-		s:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -(i - 1) * (size + 4), 0)
-		s.count:SetFont(font, math.max(10, math.floor(size * 0.5)), "OUTLINE")
-		s.time:SetFont(font, math.max(9, math.floor(size * 0.36)), "OUTLINE")
+		s:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(index - 1) * (size + 3), 0)
 	end
 end
 
@@ -202,21 +225,47 @@ local function Update()
 			end
 			local n = table.getn(st.up)
 			s.name = sp.spell or def.key
-			s.duration, s.n = duration, n
+			s.duration, s.n, s.soon = duration, n, soon
 			if n > 0 or P.unlocked then
 				if s.iconPath ~= def.icon then
 					s.iconPath = def.icon
 					s.icon:SetTexture("Interface\\Icons\\" .. def.icon)
 				end
-				s.count:SetText(n > 0 and n or "")
-				s.time:SetText(soon and math.floor(soon - now + 0.5) or "")
-				s:Show()
+				if s.shownN ~= n then
+					s.shownN = n
+					s.count:SetText(n)
+				end
 				shown = shown + 1
+				Place(s, shown)
+				s:Show()
 			else
 				s:Hide()
 			end
 		else
 			st.up, st.lastCd = {}, nil
+			s:Hide()
+		end
+	end
+	-- dauerhafte Begleiter aus Talenten
+	for j = 1, table.getn(myPets) do
+		local def = myPets[j]
+		local s = Slot(table.getn(TOTEMS) + j)
+		local has = spells[def.key] ~= nil
+		if has or P.unlocked then
+			if s.iconPath ~= def.icon then
+				s.iconPath = def.icon
+				s.icon:SetTexture("Interface\\Icons\\" .. def.icon)
+			end
+			if s.shownN ~= def.n then
+				s.shownN = def.n
+				s.count:SetText(def.n)
+			end
+			s.name = has and (spells[def.key].spell or def.key) or def.key
+			s.duration, s.soon = nil, nil
+			shown = shown + 1
+			Place(s, shown)
+			s:Show()
+		else
 			s:Hide()
 		end
 	end
@@ -236,20 +285,34 @@ end
 
 local function Init()
 	local _, class = UnitClass("player")
-	if class ~= "SHAMAN" or not P.DB().totems.enabled then
+	myPets = PETS[class] or {}
+	if not P.DB().totems.enabled or (class ~= "SHAMAN" and table.getn(myPets) == 0) then
 		return
+	end
+	if class ~= "SHAMAN" then
+		TOTEMS = {}
 	end
 	frame = CreateFrame("Frame", "PhantomUI_Totems", UIParent)
 	frame:SetFrameStrata("LOW")
 	Layout()
-	P.RegisterMover("totems", frame, "Totems", function(f)
-		local buffs = getglobal("PhantomUI_Buffs")
-		if buffs then
-			f:SetPoint("TOPRIGHT", buffs, "TOPLEFT", -8, 0)
+	-- ueber dem Spielerfenster, rechtsbuendig
+	P.RegisterMover("totems", frame, "Totems & Begleiter", function(f)
+		local player = getglobal("PhantomUI_Player")
+		if player then
+			f:SetPoint("BOTTOMRIGHT", player, "TOPRIGHT", 0, 4)
 		else
-			f:SetPoint("CENTER", UIParent, "CENTER", -120, -95)
+			f:SetPoint("CENTER", UIParent, "CENTER", -200, -110)
 		end
-	end)
+	end, {
+		uniform = true,
+		get = function()
+			local s = P.DB().totems.size or 24
+			return s, s
+		end,
+		set = function(w, h)
+			P.DB().totems.size = P.Clamp(h, 14, 48)
+		end,
+	})
 	P.OnApply(Layout)
 	local t = 0
 	local ticker = CreateFrame("Frame", "PhantomUI_TotemTicker")
@@ -274,4 +337,12 @@ function P.TotemDebug()
 			.. ", " .. P.T("Dauer") .. " " .. tostring(ScanDuration(def) or "?"))
 	end
 	P.Print("twin_totems " .. tostring(spells.twin_totems ~= nil) .. ", totemic_call " .. tostring(spells.totemic_call ~= nil))
+	for j = 1, table.getn(myPets) do
+		P.Print(myPets[j].key .. " " .. tostring(spells[myPets[j].key] ~= nil))
+	end
+	local keys = ""
+	for k in pairs(spells) do
+		keys = keys .. k .. " "
+	end
+	P.Print("AZS_SPELLS: " .. keys)
 end
