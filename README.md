@@ -6,7 +6,8 @@
   <a href="https://github.com/Phantom2796/PhantomUI/raw/main/download/PhantomUI.zip"><b>⬇ Download</b></a> ·
   <a href="https://phantom2796.github.io/PhantomUI/">Website</a> ·
   <a href="#install">Install</a> ·
-  <a href="#commands">Commands</a>
+  <a href="#commands">Commands</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
 </p>
 
 **PhantomUI** is a complete, modern interface for **Azeroth Survivors**. One addon replaces the classic look with a dark, flat style – crisp black borders, purple accents – and puts the frames, minimap, damage meter, floating damage numbers and an ability plan under one roof. Everything is movable, everything lives in one settings window, and it works in all 10 game languages. PhantomUI's own menus are translated into all 14 game languages (English, Deutsch, Français, Español, Português, Polski, Čeština, Română, Türkçe, Русский, Українська, 简体中文, 日本語, 한국어) – picked automatically from your game language, or set it under General → Language.
