@@ -1870,11 +1870,10 @@ end
 
 local function panelBackdrop()
 	return {
+		-- [Nobby] ohne Rahmen: nur Flaeche
 		bgFile = SOLID,
-		edgeFile = SOLID,
 		tile = false,
-		edgeSize = 1,
-		insets = { left = 1, right = 1, top = 1, bottom = 1 },
+		insets = { left = 0, right = 0, top = 0, bottom = 0 },
 	}
 end
 
@@ -2031,7 +2030,8 @@ local function createRow(parent, index)
 
 	local rule = row:CreateTexture(nil, "BORDER")
 	rule:SetTexture(SOLID)
-	rule:SetVertexColor(0, 0, 0, 0.65)
+	rule:SetVertexColor(0, 0, 0, 0)
+	rule:Hide() -- [Nobby] keine Trennlinien zwischen den Balken
 	rule:SetPoint("BOTTOMLEFT", row, "BOTTOMLEFT", 0, 0)
 	rule:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", 0, 0)
 	rule:SetHeight(1)

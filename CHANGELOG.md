@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.59
+- Damage meter without borders: no outer frame, no lines between the bars.
+
 ## 0.9.58
 - Damage numbers: the "show above mobs" tracking option is gone; numbers appear above visible nameplates only.
 
