@@ -1,5 +1,10 @@
 # PhantomUI – Changelog
 
+## 0.9.52
+- Plan: necklace, ring and trinket tooltips rebuilt from the game data – every effect of an item is listed (several necklaces had only one or a wrong effect), in the game's own wording and all languages.
+- Plan tooltips look like item tooltips: name in its quality colour, slot in white, "Equip:" effects in green.
+- Damage meter: kills column removed so ability names have room; sources whose floating numbers are hidden show a red cross.
+
 ## 0.9.51
 - Totems & pets: tick your talents under `/pui` → General → *Totems & pets: talents* (Call of the Elements, Totemic Wrath, Feral Spirit, wolf/raptor, imp/felguard, treants, water elemental) – the game does not tell addons what you have skilled.
 

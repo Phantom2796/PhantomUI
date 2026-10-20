@@ -205,6 +205,7 @@ P.LOC.enUS = {
 	["Naturgewalt (2 Treants)"] = "Force of Nature (2 treants)",
 	["Wasserelementar beschwören"] = "Summon Water Elemental",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Tick the ones you have skilled.",
+	["Finger"] = "Finger",
 }
 
 P.LOC.frFR = {
@@ -405,6 +406,7 @@ P.LOC.frFR = {
 	["Naturgewalt (2 Treants)"] = "Force de la nature (2 tréants)",
 	["Wasserelementar beschwören"] = "Invocation d'un élémentaire d'eau",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Cochez ceux que vous avez appris.",
+	["Finger"] = "Doigt",
 }
 
 P.LOC.esES = {
@@ -605,6 +607,7 @@ P.LOC.esES = {
 	["Naturgewalt (2 Treants)"] = "Fuerza de la naturaleza (2 ánimas)",
 	["Wasserelementar beschwören"] = "Invocar elemental de agua",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Marca los que tengas aprendidos.",
+	["Finger"] = "Dedo",
 }
 
 P.LOC.ptBR = {
@@ -805,6 +808,7 @@ P.LOC.ptBR = {
 	["Naturgewalt (2 Treants)"] = "Força da Natureza (2 árvores)",
 	["Wasserelementar beschwören"] = "Evocar Elemental da Água",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Marque os que você aprendeu.",
+	["Finger"] = "Dedo",
 }
 
 P.LOC.plPL = {
@@ -1005,6 +1009,7 @@ P.LOC.plPL = {
 	["Naturgewalt (2 Treants)"] = "Siła Natury (2 drzewce)",
 	["Wasserelementar beschwören"] = "Przyzwanie Żywiołaka Wody",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaznacz te, które masz wykupione.",
+	["Finger"] = "Palec",
 }
 
 P.LOC.csCZ = {
@@ -1205,6 +1210,7 @@ P.LOC.csCZ = {
 	["Naturgewalt (2 Treants)"] = "Síla přírody (2 enti)",
 	["Wasserelementar beschwören"] = "Vyvolat vodního elementála",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaškrtni ty, které máš naučené.",
+	["Finger"] = "Prst",
 }
 
 P.LOC.roRO = {
@@ -1405,6 +1411,7 @@ P.LOC.roRO = {
 	["Naturgewalt (2 Treants)"] = "Forța naturii (2 enți)",
 	["Wasserelementar beschwören"] = "Invocă elemental de apă",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Bifează-le pe cele învățate.",
+	["Finger"] = "Deget",
 }
 
 P.LOC.trTR = {
@@ -1605,6 +1612,7 @@ P.LOC.trTR = {
 	["Naturgewalt (2 Treants)"] = "Force of Nature (2 ağaç)",
 	["Wasserelementar beschwören"] = "Summon Water Elemental",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Öğrendiklerini işaretle.",
+	["Finger"] = "Parmak",
 }
 
 P.LOC.ruRU = {
@@ -1805,6 +1813,7 @@ P.LOC.ruRU = {
 	["Naturgewalt (2 Treants)"] = "Сила природы (2 древня)",
 	["Wasserelementar beschwören"] = "Призыв элементаля воды",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Отметьте изученные таланты.",
+	["Finger"] = "Палец",
 }
 
 P.LOC.ukUA = {
@@ -2005,6 +2014,7 @@ P.LOC.ukUA = {
 	["Naturgewalt (2 Treants)"] = "Сила природи (2 древні)",
 	["Wasserelementar beschwören"] = "Виклик елементаля води",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Позначте вивчені таланти.",
+	["Finger"] = "Палець",
 }
 
 P.LOC.zhCN = {
@@ -2205,6 +2215,7 @@ P.LOC.zhCN = {
 	["Naturgewalt (2 Treants)"] = "自然之力（2个树人）",
 	["Wasserelementar beschwören"] = "召唤水元素",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "勾选已学会的天赋。",
+	["Finger"] = "手指",
 }
 
 P.LOC.jaJP = {
@@ -2405,6 +2416,7 @@ P.LOC.jaJP = {
 	["Naturgewalt (2 Treants)"] = "自然の力（トレント2体）",
 	["Wasserelementar beschwören"] = "水のエレメンタル召喚",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "習得したものにチェック。",
+	["Finger"] = "指",
 }
 
 P.LOC.koKR = {
@@ -2605,6 +2617,7 @@ P.LOC.koKR = {
 	["Naturgewalt (2 Treants)"] = "자연의 군대 (나무정령 2)",
 	["Wasserelementar beschwören"] = "물의 정령 소환",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "배운 특성에 체크하세요.",
+	["Finger"] = "손가락",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

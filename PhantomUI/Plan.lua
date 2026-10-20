@@ -75,6 +75,32 @@ local function NameOf(a)
 end
 
 -- Wirkung eines Gegenstands (Faehigkeiten haben keine)
+-- Tooltip wie bei einem echten Gegenstand: Name in der Qualitaetsfarbe,
+-- Platz weiss, Wirkung gruen ("Equip: ..."), darunter der Hinweis grau.
+local QUALITY = {
+	[2] = { 0.12, 1, 0 },        -- gruen
+	[3] = { 0, 0.44, 0.87 },     -- blau
+	[4] = { 0.64, 0.21, 0.93 },  -- lila
+	[5] = { 1, 0.5, 0 },         -- orange (legendaer)
+}
+local SLOT_NAME = { NECK = "Hals", RING = "Finger", TRINKET = "Schmuck" }
+local function ItemTooltip(b)
+	if not b.cat or b.cat == "ABILITY" then
+		GameTooltip:SetText(b.name or "", 1, 1, 1)
+		return
+	end
+	local c = QUALITY[b.q or 3] or QUALITY[3]
+	GameTooltip:SetText(b.name or "", c[1], c[2], c[3])
+	GameTooltip:AddLine(P.T(SLOT_NAME[b.cat] or b.cat), 1, 1, 1)
+	if b.desc then
+		local equip = ITEM_SPELL_TRIGGER_ONEQUIP or "Equip:"
+		for line in string.gfind(b.desc, "[^\n]+") do
+			GameTooltip:AddLine(equip .. " " .. line, 0.12, 1, 0.12, 1)
+		end
+		GameTooltip:AddLine(T("base"), 0.6, 0.6, 0.65)
+	end
+end
+
 local function DescOf(a)
 	if not a or not a.desc then
 		return nil
@@ -233,11 +259,7 @@ local function RefreshEditor()
 			end)
 			b:SetScript("OnEnter", function()
 				GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
-				GameTooltip:SetText(this.name)
-				if this.desc then
-					GameTooltip:AddLine(this.desc, 0.12, 1, 0.12, 1)
-					GameTooltip:AddLine(T("base"), 0.6, 0.6, 0.65)
-				end
+				ItemTooltip(this)
 				GameTooltip:Show()
 			end)
 			b:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -249,6 +271,8 @@ local function RefreshEditor()
 		b.id = a.id
 		b.name = NameOf(a)
 		b.desc = DescOf(a)
+		b.q = a.q
+		b.cat = editorCat
 		b.icon:SetTexture("Interface\\Icons\\" .. a.icon)
 		local idx = IndexIn(plan, a.id)
 		if idx then
@@ -468,14 +492,7 @@ function RefreshWindow()
 					end)
 					b:SetScript("OnEnter", function()
 						GameTooltip:SetOwner(this, "ANCHOR_TOP")
-						GameTooltip:SetText(this.name or "")
-						if this.cat ~= "ABILITY" then
-							GameTooltip:AddLine(T(this.cat), 0.75, 0.6, 1)
-						end
-						if this.desc then
-							GameTooltip:AddLine(this.desc, 0.12, 1, 0.12, 1)
-							GameTooltip:AddLine(T("base"), 0.6, 0.6, 0.65)
-						end
+						ItemTooltip(this)
 						if this.owned then
 							GameTooltip:AddLine(T("owned"), GREEN[1], GREEN[2], GREEN[3])
 						end
@@ -505,6 +522,7 @@ function RefreshWindow()
 				if a then
 					b.name = NameOf(a)
 					b.desc = DescOf(a)
+					b.q = a.q
 				else
 					b.desc = nil
 					b.name = plan[i]

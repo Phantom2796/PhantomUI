@@ -35,7 +35,8 @@ end
 local WIDTH = 348
 local HEADER = 32
 local BOTTOM = 8
-local COL_KILL = 40
+-- [Nobby] Kills-Spalte entfernt: mehr Platz fuer die Namen
+local COL_KILL = 0
 local COL_DMG = 50
 local COL_DPS = 36
 
@@ -1069,11 +1070,18 @@ local function paintCheck(row, name, texture)
 	local hot = check.hot
 	if api.IsHidden(name, texture) then
 		check.dot:Hide()
+		-- rotes Kreuz: Zahlen dieser Quelle sind ausgeblendet
+		if check.cross then
+			check.cross:Show()
+		end
 		check.edge:SetVertexColor(ACC[1], ACC[2], ACC[3], hot and 0.9 or 0.35)
 		row.icon:SetVertexColor(1, 1, 1)
 		row.name:SetTextColor(0.95, 0.95, 0.95)
 	else
 		check.dot:Show()
+		if check.cross then
+			check.cross:Hide()
+		end
 		check.edge:SetVertexColor(ACC[1], ACC[2], ACC[3], hot and 1 or 0.8)
 		row.icon:SetVertexColor(1, 1, 1)
 		row.name:SetTextColor(0.95, 0.95, 0.95)
@@ -2047,6 +2055,12 @@ local function createRow(parent, index)
 	check.dot:SetWidth(5)
 	check.dot:SetHeight(5)
 	check.dot:SetPoint("CENTER", check, "CENTER", 0, 0)
+	check.cross = check:CreateFontString(nil, "OVERLAY")
+	check.cross:SetFont("Fonts\\ARIALN.TTF", 12, "OUTLINE")
+	check.cross:SetPoint("CENTER", check, "CENTER", 1, 0)
+	check.cross:SetText("x")
+	check.cross:SetTextColor(1, 0.15, 0.15)
+	check.cross:Hide()
 	check:SetScript("OnClick", function()
 		local owner = this:GetParent()
 		local data = owner.data
@@ -2113,7 +2127,8 @@ local function createRow(parent, index)
 	row.name = name
 
 	local kills = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-	kills:SetWidth(COL_KILL)
+	kills:SetWidth(1)
+	kills:Hide()
 	kills:SetJustifyH("RIGHT")
 	face(kills, 10)
 	kills:SetTextColor(0.75, 0.75, 0.8)
@@ -2136,7 +2151,7 @@ local function createRow(parent, index)
 	rate:SetPoint("RIGHT", row, "RIGHT", -2, 0)
 	damage:SetPoint("RIGHT", rate, "LEFT", -6, 0)
 	kills:SetPoint("RIGHT", damage, "LEFT", -6, 0)
-	name:SetPoint("RIGHT", kills, "LEFT", -4, 0)
+	name:SetPoint("RIGHT", damage, "LEFT", -6, 0)
 
 	row:SetScript("OnEnter", function()
 		local owner = this
@@ -2821,8 +2836,12 @@ local function createUI()
 	dpsCol:SetPoint("RIGHT", cols, "RIGHT", -2, 0)
 	local dmgCol = makeSortButton("damage", "Damage", COL_DMG, "RIGHT")
 	dmgCol:SetPoint("RIGHT", dpsCol, "LEFT", -6, 0)
-	local killCol = makeSortButton("kills", "Kills", COL_KILL, "RIGHT")
+	local killCol = makeSortButton("kills", "Kills", 1, "RIGHT")
 	killCol:SetPoint("RIGHT", dmgCol, "LEFT", -6, 0)
+	killCol:Hide()
+	if config().sort == "kills" then
+		config().sort = "damage"
+	end
 
 	local scrollFrame = CreateFrame("ScrollFrame", "AZSSpellMeterScroll", frame)
 	scrollFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -HEADER)
