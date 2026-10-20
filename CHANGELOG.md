@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.54
+- Plan: the order is your ranking. Once you wear as many planned pieces as the slot holds (neck 1, rings/trinkets 2), every worse pick below them disappears; better ones stay. A worn legendary necklace counts as your planned legendary.
+
 ## 0.9.53
 - Plan: legendary necklaces of your class under *Neck* – one per ability, orange, with the ability's icon and the game's own text ("Legendary amulet · remakes …").
 

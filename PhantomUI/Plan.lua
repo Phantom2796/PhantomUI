@@ -206,6 +206,10 @@ local function Worn(cat)
 			if name then
 				worn.names[BaseName(name)] = true
 			end
+			-- legendaer (orange): der Name verraet nicht, welche es ist
+			if string.find(string.lower(link), "|cffff8000", 1, true) then
+				worn.legendary = true
+			end
 		end
 	end
 	return worn
@@ -214,6 +218,9 @@ end
 local function IsWorn(worn, a)
 	if not a then
 		return false
+	end
+	if a.legendary then
+		return worn.legendary and true or false
 	end
 	-- Name ist eindeutig; das Symbol nur, wenn das Spiel keine Namen liefert
 	if next(worn.names) then
@@ -495,6 +502,11 @@ function RefreshWindow()
 		local n = table.getn(plan)
 		planned = planned + n
 		local worn = cat ~= "ABILITY" and Worn(cat) or nil
+		-- Reihenfolge = Rangliste: Traegt man schon so viele Teile aus dem Plan,
+		-- wie es Plaetze gibt (Hals 1, Ring/Schmuck 2), fallen alle schlechteren
+		-- darunter weg. Bessere bleiben stehen.
+		local slotCount = GEAR_SLOTS[cat] and table.getn(GEAR_SLOTS[cat]) or 0
+		local wornAbove = 0
 		local col = 0
 		for i = 1, n do
 			local a = Ability(class, plan[i], cat)
@@ -505,6 +517,11 @@ function RefreshWindow()
 				have = owned[plan[i]] and true or false
 			else
 				have = IsWorn(worn, a)
+				if have then
+					wornAbove = wornAbove + 1
+				elseif slotCount > 0 and wornAbove >= slotCount then
+					have = true -- schlechter als alles, was man schon traegt
+				end
 			end
 			if not have then
 				used = used + 1
