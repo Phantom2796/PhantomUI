@@ -126,7 +126,7 @@ local DEFAULTS = {
 		portrait = true,
 		portrait3d = false,
 		level = true,
-		class = true,
+		class = false,
 		percent = true,
 		short = false,
 		colorPlayer = "class",
@@ -200,7 +200,7 @@ local DEFAULTS = {
 	},
 }
 
-local DB_VERSION = 15
+local DB_VERSION = 16
 
 local function Merge(target, source)
 	for key, value in pairs(source) do
@@ -908,6 +908,10 @@ boot:SetScript("OnEvent", function()
 		if (db.version or 1) < 9 and db.stats then
 			-- Laufwerte: ganz durchsichtig
 			db.stats.bgAlpha = 0
+		end
+		if (db.version or 1) < 16 and db.unit then
+			-- Klassensymbol / Gegnerart-Kasten standardmaessig weg
+			db.unit.class = false
 		end
 		if (db.version or 1) < 15 and db.power then
 			-- Wutleiste wieder an (zeigt sich nur beim Krieger)

@@ -1,4 +1,4 @@
-PhantomUI 0.9.46 - UI for Azeroth Survivors
+PhantomUI 0.9.47 - UI for Azeroth Survivors
 ==========================================
 
 Install
