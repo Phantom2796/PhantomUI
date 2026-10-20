@@ -347,7 +347,12 @@ end
 
 local function comma(n)
 	n = math.floor((n or 0) + 0.5)
-	if n >= 1000000 then
+	-- ab 1000 Millionen auf Milliarden/Billionen umschalten (sonst zu breit)
+	if n >= 1000000000000 then
+		return string.format("%.2ft", n / 1000000000000)
+	elseif n >= 1000000000 then
+		return string.format("%.2fb", n / 1000000000)
+	elseif n >= 1000000 then
 		return string.format("%.2fm", n / 1000000)
 	elseif n >= 10000 then
 		return string.format("%.1fk", n / 1000)

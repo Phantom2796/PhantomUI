@@ -409,7 +409,9 @@ local function Update(f)
 		f.hp:SetText(P.T("Tot"))
 		f.pct:SetText("0%")
 	else
-		if db.short then
+		-- Ab einer Million immer kuerzen: im Endlos-Modus passen die vollen
+		-- Zahlen sonst nicht mehr ins Fenster
+		if db.short or (max or 0) >= 1000000 then
 			f.hp:SetText(P.Short(cur) .. " / " .. P.Short(max))
 		else
 			f.hp:SetText(cur .. " / " .. max)

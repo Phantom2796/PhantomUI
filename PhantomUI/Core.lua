@@ -301,7 +301,12 @@ function P.Short(value)
 	if not value then
 		return "0"
 	end
-	if value >= 1000000 then
+	-- Endlos-Modus: Werte wachsen in Milliarden und Billionen
+	if value >= 1000000000000 then
+		return string.format("%.1fT", value / 1000000000000)
+	elseif value >= 1000000000 then
+		return string.format("%.1fB", value / 1000000000)
+	elseif value >= 1000000 then
 		return string.format("%.1fM", value / 1000000)
 	elseif value >= 10000 then
 		return string.format("%.1fK", value / 1000)
