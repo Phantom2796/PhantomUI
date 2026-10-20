@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.53
+- Plan: legendary necklaces of your class under *Neck* – one per ability, orange, with the ability's icon and the game's own text ("Legendary amulet · remakes …").
+
 ## 0.9.52
 - Plan: necklace, ring and trinket tooltips rebuilt from the game data – every effect of an item is listed (several necklaces had only one or a wrong effect), in the game's own wording and all languages.
 - Plan tooltips look like item tooltips: name in its quality colour, slot in white, "Equip:" effects in green.

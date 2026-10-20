@@ -50,11 +50,43 @@ local function PlayerClass()
 end
 
 -- Auswahl je Reiter: Faehigkeiten der Klasse oder Gegenstaende eines Platzes
+-- Legendaere Halsketten: das Spiel hat eine pro Faehigkeit ("gestaltet X
+-- neu"), jede Klasse also ihre eigenen. Name und Werte der einzelnen Ketten
+-- stehen nicht lesbar in den Spieldaten, darum hier je Faehigkeit der Klasse
+-- ein Eintrag mit deren Symbol und dem Text des Spiels.
+local legendaryCache = {}
+local function NeckWithLegendaries(class, items)
+	if legendaryCache[class] then
+		return legendaryCache[class]
+	end
+	local list = {}
+	for i = 1, table.getn(items) do
+		table.insert(list, items[i])
+	end
+	local spells = PhantomUI_PlanData and PhantomUI_PlanData[class] or {}
+	local tmpl = PhantomUI_LegendaryName or {}
+	for i = 1, table.getn(spells) do
+		local sp = spells[i]
+		local names = {}
+		for lang, spell in pairs(sp.names or {}) do
+			local t = tmpl[lang] or tmpl.enUS or "Legendary amulet · remakes {spell}"
+			names[lang] = (string.gsub(t, "{spell}", spell))
+		end
+		table.insert(list, { id = "legendary_" .. sp.id, icon = sp.icon, names = names, q = 5, legendary = true })
+	end
+	legendaryCache[class] = list
+	return list
+end
+
 local function Choices(class, cat)
 	if cat == "ABILITY" then
 		return PhantomUI_PlanData and PhantomUI_PlanData[class] or {}
 	end
-	return PhantomUI_PlanItems and PhantomUI_PlanItems[cat] or {}
+	local items = PhantomUI_PlanItems and PhantomUI_PlanItems[cat] or {}
+	if cat == "NECK" then
+		return NeckWithLegendaries(class, items)
+	end
+	return items
 end
 
 local function Ability(class, id, cat)
