@@ -534,9 +534,13 @@ function RefreshWindow()
 				have = owned[plan[i]] and true or false
 			else
 				have = IsWorn(worn, a)
-				if have then
+				-- traegt man eine legendaere Kette, ist jede normale schlechter
+				if not have and worn.legendary and a and not a.legendary then
+					have = true
+				elseif have then
 					wornAbove = wornAbove + 1
-				elseif slotCount > 0 and wornAbove >= slotCount then
+				elseif slotCount > 0 and wornAbove >= slotCount and not (a and a.legendary) then
+					-- (legendaere Ketten sind immer besser als normale und bleiben)
 					have = true -- schlechter als alles, was man schon traegt
 				end
 			end

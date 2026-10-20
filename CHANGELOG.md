@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.56
+- Plan: legendary necklaces always rank above normal ones, whatever their position in the plan; wearing a legendary hides all normal necklaces.
+
 ## 0.9.55
 - Fixed: a normal necklace that dropped as legendary (orange) no longer counts as the legendary necklace in the plan.
 
