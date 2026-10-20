@@ -31,7 +31,7 @@ local DEFAULTS = {
 	merge = true,       -- gleiche Treffer kurz hintereinander zu einer Zahl zusammenfassen
 	duration = 0.9,     -- Sekunden sichtbar
 	rise = 32,          -- so weit steigen sie nach oben
-	track = true,       -- Positionen auch mit ausgeblendeten Namensplaketten
+	track = false,      -- [entfernt] Verfolgung ohne sichtbare Plaketten gibt es nicht mehr
 	font = "friz",
 	offsetY = 6,        -- Abstand ueber der Plakette
 	opacity = 0.6,      -- Sichtbarkeit 0 bis 1
@@ -109,6 +109,7 @@ local function LoadSettings()
 		end
 	end
 	db = CompactSCTDB
+	db.track = false -- Verfolgung entfernt
 end
 
 ------------------------------------------------------------------------
@@ -715,7 +716,7 @@ local function Mask(plate, data, masked, now)
 end
 
 local function WantBacking()
-	return db and db.enabled and db.track and not userPlates
+	return false -- Verfolgung entfernt
 end
 
 local function ApplyBacking()
@@ -1417,7 +1418,7 @@ local function Status()
 		.. ", max " .. db.maxTexts
 		.. L(", Dauer ", ", duration ") .. db.duration .. "s"
 		.. L(", Sichtbarkeit ", ", opacity ") .. db.opacity
-		.. L(", Verfolgung ", ", tracking ") .. OnOff(db.track))
+)
 end
 
 local function Help()
@@ -1440,7 +1441,6 @@ local function Help()
 		L("/csct alpha 0.1-1  - Sichtbarkeit (z. B. 0.8)", "/csct alpha 0.1-1  - opacity (e.g. 0.8)"),
 		L("/csct spread 0.5-4  - wie weit die Zahlen auseinander liegen", "/csct spread 0.5-4  - how far apart the numbers are"),
 		L("/csct merge  - gleiche Treffer zusammenfassen an/aus", "/csct merge  - merge identical hits on/off"),
-		L("/csct track  - Positionen auch bei ausgeblendeten Plaketten", "/csct track  - positions even with hidden nameplates"),
 		L("/csct missing  - Faehigkeiten ohne Symbol auflisten", "/csct missing  - list abilities without an icon"),
 		"/csct status | reset",
 	}
@@ -1586,7 +1586,7 @@ SlashCmdList["COMPACTSCT"] = function(msg)
 		local n = Number(rest, 0, 120)
 		if n then db.rise = n end
 		Print(L("Steigen ", "Rise ") .. db.rise .. " px")
-	elseif cmd == "track" then
+	elseif cmd == "track_removed" then
 		db.track = not db.track
 		ApplyBacking()
 		if not db.track then

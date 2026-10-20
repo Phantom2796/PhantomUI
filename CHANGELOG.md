@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.58
+- Damage numbers: the "show above mobs" tracking option is gone; numbers appear above visible nameplates only.
+
 ## 0.9.57
 - Plan: a worn legendary necklace is now recognised by its name (all 12, every language), not only by its colour. `/pui gear` shows what the game reports for neck, rings and trinkets.
 

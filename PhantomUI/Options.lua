@@ -509,7 +509,6 @@ local function PageNumbers(page)
 	Check(page, half, y, "Große Zahlen kürzen", SCT("short"))
 	y = y - ROW
 	Check(page, 16, y, "Treffer zusammenfassen", SCT("merge"))
-	Check(page, half, y, "Über den Mobs anzeigen", SCT("track", function() API.TrackChanged() end))
 	y = y - ROW - 6
 	y = Slider(page, y, "Schriftgröße", SCT("size", function() API.FontChanged() end), 8, 30, 1, "%d")
 	y = Cycle(page, y, "Schriftart", SCT("font", function() API.FontChanged() end),
