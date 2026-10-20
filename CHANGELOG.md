@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.51
+- Totems & pets: tick your talents under `/pui` → General → *Totems & pets: talents* (Call of the Elements, Totemic Wrath, Feral Spirit, wolf/raptor, imp/felguard, treants, water elemental) – the game does not tell addons what you have skilled.
+
 ## 0.9.50
 **New**
 - **Totems & pets** above the player frame – just the icon with the number inside.

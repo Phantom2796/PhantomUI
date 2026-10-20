@@ -444,6 +444,31 @@ local function PageGeneral(page)
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })
 	y = y - ROW
 	y = Note(page, y, "Ein/Aus wirkt nach /reload.")
+	-- Talente fuer Totems & Begleiter: das Spiel verraet Addons nicht, was
+	-- geskillt ist, daher hier von Hand (nur die eigene Klasse)
+	local _, myClass = UnitClass("player")
+	local talents = P.TOTEM_TALENTS and P.TOTEM_TALENTS[myClass]
+	if talents then
+		y = y - 6
+		y = Heading(page, y, "Totems & Begleiter: Talente")
+		for i = 1, table.getn(talents) do
+			local key = talents[i].key
+			Check(page, 16 + math.mod(i - 1, 2) * (INNER / 2 + 6), y, talents[i].name, {
+				get = function()
+					local t = P.DB().totems.talents
+					return t and t[key] and true or false
+				end,
+				set = function(on)
+					P.DB().totems.talents = P.DB().totems.talents or {}
+					P.DB().totems.talents[key] = on or nil
+				end,
+			})
+			if math.mod(i, 2) == 0 or i == table.getn(talents) then
+				y = y - ROW
+			end
+		end
+		y = Note(page, y, "Haken setzen, wenn du das Talent geskillt hast.")
+	end
 	return y
 end
 

@@ -29,6 +29,33 @@ local PETS = {
 }
 local myPets = {}
 
+-- Talent geskillt? Von Hand in den Einstellungen (Allgemein -> Totems &
+-- Begleiter) oder, falls das Spiel es mitschickt, aus der Faehigkeitenliste.
+local function Has(spells, key)
+	local t = P.DB().totems.talents
+	return (t and t[key]) or spells[key] ~= nil
+end
+
+-- Talente je Klasse fuer die Einstellungen: Schluessel und Name (deutsch,
+-- wird uebersetzt)
+P.TOTEM_TALENTS = {
+	SHAMAN = {
+		{ key = "twin_totems", name = "Ruf der Elemente (jedes Totem doppelt)" },
+		{ key = "totemic_call", name = "Totemischer Zorn (Totem alle 14 Sek.)" },
+		{ key = "stormstrike", name = "Wildgeist (2 Geisterwölfe)" },
+	},
+	HUNTER = {
+		{ key = "tame_beast", name = "Wolf (Meilenstein)" },
+		{ key = "bestial_wrath", name = "Raptor (Schlussstein)" },
+	},
+	WARLOCK = {
+		{ key = "summon_imp", name = "Wichtel beschwören" },
+		{ key = "felguard", name = "Teufelswache beschwören" },
+	},
+	DRUID = { { key = "force_of_nature", name = "Naturgewalt (2 Treants)" } },
+	MAGE = { { key = "water_elemental", name = "Wasserelementar beschwören" } },
+}
+
 local frame
 local slots = {}
 local state = {}   -- key -> { up = { Ablaufzeiten }, lastCd, duration, scanned }
@@ -186,7 +213,7 @@ end
 local function Update()
 	local now = GetTime()
 	local spells = Spells()
-	local twin = spells.twin_totems and 2 or 1
+	local twin = Has(spells, "twin_totems") and 2 or 1
 	local shown = 0
 	for i = 1, table.getn(TOTEMS) do
 		local def = TOTEMS[i]
@@ -213,7 +240,7 @@ local function Update()
 			end
 			st.lastCd = cd
 			-- Totemischer Zorn: alle 14 Sek. ein Totem der Verbrennung von selbst
-			if def.key == "searing_totem" and spells.totemic_call and (AZS_GetPhase and AZS_GetPhase() == "playing") then
+			if def.key == "searing_totem" and Has(spells, "totemic_call") and (AZS_GetPhase and AZS_GetPhase() == "playing") then
 				if st.nextAuto == 0 then
 					st.nextAuto = now + AUTO_EVERY
 				elseif now >= st.nextAuto then
@@ -257,7 +284,7 @@ local function Update()
 	for j = 1, table.getn(myPets) do
 		local def = myPets[j]
 		local s = Slot(table.getn(TOTEMS) + j)
-		local has = spells[def.key] ~= nil
+		local has = Has(spells, def.key)
 		if has or P.unlocked then
 			if s.iconPath ~= def.icon then
 				s.iconPath = def.icon
@@ -267,7 +294,7 @@ local function Update()
 				s.shownN = def.n
 				s.count:SetText(def.n)
 			end
-			s.name = has and (spells[def.key].spell or def.key) or def.key
+			s.name = spells[def.key] and spells[def.key].spell or def.key
 			s.duration, s.soon = nil, nil
 			shown = shown + 1
 			Place(s, shown)

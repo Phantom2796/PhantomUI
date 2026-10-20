@@ -194,6 +194,17 @@ P.LOC.enUS = {
 	["Totems"] = "Totems",
 	["Dauer"] = "Duration",
 	["Totems & Begleiter"] = "Totems & pets",
+	["Totems & Begleiter: Talente"] = "Totems & pets: talents",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Call of the Elements (every totem twice)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Totemic Wrath (totem every 14 sec)",
+	["Wildgeist (2 Geisterwölfe)"] = "Feral Spirit (2 spirit wolves)",
+	["Wolf (Meilenstein)"] = "Wolf (milestone)",
+	["Raptor (Schlussstein)"] = "Raptor (capstone)",
+	["Wichtel beschwören"] = "Summon Imp",
+	["Teufelswache beschwören"] = "Summon Felguard",
+	["Naturgewalt (2 Treants)"] = "Force of Nature (2 treants)",
+	["Wasserelementar beschwören"] = "Summon Water Elemental",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Tick the ones you have skilled.",
 }
 
 P.LOC.frFR = {
@@ -383,6 +394,17 @@ P.LOC.frFR = {
 	["Totems"] = "Totems",
 	["Dauer"] = "Durée",
 	["Totems & Begleiter"] = "Totems et familiers",
+	["Totems & Begleiter: Talente"] = "Totems et familiers : talents",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Appel des éléments (chaque totem en double)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Courroux totémique (totem toutes les 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Esprit farouche (2 loups spectraux)",
+	["Wolf (Meilenstein)"] = "Loup (palier)",
+	["Raptor (Schlussstein)"] = "Raptor (apogée)",
+	["Wichtel beschwören"] = "Invocation d'un diablotin",
+	["Teufelswache beschwören"] = "Invocation d'un gangregarde",
+	["Naturgewalt (2 Treants)"] = "Force de la nature (2 tréants)",
+	["Wasserelementar beschwören"] = "Invocation d'un élémentaire d'eau",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Cochez ceux que vous avez appris.",
 }
 
 P.LOC.esES = {
@@ -572,6 +594,17 @@ P.LOC.esES = {
 	["Totems"] = "Tótems",
 	["Dauer"] = "Duración",
 	["Totems & Begleiter"] = "Tótems y mascotas",
+	["Totems & Begleiter: Talente"] = "Tótems y mascotas: talentos",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Llamada de los elementos (cada tótem doble)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Cólera totémica (tótem cada 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Espíritu feral (2 lobos espirituales)",
+	["Wolf (Meilenstein)"] = "Lobo (hito)",
+	["Raptor (Schlussstein)"] = "Raptor (cúspide)",
+	["Wichtel beschwören"] = "Invocar diablillo",
+	["Teufelswache beschwören"] = "Invocar guarda vil",
+	["Naturgewalt (2 Treants)"] = "Fuerza de la naturaleza (2 ánimas)",
+	["Wasserelementar beschwören"] = "Invocar elemental de agua",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Marca los que tengas aprendidos.",
 }
 
 P.LOC.ptBR = {
@@ -761,6 +794,17 @@ P.LOC.ptBR = {
 	["Totems"] = "Totens",
 	["Dauer"] = "Duração",
 	["Totems & Begleiter"] = "Totens e mascotes",
+	["Totems & Begleiter: Talente"] = "Totens e mascotes: talentos",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Chamado dos Elementos (cada totem em dobro)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Ira Totêmica (totem a cada 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Espírito Feral (2 lobos espirituais)",
+	["Wolf (Meilenstein)"] = "Lobo (marco)",
+	["Raptor (Schlussstein)"] = "Raptor (ápice)",
+	["Wichtel beschwören"] = "Evocar Diabrete",
+	["Teufelswache beschwören"] = "Evocar Guarda Vil",
+	["Naturgewalt (2 Treants)"] = "Força da Natureza (2 árvores)",
+	["Wasserelementar beschwören"] = "Evocar Elemental da Água",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Marque os que você aprendeu.",
 }
 
 P.LOC.plPL = {
@@ -950,6 +994,17 @@ P.LOC.plPL = {
 	["Totems"] = "Totemy",
 	["Dauer"] = "Czas trwania",
 	["Totems & Begleiter"] = "Totemy i chowańce",
+	["Totems & Begleiter: Talente"] = "Totemy i chowańce: talenty",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Zew Żywiołów (każdy totem podwójnie)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Totemiczny Gniew (totem co 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Dziki Duch (2 duchowe wilki)",
+	["Wolf (Meilenstein)"] = "Wilk (kamień milowy)",
+	["Raptor (Schlussstein)"] = "Raptor (zwieńczenie)",
+	["Wichtel beschwören"] = "Przyzwanie Chochlika",
+	["Teufelswache beschwören"] = "Przyzwanie Strażnika Zguby",
+	["Naturgewalt (2 Treants)"] = "Siła Natury (2 drzewce)",
+	["Wasserelementar beschwören"] = "Przyzwanie Żywiołaka Wody",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaznacz te, które masz wykupione.",
 }
 
 P.LOC.csCZ = {
@@ -1139,6 +1194,17 @@ P.LOC.csCZ = {
 	["Totems"] = "Totemy",
 	["Dauer"] = "Trvání",
 	["Totems & Begleiter"] = "Totemy a mazlíčci",
+	["Totems & Begleiter: Talente"] = "Totemy a mazlíčci: talenty",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Volání živlů (každý totem dvakrát)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Totemický hněv (totem každých 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Divoký duch (2 duchovní vlci)",
+	["Wolf (Meilenstein)"] = "Vlk (milník)",
+	["Raptor (Schlussstein)"] = "Raptor (vrchol)",
+	["Wichtel beschwören"] = "Vyvolat skřeta",
+	["Teufelswache beschwören"] = "Vyvolat strážce zkázy",
+	["Naturgewalt (2 Treants)"] = "Síla přírody (2 enti)",
+	["Wasserelementar beschwören"] = "Vyvolat vodního elementála",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaškrtni ty, které máš naučené.",
 }
 
 P.LOC.roRO = {
@@ -1328,6 +1394,17 @@ P.LOC.roRO = {
 	["Totems"] = "Totemuri",
 	["Dauer"] = "Durată",
 	["Totems & Begleiter"] = "Totemuri și companioni",
+	["Totems & Begleiter: Talente"] = "Totemuri și companioni: talente",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Chemarea elementelor (fiecare totem dublu)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Furia totemică (totem la 14 s)",
+	["Wildgeist (2 Geisterwölfe)"] = "Spirit feral (2 lupi spirituali)",
+	["Wolf (Meilenstein)"] = "Lup (reper)",
+	["Raptor (Schlussstein)"] = "Raptor (vârf)",
+	["Wichtel beschwören"] = "Invocă drac",
+	["Teufelswache beschwören"] = "Invocă paznic infernal",
+	["Naturgewalt (2 Treants)"] = "Forța naturii (2 enți)",
+	["Wasserelementar beschwören"] = "Invocă elemental de apă",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Bifează-le pe cele învățate.",
 }
 
 P.LOC.trTR = {
@@ -1517,6 +1594,17 @@ P.LOC.trTR = {
 	["Totems"] = "Totemler",
 	["Dauer"] = "Süre",
 	["Totems & Begleiter"] = "Totemler ve evcil hayvanlar",
+	["Totems & Begleiter: Talente"] = "Totemler ve evcil hayvanlar: yetenekler",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Call of the Elements (her totem iki kez)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Totemic Wrath (14 sn'de bir totem)",
+	["Wildgeist (2 Geisterwölfe)"] = "Feral Spirit (2 ruh kurdu)",
+	["Wolf (Meilenstein)"] = "Kurt (dönüm noktası)",
+	["Raptor (Schlussstein)"] = "Raptor (zirve)",
+	["Wichtel beschwören"] = "Summon Imp",
+	["Teufelswache beschwören"] = "Summon Felguard",
+	["Naturgewalt (2 Treants)"] = "Force of Nature (2 ağaç)",
+	["Wasserelementar beschwören"] = "Summon Water Elemental",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Öğrendiklerini işaretle.",
 }
 
 P.LOC.ruRU = {
@@ -1706,6 +1794,17 @@ P.LOC.ruRU = {
 	["Totems"] = "Тотемы",
 	["Dauer"] = "Длительность",
 	["Totems & Begleiter"] = "Тотемы и питомцы",
+	["Totems & Begleiter: Talente"] = "Тотемы и питомцы: таланты",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Зов стихий (каждый тотем дважды)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Гнев тотемов (тотем каждые 14 с)",
+	["Wildgeist (2 Geisterwölfe)"] = "Дух дикого зверя (2 волка)",
+	["Wolf (Meilenstein)"] = "Волк (веха)",
+	["Raptor (Schlussstein)"] = "Ящер (вершина)",
+	["Wichtel beschwören"] = "Призыв беса",
+	["Teufelswache beschwören"] = "Призыв стража Скверны",
+	["Naturgewalt (2 Treants)"] = "Сила природы (2 древня)",
+	["Wasserelementar beschwören"] = "Призыв элементаля воды",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Отметьте изученные таланты.",
 }
 
 P.LOC.ukUA = {
@@ -1895,6 +1994,17 @@ P.LOC.ukUA = {
 	["Totems"] = "Тотеми",
 	["Dauer"] = "Тривалість",
 	["Totems & Begleiter"] = "Тотеми й вихованці",
+	["Totems & Begleiter: Talente"] = "Тотеми й вихованці: таланти",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "Поклик стихій (кожен тотем двічі)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "Гнів тотемів (тотем кожні 14 с)",
+	["Wildgeist (2 Geisterwölfe)"] = "Дух дикого звіра (2 вовки)",
+	["Wolf (Meilenstein)"] = "Вовк (віха)",
+	["Raptor (Schlussstein)"] = "Ящір (вершина)",
+	["Wichtel beschwören"] = "Виклик біса",
+	["Teufelswache beschwören"] = "Виклик вартового Скверни",
+	["Naturgewalt (2 Treants)"] = "Сила природи (2 древні)",
+	["Wasserelementar beschwören"] = "Виклик елементаля води",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "Позначте вивчені таланти.",
 }
 
 P.LOC.zhCN = {
@@ -2084,6 +2194,17 @@ P.LOC.zhCN = {
 	["Totems"] = "图腾",
 	["Dauer"] = "持续时间",
 	["Totems & Begleiter"] = "图腾和宠物",
+	["Totems & Begleiter: Talente"] = "图腾和宠物：天赋",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "元素召唤（每个图腾双倍）",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "图腾之怒（每14秒一个图腾）",
+	["Wildgeist (2 Geisterwölfe)"] = "野性狼魂（2只幽灵狼）",
+	["Wolf (Meilenstein)"] = "狼（里程碑）",
+	["Raptor (Schlussstein)"] = "迅猛龙（终极）",
+	["Wichtel beschwören"] = "召唤小鬼",
+	["Teufelswache beschwören"] = "召唤恶魔卫士",
+	["Naturgewalt (2 Treants)"] = "自然之力（2个树人）",
+	["Wasserelementar beschwören"] = "召唤水元素",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "勾选已学会的天赋。",
 }
 
 P.LOC.jaJP = {
@@ -2273,6 +2394,17 @@ P.LOC.jaJP = {
 	["Totems"] = "トーテム",
 	["Dauer"] = "持続時間",
 	["Totems & Begleiter"] = "トーテムとペット",
+	["Totems & Begleiter: Talente"] = "トーテムとペット：タレント",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "エレメントの呼び声（トーテム2倍）",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "トーテムの怒り（14秒ごと）",
+	["Wildgeist (2 Geisterwölfe)"] = "野生の霊（狼の霊2体）",
+	["Wolf (Meilenstein)"] = "狼（マイルストーン）",
+	["Raptor (Schlussstein)"] = "ラプター（キャップストーン）",
+	["Wichtel beschwören"] = "インプ召喚",
+	["Teufelswache beschwören"] = "フェルガード召喚",
+	["Naturgewalt (2 Treants)"] = "自然の力（トレント2体）",
+	["Wasserelementar beschwören"] = "水のエレメンタル召喚",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "習得したものにチェック。",
 }
 
 P.LOC.koKR = {
@@ -2462,6 +2594,17 @@ P.LOC.koKR = {
 	["Totems"] = "토템",
 	["Dauer"] = "지속 시간",
 	["Totems & Begleiter"] = "토템 및 소환수",
+	["Totems & Begleiter: Talente"] = "토템 및 소환수: 특성",
+	["Ruf der Elemente (jedes Totem doppelt)"] = "원소의 부름 (토템 2배)",
+	["Totemischer Zorn (Totem alle 14 Sek.)"] = "토템의 격노 (14초마다 토템)",
+	["Wildgeist (2 Geisterwölfe)"] = "야수 정령 (정령 늑대 2)",
+	["Wolf (Meilenstein)"] = "늑대 (이정표)",
+	["Raptor (Schlussstein)"] = "랩터 (최종)",
+	["Wichtel beschwören"] = "임프 소환",
+	["Teufelswache beschwören"] = "지옥수호병 소환",
+	["Naturgewalt (2 Treants)"] = "자연의 군대 (나무정령 2)",
+	["Wasserelementar beschwören"] = "물의 정령 소환",
+	["Haken setzen, wenn du das Talent geskillt hast."] = "배운 특성에 체크하세요.",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

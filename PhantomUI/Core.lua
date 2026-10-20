@@ -178,7 +178,7 @@ local DEFAULTS = {
 		enabled = true,
 		size = 30,
 	},
-	totems = { enabled = true, size = 32 },
+	totems = { enabled = true, size = 32, talents = {} },
 	minimap = {
 		enabled = true,
 		size = 180,
