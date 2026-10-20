@@ -178,6 +178,7 @@ local DEFAULTS = {
 		enabled = true,
 		size = 30,
 	},
+	totems = { enabled = true },
 	minimap = {
 		enabled = true,
 		size = 180,
@@ -975,6 +976,12 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 			ReloadUI()
 		else
 			P.Print(P.L("Sprache: /pui lang auto | en | de | fr | es | pt | pl | cs | ro | tr | ru | uk | zh | ja | ko", "Language: /pui lang auto | en | de | fr | es | pt | pl | cs | ro | tr | ru | uk | zh | ja | ko"))
+		end
+		return
+	end
+	if msg == "totems" or msg == "totem" then
+		if P.TotemDebug then
+			P.TotemDebug()
 		end
 		return
 	end

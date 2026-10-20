@@ -191,6 +191,9 @@ P.LOC.enUS = {
 	["Buffs im PhantomUI-Stil"] = "Buffs in PhantomUI style",
 	["Ausblenden nach"] = "Fade after",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "Fade 0 = never. The mouse wheel brings old lines back.",
+	["Totems"] = "Totems",
+	["Dauer"] = "Duration",
+	["Totem-Zähler (Schamane)"] = "Totem counter (shaman)",
 }
 
 P.LOC.frFR = {
@@ -377,6 +380,9 @@ P.LOC.frFR = {
 	["Buffs im PhantomUI-Stil"] = "Améliorations style PhantomUI",
 	["Ausblenden nach"] = "Masquer après",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = jamais. La molette rappelle les anciennes lignes.",
+	["Totems"] = "Totems",
+	["Dauer"] = "Durée",
+	["Totem-Zähler (Schamane)"] = "Compteur de totems (chaman)",
 }
 
 P.LOC.esES = {
@@ -563,6 +569,9 @@ P.LOC.esES = {
 	["Buffs im PhantomUI-Stil"] = "Beneficios estilo PhantomUI",
 	["Ausblenden nach"] = "Ocultar tras",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nunca. La rueda recupera las líneas antiguas.",
+	["Totems"] = "Tótems",
+	["Dauer"] = "Duración",
+	["Totem-Zähler (Schamane)"] = "Contador de tótems (chamán)",
 }
 
 P.LOC.ptBR = {
@@ -749,6 +758,9 @@ P.LOC.ptBR = {
 	["Buffs im PhantomUI-Stil"] = "Bônus estilo PhantomUI",
 	["Ausblenden nach"] = "Ocultar após",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nunca. A roda traz as linhas antigas de volta.",
+	["Totems"] = "Totens",
+	["Dauer"] = "Duração",
+	["Totem-Zähler (Schamane)"] = "Contador de totens (xamã)",
 }
 
 P.LOC.plPL = {
@@ -935,6 +947,9 @@ P.LOC.plPL = {
 	["Buffs im PhantomUI-Stil"] = "Wzmocnienia w stylu PhantomUI",
 	["Ausblenden nach"] = "Zanikaj po",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nigdy. Kółko myszy przywraca stare wiersze.",
+	["Totems"] = "Totemy",
+	["Dauer"] = "Czas trwania",
+	["Totem-Zähler (Schamane)"] = "Licznik totemów (szaman)",
 }
 
 P.LOC.csCZ = {
@@ -1121,6 +1136,9 @@ P.LOC.csCZ = {
 	["Buffs im PhantomUI-Stil"] = "Buffy ve stylu PhantomUI",
 	["Ausblenden nach"] = "Skrýt po",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = nikdy. Kolečko vrátí staré řádky.",
+	["Totems"] = "Totemy",
+	["Dauer"] = "Trvání",
+	["Totem-Zähler (Schamane)"] = "Počítadlo totemů (šaman)",
 }
 
 P.LOC.roRO = {
@@ -1307,6 +1325,9 @@ P.LOC.roRO = {
 	["Buffs im PhantomUI-Stil"] = "Buff-uri în stil PhantomUI",
 	["Ausblenden nach"] = "Ascunde după",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = niciodată. Rotița readuce rândurile vechi.",
+	["Totems"] = "Totemuri",
+	["Dauer"] = "Durată",
+	["Totem-Zähler (Schamane)"] = "Contor totemuri (șaman)",
 }
 
 P.LOC.trTR = {
@@ -1493,6 +1514,9 @@ P.LOC.trTR = {
 	["Buffs im PhantomUI-Stil"] = "PhantomUI tarzı güçlendirmeler",
 	["Ausblenden nach"] = "Şu süreden sonra gizle",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = asla. Fare tekerleği eski satırları getirir.",
+	["Totems"] = "Totemler",
+	["Dauer"] = "Süre",
+	["Totem-Zähler (Schamane)"] = "Totem sayacı (şaman)",
 }
 
 P.LOC.ruRU = {
@@ -1679,6 +1703,9 @@ P.LOC.ruRU = {
 	["Buffs im PhantomUI-Stil"] = "Баффы в стиле PhantomUI",
 	["Ausblenden nach"] = "Скрывать через",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = никогда. Колесо мыши возвращает старые строки.",
+	["Totems"] = "Тотемы",
+	["Dauer"] = "Длительность",
+	["Totem-Zähler (Schamane)"] = "Счётчик тотемов (шаман)",
 }
 
 P.LOC.ukUA = {
@@ -1865,6 +1892,9 @@ P.LOC.ukUA = {
 	["Buffs im PhantomUI-Stil"] = "Бафи в стилі PhantomUI",
 	["Ausblenden nach"] = "Ховати через",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = ніколи. Коліщатко повертає старі рядки.",
+	["Totems"] = "Тотеми",
+	["Dauer"] = "Тривалість",
+	["Totem-Zähler (Schamane)"] = "Лічильник тотемів (шаман)",
 }
 
 P.LOC.zhCN = {
@@ -2051,6 +2081,9 @@ P.LOC.zhCN = {
 	["Buffs im PhantomUI-Stil"] = "PhantomUI 风格增益",
 	["Ausblenden nach"] = "淡出时间",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = 永不。滚轮可找回旧消息。",
+	["Totems"] = "图腾",
+	["Dauer"] = "持续时间",
+	["Totem-Zähler (Schamane)"] = "图腾计数（萨满）",
 }
 
 P.LOC.jaJP = {
@@ -2237,6 +2270,9 @@ P.LOC.jaJP = {
 	["Buffs im PhantomUI-Stil"] = "PhantomUI 風バフ",
 	["Ausblenden nach"] = "フェードまで",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = しない。ホイールで古い行を表示。",
+	["Totems"] = "トーテム",
+	["Dauer"] = "持続時間",
+	["Totem-Zähler (Schamane)"] = "トーテム数（シャーマン）",
 }
 
 P.LOC.koKR = {
@@ -2423,6 +2459,9 @@ P.LOC.koKR = {
 	["Buffs im PhantomUI-Stil"] = "PhantomUI 스타일 강화 효과",
 	["Ausblenden nach"] = "사라지는 시간",
 	["Ausblenden 0 = nie. Mausrad holt alte Zeilen zurück."] = "0 = 안 함. 휠로 이전 줄을 다시 봅니다.",
+	["Totems"] = "토템",
+	["Dauer"] = "지속 시간",
+	["Totem-Zähler (Schamane)"] = "토템 수 (주술사)",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache
