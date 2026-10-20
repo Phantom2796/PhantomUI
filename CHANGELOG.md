@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.60
+- Damage meter: with its own scale it now moves all the way to the screen edge (the keep-on-screen check used the wrong units).
+
 ## 0.9.59
 - Damage meter without borders: no outer frame, no lines between the bars.
 

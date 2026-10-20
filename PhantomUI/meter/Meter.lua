@@ -1749,6 +1749,17 @@ local function clampIntoView(target, keepX, keepY)
 		sw = UIParent:GetWidth() or 0
 		sh = UIParent:GetHeight() or 0
 	end
+	-- [Nobby] Bildschirmgroesse in die Masseinheit des Fensters umrechnen
+	-- (bei eigener Skalierung des Meters stimmten die Grenzen sonst nicht und
+	-- das Fenster kam nicht bis an den Rand)
+	local ratio = 1
+	if target.GetEffectiveScale and UIParent and UIParent.GetEffectiveScale then
+		local ts, us = target:GetEffectiveScale(), UIParent:GetEffectiveScale()
+		if ts and us and ts > 0 then
+			ratio = us / ts
+		end
+	end
+	sw, sh = sw * ratio, sh * ratio
 	if sw < 100 or sh < 100 then
 		return false
 	end
