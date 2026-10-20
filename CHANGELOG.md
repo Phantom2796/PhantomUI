@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.55
+- Fixed: a normal necklace that dropped as legendary (orange) no longer counts as the legendary necklace in the plan.
+
 ## 0.9.54
 - Plan: the order is your ranking. Once you wear as many planned pieces as the slot holds (neck 1, rings/trinkets 2), every worse pick below them disappears; better ones stay. A worn legendary necklace counts as your planned legendary.
 

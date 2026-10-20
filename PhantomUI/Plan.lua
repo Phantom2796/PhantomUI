@@ -188,6 +188,21 @@ local function BaseName(name)
 	local base = string.gsub(name, "%s+[IVXL]+%+*$", "")
 	return base
 end
+-- Ist das eine der normalen Halsketten (Name in irgendeiner Sprache)?
+local knownNecks
+local function KnownNeck(name)
+	if not knownNecks then
+		knownNecks = {}
+		local list = PhantomUI_PlanItems and PhantomUI_PlanItems.NECK or {}
+		for i = 1, table.getn(list) do
+			for lang, n in pairs(list[i].names or {}) do
+				knownNecks[n] = true
+			end
+		end
+	end
+	return knownNecks[name]
+end
+
 local function Worn(cat)
 	local worn = { icons = {}, names = {} }
 	local slots = GEAR_SLOTS[cat]
@@ -206,8 +221,10 @@ local function Worn(cat)
 			if name then
 				worn.names[BaseName(name)] = true
 			end
-			-- legendaer (orange): der Name verraet nicht, welche es ist
-			if string.find(string.lower(link), "|cffff8000", 1, true) then
+			-- Legendaere Kette: orange UND keine der normalen Halsketten (auch
+			-- normale Ketten koennen als legendaere Seltenheit, also orange, fallen)
+			if cat == "NECK" and name and string.find(string.lower(link), "|cffff8000", 1, true)
+				and not KnownNeck(BaseName(name)) then
 				worn.legendary = true
 			end
 		end
