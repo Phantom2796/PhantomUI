@@ -924,10 +924,13 @@ end
 -- unten an den Anfang und schiebt die aelteren auf ihrer Bahn weiter nach
 -- aussen, so ueberlappt nichts. Links buendig nach rechts, rechts nach links,
 -- damit sich die Bahnen nicht in die Quere kommen.
+-- Jede Bahn ist ein Faecherstueck: jede Zahl bekommt darin ihre eigene
+-- Neigung (tmin bis tmax, tan des Winkels), so fuellen sich die Luecken
+-- zwischen den drei Bereichen, ohne dass es wild durcheinander geht.
 local LANES = {
-	{ x = -58, y = 26, tan = -1.19, align = "RIGHT" },  -- ca. 50 Grad nach links
-	{ x = 0, y = 34, tan = 0, align = "CENTER" },
-	{ x = 58, y = 26, tan = 1.19, align = "LEFT" },
+	{ x = -58, y = 26, tmin = -1.7, tmax = -0.55, align = "RIGHT" },  -- ca. 30 bis 60 Grad links
+	{ x = 0, y = 34, tmin = -0.32, tmax = 0.32, align = "CENTER" },   -- ca. 18 Grad je Seite
+	{ x = 58, y = 26, tmin = 0.55, tmax = 1.7, align = "LEFT" },
 }
 local LANE_MAX = 8
 local laneTexts = { {}, {}, {} }
@@ -1071,6 +1074,11 @@ local function Show(info, x, y, origin)
 		table.insert(list, 1, t)
 		t.lane = lane
 		t.curV = 0
+		-- Neigung im Faecherstueck: reihum innen, mitte, aussen, etwas gestreut
+		local L = LANES[lane]
+		L.step = math.mod((L.step or 0) + 1, 3)
+		local f = (L.step + 0.2 + math.random() * 0.6) / 3
+		t.tan = L.tmin + (L.tmax - L.tmin) * f
 		if table.getn(list) > LANE_MAX then
 			local oldest = list[table.getn(list)]
 			for k = 1, table.getn(active) do
@@ -1138,7 +1146,7 @@ local function UpdateTexts(elapsed)
 				local L = LANES[t.lane]
 				t.curV = (t.curV or 0) + ((t.targetV or 0) - (t.curV or 0)) * math.min(1, elapsed * 12)
 				local v = t.curV + (db.fanReach or 240) * 0.25 * p
-				x = t.baseX + L.x + L.tan * v
+				x = t.baseX + L.x + (t.tan or 0) * v
 				y = t.baseY + L.y + v
 			else
 				-- Am lebenden Mob mitlaufen.

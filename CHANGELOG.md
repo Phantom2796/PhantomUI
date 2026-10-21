@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.70
+- Damage number fan: the three areas are now fan slices instead of thin rays. Every number gets its own angle within its area (inner, middle, outer in turn, slightly scattered), so the gaps fill up – still stacked, so nothing overlaps.
+
 ## 0.9.69
 - Damage number fan rebuilt: three lanes above your hero – up-left, straight up, up-right. Each lane is a stack: a new number takes the bottom spot and pushes the older ones further out along the lane, so numbers no longer overlap. The left lane is right-aligned and the right lane left-aligned so the lanes stay apart. At most 8 numbers per lane; the oldest goes first.
 
