@@ -38,7 +38,7 @@
 - Adjustable background, scale and row height; per-row checkbox hides that source's floating numbers
 
 ### 💥 Floating damage numbers
-- Compact numbers with the spell icon above the enemy that was hit, red crits, merged hits with their count (`238.3k x37`)
+- Compact numbers with the spell icon in a fan above your hero (or above the enemy that was hit), red crits, merged hits with their count (`238.3k x37`)
 - Size, font, spread, opacity and a minimum size (in % of your biggest hit) so the screen stays readable
 - Built to stay smooth when the numbers hail down
 

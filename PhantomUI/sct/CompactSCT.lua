@@ -38,6 +38,8 @@ local DEFAULTS = {
 	offsetY = 6,        -- Abstand ueber der Plakette
 	opacity = 0.6,      -- Sichtbarkeit 0 bis 1
 	spread = 2.3,       -- wie weit die Zahlen auseinander liegen (1 = eng)
+	layout = "fan",     -- fan: Faecher ueber dem Helden | plates: ueber den Gegnern
+	fanReach = 240,     -- so weit fliegen die Zahlen im Faecher nach aussen
 }
 
 local SCHOOL_COLORS = {
@@ -53,7 +55,7 @@ local WHITE = { 1, 1, 1 }
 local GOLD = { 1, 0.82, 0 }
 local CRIT_GOLD = { 1, 0.62, 0.10 }
 local CRIT_RED = { 1, 0.15, 0.15 }
-local DB_VERSION = 11
+local DB_VERSION = 12
 
 local db
 
@@ -92,6 +94,7 @@ local function LoadSettings()
 		CompactSCTDB.spread = DEFAULTS.spread
 		CompactSCTDB.maxTexts = DEFAULTS.maxTexts
 		CompactSCTDB.merge = DEFAULTS.merge
+		CompactSCTDB.layout = DEFAULTS.layout
 		-- Der feste Mindestwert wird durch den prozentualen ersetzt.
 		CompactSCTDB.minAmount = 0
 		CompactSCTDB.version = DB_VERSION
@@ -945,6 +948,40 @@ local function ColorFor(info)
 	return SCHOOL_COLORS[info.school] or SCHOOL_COLORS.Physical
 end
 
+-- Faecher: drei Bereiche (links, Mitte, rechts) mit je drei Bahnen, Winkel in
+-- Grad von senkrecht nach oben. Neue Zahlen starten am Helden und fliegen auf
+-- ihrer Bahn nach aussen: je aelter, desto weiter oben.
+local FAN = {
+	{ -64, -52, -40 },
+	{ -12, 0, 12 },
+	{ 40, 52, 64 },
+}
+local FAN_START = 55
+local laneUse = {}
+local sectorTurn = 0
+
+local function FanAnchor()
+	return UIParent:GetWidth() / 2, UIParent:GetHeight() / 2 + 20
+end
+
+-- naechste Bahn: Bereiche reihum, darin die am laengsten freie Bahn
+local function FanLane(now)
+	sectorTurn = math.mod(sectorTurn, 3) + 1
+	local lanes = FAN[sectorTurn]
+	local best, bestAt
+	for i = 1, 3 do
+		local key = sectorTurn * 10 + i
+		local at = laneUse[key] or 0
+		if not best or at < bestAt then
+			best, bestAt = i, at
+		end
+	end
+	laneUse[sectorTurn * 10 + best] = now
+	local a = lanes[best] * 0.017453
+	-- etwas breiter als hoch, damit links und rechts mehr Platz haben
+	return math.sin(a) * 1.25, math.cos(a)
+end
+
 -- Summe, bei mehreren Treffern mit Anzahl dahinter: "238.3k x37"
 local function LabelText(amount, hits)
 	if hits and hits > 1 and db.mergeCount ~= false then
@@ -982,6 +1019,10 @@ local function Show(info, x, y, origin)
 
 	t.origin = origin
 	t.baseX, t.baseY = x, y
+	t.fan = db.layout == "fan"
+	if t.fan then
+		t.dirX, t.dirY = FanLane(GetTime())
+	end
 	local spread = db.spread or 1
 	t.jitterX = (math.random() - 0.5) * 60 * spread
 	t.jitterY = (math.random() - 0.5) * 24 * spread
@@ -1004,6 +1045,7 @@ end
 
 local POP_TIME = 0.12
 
+
 local function UpdateTexts(elapsed)
 	for i = table.getn(active), 1, -1 do
 		local t = active[i]
@@ -1018,15 +1060,22 @@ local function UpdateTexts(elapsed)
 		if p >= 1 then
 			Release(i)
 		else
-			-- Am lebenden Mob mitlaufen.
-			local o = t.origin
-			if o and o.live and o.x then
-				t.baseX = t.baseX + (o.x - t.baseX) * 0.35
-				t.baseY = t.baseY + (o.y - t.baseY) * 0.35
-			end
 			local eased = 1 - (1 - p) * (1 - p)
-			local x = t.baseX + t.jitterX + t.drift * eased
-			local y = t.baseY + db.offsetY + t.jitterY + db.rise * eased
+			local x, y
+			if t.fan then
+				local r = FAN_START + (db.fanReach or 240) * eased
+				x = t.baseX + t.dirX * r
+				y = t.baseY + t.dirY * r
+			else
+				-- Am lebenden Mob mitlaufen.
+				local o = t.origin
+				if o and o.live and o.x then
+					t.baseX = t.baseX + (o.x - t.baseX) * 0.35
+					t.baseY = t.baseY + (o.y - t.baseY) * 0.35
+				end
+				x = t.baseX + t.jitterX + t.drift * eased
+				y = t.baseY + db.offsetY + t.jitterY + db.rise * eased
+			end
 			-- Nur die Position aendern (ganze Pixel): die Groesse steht fest, seit die
 			-- Zahl erschienen ist. Derselbe Ankerpunkt ersetzt den alten.
 			x = math.floor(x + 0.5)
@@ -1084,6 +1133,10 @@ local function UpdatePending(now)
 		local shown = false
 		if age >= SETTLE then
 			if MergeIntoActive(entry) then
+				shown = true
+			elseif db.layout == "fan" then
+				local x, y = FanAnchor()
+				Show(entry, x, y, nil)
 				shown = true
 			else
 				local x, y, origin = Resolve(entry, now, age >= FALLBACK)

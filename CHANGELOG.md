@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.65
+- Damage numbers in a fan above your hero: three areas (left, middle, right) with three lanes each. New numbers start at your hero and fly outwards along their lane, so the older a number is, the further up it is – even when lots of hits come at once.
+- Under `/pui` → Damage numbers: *Layout* (fan above you / above enemies, as before) and *Fan reach*.
+
 ## 0.9.64
 - Damage numbers: merged hits now show how often they hit, e.g. `238.3k x37` – the sum of all hits of one ability on one enemy.
 - A merged number keeps collecting hits for up to 1.5 sec (*Merge over* under `/pui` → Damage numbers, 0.25–3 sec) and stays on screen while hits keep coming. The count can be switched off with *Show hit count*.

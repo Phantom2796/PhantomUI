@@ -220,6 +220,10 @@ P.LOC.enUS = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: detected automatically.",
 	["Trefferanzahl zeigen (x12)"] = "Show hit count (x12)",
 	["Zusammenfassen über"] = "Merge over",
+	["Anordnung"] = "Layout",
+	["Fächer über dir"] = "Fan above you",
+	["über den Gegnern"] = "above enemies",
+	["Fächer-Weite"] = "Fan reach",
 }
 
 P.LOC.frFR = {
@@ -435,6 +439,10 @@ P.LOC.frFR = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, garde funeste, seigneur des fosses, gangregarde : détectés automatiquement.",
 	["Trefferanzahl zeigen (x12)"] = "Afficher le nombre de coups (x12)",
 	["Zusammenfassen über"] = "Fusionner sur",
+	["Anordnung"] = "Disposition",
+	["Fächer über dir"] = "Éventail au-dessus de vous",
+	["über den Gegnern"] = "au-dessus des ennemis",
+	["Fächer-Weite"] = "Portée de l'éventail",
 }
 
 P.LOC.esES = {
@@ -650,6 +658,10 @@ P.LOC.esES = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, guardia apocalíptico, señor del foso, guardia vil: detectados solos.",
 	["Trefferanzahl zeigen (x12)"] = "Mostrar n.º de golpes (x12)",
 	["Zusammenfassen über"] = "Agrupar durante",
+	["Anordnung"] = "Disposición",
+	["Fächer über dir"] = "Abanico sobre ti",
+	["über den Gegnern"] = "sobre los enemigos",
+	["Fächer-Weite"] = "Alcance del abanico",
 }
 
 P.LOC.ptBR = {
@@ -865,6 +877,10 @@ P.LOC.ptBR = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Guarda Apocalíptico, Senhor do Abismo, Guarda Vil: detectados sozinhos.",
 	["Trefferanzahl zeigen (x12)"] = "Mostrar nº de acertos (x12)",
 	["Zusammenfassen über"] = "Agrupar durante",
+	["Anordnung"] = "Disposição",
+	["Fächer über dir"] = "Leque acima de você",
+	["über den Gegnern"] = "acima dos inimigos",
+	["Fächer-Weite"] = "Alcance do leque",
 }
 
 P.LOC.plPL = {
@@ -1080,6 +1096,10 @@ P.LOC.plPL = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Piekielnik, Strażnik Zagłady, Władca Otchłani, Strażnik Zguby: wykrywane same.",
 	["Trefferanzahl zeigen (x12)"] = "Pokazuj liczbę trafień (x12)",
 	["Zusammenfassen über"] = "Łącz przez",
+	["Anordnung"] = "Układ",
+	["Fächer über dir"] = "Wachlarz nad tobą",
+	["über den Gegnern"] = "nad wrogami",
+	["Fächer-Weite"] = "Zasięg wachlarza",
 }
 
 P.LOC.csCZ = {
@@ -1295,6 +1315,10 @@ P.LOC.csCZ = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, strážce zkázy, pán jámy, ďábelský strážce: rozpoznány samy.",
 	["Trefferanzahl zeigen (x12)"] = "Zobrazit počet zásahů (x12)",
 	["Zusammenfassen über"] = "Slučovat po dobu",
+	["Anordnung"] = "Rozložení",
+	["Fächer über dir"] = "Vějíř nad tebou",
+	["über den Gegnern"] = "nad nepřáteli",
+	["Fächer-Weite"] = "Dosah vějíře",
 }
 
 P.LOC.roRO = {
@@ -1510,6 +1534,10 @@ P.LOC.roRO = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, gardian al pieirii, stăpân al hăului, gardian infernal: detectați automat.",
 	["Trefferanzahl zeigen (x12)"] = "Arată nr. de lovituri (x12)",
 	["Zusammenfassen über"] = "Combină timp de",
+	["Anordnung"] = "Aranjare",
+	["Fächer über dir"] = "Evantai deasupra ta",
+	["über den Gegnern"] = "deasupra inamicilor",
+	["Fächer-Weite"] = "Întindere evantai",
 }
 
 P.LOC.trTR = {
@@ -1725,6 +1753,10 @@ P.LOC.trTR = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: otomatik algılanır.",
 	["Trefferanzahl zeigen (x12)"] = "İsabet sayısını göster (x12)",
 	["Zusammenfassen über"] = "Birleştirme süresi",
+	["Anordnung"] = "Düzen",
+	["Fächer über dir"] = "Üstünde yelpaze",
+	["über den Gegnern"] = "düşmanların üstünde",
+	["Fächer-Weite"] = "Yelpaze genişliği",
 }
 
 P.LOC.ruRU = {
@@ -1940,6 +1972,10 @@ P.LOC.ruRU = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Инфернал, страж ужаса, владыка преисподней, страж Скверны: определяются сами.",
 	["Trefferanzahl zeigen (x12)"] = "Показывать число попаданий (x12)",
 	["Zusammenfassen über"] = "Объединять в течение",
+	["Anordnung"] = "Расположение",
+	["Fächer über dir"] = "Веер над вами",
+	["über den Gegnern"] = "над врагами",
+	["Fächer-Weite"] = "Размах веера",
 }
 
 P.LOC.ukUA = {
@@ -2155,6 +2191,10 @@ P.LOC.ukUA = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Інфернал, вартовий жаху, володар безодні, скверноварт: визначаються самі.",
 	["Trefferanzahl zeigen (x12)"] = "Показувати кількість влучань (x12)",
 	["Zusammenfassen über"] = "Об'єднувати протягом",
+	["Anordnung"] = "Розташування",
+	["Fächer über dir"] = "Віяло над вами",
+	["über den Gegnern"] = "над ворогами",
+	["Fächer-Weite"] = "Розмах віяла",
 }
 
 P.LOC.zhCN = {
@@ -2370,6 +2410,10 @@ P.LOC.zhCN = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "地狱火、末日守卫、深渊领主、恶魔卫士：自动识别。",
 	["Trefferanzahl zeigen (x12)"] = "显示命中次数 (x12)",
 	["Zusammenfassen über"] = "合并时长",
+	["Anordnung"] = "布局",
+	["Fächer über dir"] = "你上方扇形",
+	["über den Gegnern"] = "敌人上方",
+	["Fächer-Weite"] = "扇形范围",
 }
 
 P.LOC.jaJP = {
@@ -2585,6 +2629,10 @@ P.LOC.jaJP = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "インファーナル、ドゥームガード、ピットロード、フェルガード：自動で検出。",
 	["Trefferanzahl zeigen (x12)"] = "ヒット数を表示 (x12)",
 	["Zusammenfassen über"] = "まとめる時間",
+	["Anordnung"] = "配置",
+	["Fächer über dir"] = "自分の上に扇形",
+	["über den Gegnern"] = "敵の上",
+	["Fächer-Weite"] = "扇の広さ",
 }
 
 P.LOC.koKR = {
@@ -2800,6 +2848,10 @@ P.LOC.koKR = {
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "지옥불정령, 파멸의 수호병, 구렁텅이 군주, 지옥수호병: 자동 감지.",
 	["Trefferanzahl zeigen (x12)"] = "적중 횟수 표시 (x12)",
 	["Zusammenfassen über"] = "합산 시간",
+	["Anordnung"] = "배치",
+	["Fächer über dir"] = "내 위에 부채꼴",
+	["über den Gegnern"] = "적 위",
+	["Fächer-Weite"] = "부채꼴 범위",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

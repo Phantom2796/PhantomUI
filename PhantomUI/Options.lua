@@ -515,6 +515,8 @@ local function PageNumbers(page)
 	Check(page, half, y, "Trefferanzahl zeigen (x12)", SCT("mergeCount"))
 	y = y - ROW - 6
 	y = Slider(page, y, "Zusammenfassen über", SCT("mergeTime"), 0.25, 3, 0.25, "%.2f s")
+	y = Cycle(page, y, "Anordnung", SCT("layout"), { "fan", "plates" }, { "Fächer über dir", "über den Gegnern" })
+	y = Slider(page, y, "Fächer-Weite", SCT("fanReach"), 100, 500, 10, "%d px")
 	y = Slider(page, y, "Schriftgröße", SCT("size", function() API.FontChanged() end), 8, 30, 1, "%d")
 	y = Cycle(page, y, "Schriftart", SCT("font", function() API.FontChanged() end),
 		{ "friz", "arial", "skurri", "morpheus" }, { "Friz Quadrata", "Arial Narrow", "Skurri", "Morpheus" })
