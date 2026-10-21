@@ -961,15 +961,16 @@ local FAN_START = 14
 local laneUse = {}
 local sectorTurn = 0
 
--- Startpunkt = dein Held. Im Ankermodus (/pui unlock) verschiebbar; Standard
--- dort, wo die Spielkamera den Helden zeigt (etwas links ueber der Mitte).
+-- Startpunkt = dein Held. Die Spielkamera zeigt ihn genau in der
+-- Bildschirmmitte. Im Ankermodus (/pui unlock) verschiebbar.
 local fanAnchor
 if PhantomUI and PhantomUI.RegisterMover then
 	fanAnchor = CreateFrame("Frame", "PhantomUI_SCTFan", UIParent)
 	fanAnchor:SetWidth(36)
 	fanAnchor:SetHeight(36)
-	PhantomUI.RegisterMover("sctfan", fanAnchor, "Schadenszahlen-Fächer", function(f)
-		f:SetPoint("CENTER", UIParent, "CENTER", -UIParent:GetWidth() * 0.069, UIParent:GetHeight() * 0.07)
+	-- neuer Schluessel: ein gespeicherter Platz vom falschen Standard (0.9.66) zaehlt nicht
+	PhantomUI.RegisterMover("sctfan2", fanAnchor, "Schadenszahlen-Fächer", function(f)
+		f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 	end)
 end
 
