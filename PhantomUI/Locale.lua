@@ -224,6 +224,8 @@ P.LOC.enUS = {
 	["Fächer über dir"] = "Fan above you",
 	["über den Gegnern"] = "above enemies",
 	["Fächer-Weite"] = "Fan reach",
+	["Schadenszahlen-Fächer"] = "Damage number fan",
+	["Fächer-Flugzeit"] = "Fan flight time",
 }
 
 P.LOC.frFR = {
@@ -443,6 +445,8 @@ P.LOC.frFR = {
 	["Fächer über dir"] = "Éventail au-dessus de vous",
 	["über den Gegnern"] = "au-dessus des ennemis",
 	["Fächer-Weite"] = "Portée de l'éventail",
+	["Schadenszahlen-Fächer"] = "Éventail des dégâts",
+	["Fächer-Flugzeit"] = "Durée de vol",
 }
 
 P.LOC.esES = {
@@ -662,6 +666,8 @@ P.LOC.esES = {
 	["Fächer über dir"] = "Abanico sobre ti",
 	["über den Gegnern"] = "sobre los enemigos",
 	["Fächer-Weite"] = "Alcance del abanico",
+	["Schadenszahlen-Fächer"] = "Abanico de daño",
+	["Fächer-Flugzeit"] = "Tiempo de vuelo",
 }
 
 P.LOC.ptBR = {
@@ -881,6 +887,8 @@ P.LOC.ptBR = {
 	["Fächer über dir"] = "Leque acima de você",
 	["über den Gegnern"] = "acima dos inimigos",
 	["Fächer-Weite"] = "Alcance do leque",
+	["Schadenszahlen-Fächer"] = "Leque de dano",
+	["Fächer-Flugzeit"] = "Tempo de voo",
 }
 
 P.LOC.plPL = {
@@ -1100,6 +1108,8 @@ P.LOC.plPL = {
 	["Fächer über dir"] = "Wachlarz nad tobą",
 	["über den Gegnern"] = "nad wrogami",
 	["Fächer-Weite"] = "Zasięg wachlarza",
+	["Schadenszahlen-Fächer"] = "Wachlarz obrażeń",
+	["Fächer-Flugzeit"] = "Czas lotu",
 }
 
 P.LOC.csCZ = {
@@ -1319,6 +1329,8 @@ P.LOC.csCZ = {
 	["Fächer über dir"] = "Vějíř nad tebou",
 	["über den Gegnern"] = "nad nepřáteli",
 	["Fächer-Weite"] = "Dosah vějíře",
+	["Schadenszahlen-Fächer"] = "Vějíř poškození",
+	["Fächer-Flugzeit"] = "Doba letu",
 }
 
 P.LOC.roRO = {
@@ -1538,6 +1550,8 @@ P.LOC.roRO = {
 	["Fächer über dir"] = "Evantai deasupra ta",
 	["über den Gegnern"] = "deasupra inamicilor",
 	["Fächer-Weite"] = "Întindere evantai",
+	["Schadenszahlen-Fächer"] = "Evantai daune",
+	["Fächer-Flugzeit"] = "Timp de zbor",
 }
 
 P.LOC.trTR = {
@@ -1757,6 +1771,8 @@ P.LOC.trTR = {
 	["Fächer über dir"] = "Üstünde yelpaze",
 	["über den Gegnern"] = "düşmanların üstünde",
 	["Fächer-Weite"] = "Yelpaze genişliği",
+	["Schadenszahlen-Fächer"] = "Hasar yelpazesi",
+	["Fächer-Flugzeit"] = "Uçuş süresi",
 }
 
 P.LOC.ruRU = {
@@ -1976,6 +1992,8 @@ P.LOC.ruRU = {
 	["Fächer über dir"] = "Веер над вами",
 	["über den Gegnern"] = "над врагами",
 	["Fächer-Weite"] = "Размах веера",
+	["Schadenszahlen-Fächer"] = "Веер урона",
+	["Fächer-Flugzeit"] = "Время полёта",
 }
 
 P.LOC.ukUA = {
@@ -2195,6 +2213,8 @@ P.LOC.ukUA = {
 	["Fächer über dir"] = "Віяло над вами",
 	["über den Gegnern"] = "над ворогами",
 	["Fächer-Weite"] = "Розмах віяла",
+	["Schadenszahlen-Fächer"] = "Віяло шкоди",
+	["Fächer-Flugzeit"] = "Час польоту",
 }
 
 P.LOC.zhCN = {
@@ -2414,6 +2434,8 @@ P.LOC.zhCN = {
 	["Fächer über dir"] = "你上方扇形",
 	["über den Gegnern"] = "敌人上方",
 	["Fächer-Weite"] = "扇形范围",
+	["Schadenszahlen-Fächer"] = "伤害数字扇形",
+	["Fächer-Flugzeit"] = "飞行时间",
 }
 
 P.LOC.jaJP = {
@@ -2633,6 +2655,8 @@ P.LOC.jaJP = {
 	["Fächer über dir"] = "自分の上に扇形",
 	["über den Gegnern"] = "敵の上",
 	["Fächer-Weite"] = "扇の広さ",
+	["Schadenszahlen-Fächer"] = "ダメージ扇",
+	["Fächer-Flugzeit"] = "飛行時間",
 }
 
 P.LOC.koKR = {
@@ -2852,6 +2876,8 @@ P.LOC.koKR = {
 	["Fächer über dir"] = "내 위에 부채꼴",
 	["über den Gegnern"] = "적 위",
 	["Fächer-Weite"] = "부채꼴 범위",
+	["Schadenszahlen-Fächer"] = "피해 숫자 부채꼴",
+	["Fächer-Flugzeit"] = "비행 시간",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

@@ -40,6 +40,7 @@ local DEFAULTS = {
 	spread = 2.3,       -- wie weit die Zahlen auseinander liegen (1 = eng)
 	layout = "fan",     -- fan: Faecher ueber dem Helden | plates: ueber den Gegnern
 	fanReach = 240,     -- so weit fliegen die Zahlen im Faecher nach aussen
+	fanTime = 2.4,      -- so lange (Sekunden) fliegt eine Zahl im Faecher
 }
 
 local SCHOOL_COLORS = {
@@ -956,12 +957,31 @@ local FAN = {
 	{ -12, 0, 12 },
 	{ 40, 52, 64 },
 }
-local FAN_START = 55
+local FAN_START = 14
 local laneUse = {}
 local sectorTurn = 0
 
+-- Startpunkt = dein Held. Im Ankermodus (/pui unlock) verschiebbar; Standard
+-- dort, wo die Spielkamera den Helden zeigt (etwas links ueber der Mitte).
+local fanAnchor
+if PhantomUI and PhantomUI.RegisterMover then
+	fanAnchor = CreateFrame("Frame", "PhantomUI_SCTFan", UIParent)
+	fanAnchor:SetWidth(36)
+	fanAnchor:SetHeight(36)
+	PhantomUI.RegisterMover("sctfan", fanAnchor, "Schadenszahlen-Fächer", function(f)
+		f:SetPoint("CENTER", UIParent, "CENTER", -UIParent:GetWidth() * 0.069, UIParent:GetHeight() * 0.07)
+	end)
+end
+
 local function FanAnchor()
-	return UIParent:GetWidth() / 2, UIParent:GetHeight() / 2 + 20
+	if fanAnchor and fanAnchor.GetCenter then
+		local x, y = fanAnchor:GetCenter()
+		if x and y then
+			local ratio = (fanAnchor:GetEffectiveScale() or 1) / (UIParent:GetEffectiveScale() or 1)
+			return x * ratio, y * ratio
+		end
+	end
+	return UIParent:GetWidth() / 2, UIParent:GetHeight() / 2
 end
 
 -- naechste Bahn: Bereiche reihum, darin die am laengsten freie Bahn
@@ -1031,6 +1051,9 @@ local function Show(info, x, y, origin)
 	t.dot = info.kind == "dot"
 	t.age = 0
 	t.life = info.crit and db.duration * 1.25 or db.duration
+	if db.layout == "fan" then
+		t.life = db.fanTime or 2.4
+	end
 	t.frame:SetAlpha((t.dot and 0.85 or 1) * db.opacity)
 	t.lastAlpha, t.lastX, t.lastY = nil, nil, nil
 	t.amount = info.amount
@@ -1063,7 +1086,9 @@ local function UpdateTexts(elapsed)
 			local eased = 1 - (1 - p) * (1 - p)
 			local x, y
 			if t.fan then
-				local r = FAN_START + (db.fanReach or 240) * eased
+				-- gleichmaessig und gemaechlich nach aussen, nur am Anfang ein
+				-- kleiner Schubs, damit die Zahl vom Helden wegkommt
+				local r = FAN_START + (db.fanReach or 240) * (0.15 * eased + 0.85 * p)
 				x = t.baseX + t.dirX * r
 				y = t.baseY + t.dirY * r
 			else

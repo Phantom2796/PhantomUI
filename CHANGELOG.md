@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.66
+- Damage number fan: numbers now start right at your hero instead of a ring around the screen centre. The start point sits where the game's camera shows your hero and can be moved in anchor mode (`/pui unlock`, *Damage number fan*).
+- Slower, calmer flight: a number takes 2.4 sec to fly out at an even pace (*Fan flight time*, 1–5 sec).
+
 ## 0.9.65
 - Damage numbers in a fan above your hero: three areas (left, middle, right) with three lanes each. New numbers start at your hero and fly outwards along their lane, so the older a number is, the further up it is – even when lots of hits come at once.
 - Under `/pui` → Damage numbers: *Layout* (fan above you / above enemies, as before) and *Fan reach*.

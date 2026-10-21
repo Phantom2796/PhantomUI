@@ -517,6 +517,7 @@ local function PageNumbers(page)
 	y = Slider(page, y, "Zusammenfassen über", SCT("mergeTime"), 0.25, 3, 0.25, "%.2f s")
 	y = Cycle(page, y, "Anordnung", SCT("layout"), { "fan", "plates" }, { "Fächer über dir", "über den Gegnern" })
 	y = Slider(page, y, "Fächer-Weite", SCT("fanReach"), 100, 500, 10, "%d px")
+	y = Slider(page, y, "Fächer-Flugzeit", SCT("fanTime"), 1, 5, 0.1, "%.1f s")
 	y = Slider(page, y, "Schriftgröße", SCT("size", function() API.FontChanged() end), 8, 30, 1, "%d")
 	y = Cycle(page, y, "Schriftart", SCT("font", function() API.FontChanged() end),
 		{ "friz", "arial", "skurri", "morpheus" }, { "Friz Quadrata", "Arial Narrow", "Skurri", "Morpheus" })
