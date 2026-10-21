@@ -1,5 +1,10 @@
 # PhantomUI – Changelog
 
+## 0.9.63
+- Totems & pets for the new warlock talents (AS 0.105): tick *Demonic Familiar* (imp), *Soul Devourer* (felhunter), *Soul Link* (voidwalker) and *Demonic Supremacy* under `/pui` → General.
+- Infernal, Doomguard, Pit Lord and Felguard show up on their own while they are out, with the seconds they have left under the icon (read from the damage meter). With Demonic Supremacy, Infernal and Doomguard stay for good and imp, felhunter and voidwalker are hidden.
+- The old "Summon Imp" tick carries over to Demonic Familiar.
+
 ## 0.9.62
 - Icons: Demonic Empowerment takes its real icon straight from your action bar (plan and meter); the new demons (Infernal, Doomguard, Pit Lord, Felguard, Imp, Felhunter, Voidwalker, Succubus) have icons in the meter.
 

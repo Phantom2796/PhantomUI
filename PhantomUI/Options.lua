@@ -468,6 +468,9 @@ local function PageGeneral(page)
 			end
 		end
 		y = Note(page, y, "Haken setzen, wenn du das Talent geskillt hast.")
+		if myClass == "WARLOCK" then
+			y = Note(page, y, "Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt.")
+		end
 	end
 	return y
 end

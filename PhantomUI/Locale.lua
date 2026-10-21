@@ -206,6 +206,18 @@ P.LOC.enUS = {
 	["Wasserelementar beschwören"] = "Summon Water Elemental",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Tick the ones you have skilled.",
 	["Finger"] = "Finger",
+	["Wichtel"] = "Imp",
+	["Teufelsjäger"] = "Felhunter",
+	["Leerwandler"] = "Voidwalker",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Doomguard",
+	["Grubenlord"] = "Pit Lord",
+	["Teufelswache"] = "Felguard",
+	["Dämonischer Vertrauter (Wichtel)"] = "Demonic Familiar (Imp)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Soul Devourer (Felhunter)",
+	["Seelenverbindung (Leerwandler)"] = "Soul Link (Voidwalker)",
+	["Dämonische Vorherrschaft"] = "Demonic Supremacy",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: detected automatically.",
 }
 
 P.LOC.frFR = {
@@ -407,6 +419,18 @@ P.LOC.frFR = {
 	["Wasserelementar beschwören"] = "Invocation d'un élémentaire d'eau",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Cochez ceux que vous avez appris.",
 	["Finger"] = "Doigt",
+	["Wichtel"] = "Diablotin",
+	["Teufelsjäger"] = "Chasseur corrompu",
+	["Leerwandler"] = "Marcheur du Vide",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Garde funeste",
+	["Grubenlord"] = "Seigneur des fosses",
+	["Teufelswache"] = "Gangregarde",
+	["Dämonischer Vertrauter (Wichtel)"] = "Familier démoniaque (diablotin)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Dévoreur d'âmes (chasseur corrompu)",
+	["Seelenverbindung (Leerwandler)"] = "Lien spirituel (marcheur du Vide)",
+	["Dämonische Vorherrschaft"] = "Suprématie démoniaque",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, garde funeste, seigneur des fosses, gangregarde : détectés automatiquement.",
 }
 
 P.LOC.esES = {
@@ -608,6 +632,18 @@ P.LOC.esES = {
 	["Wasserelementar beschwören"] = "Invocar elemental de agua",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Marca los que tengas aprendidos.",
 	["Finger"] = "Dedo",
+	["Wichtel"] = "Diablillo",
+	["Teufelsjäger"] = "Manáfago",
+	["Leerwandler"] = "Abisario",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Guardia apocalíptico",
+	["Grubenlord"] = "Señor del foso",
+	["Teufelswache"] = "Guardia vil",
+	["Dämonischer Vertrauter (Wichtel)"] = "Familiar demoníaco (diablillo)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Devorador de almas (manáfago)",
+	["Seelenverbindung (Leerwandler)"] = "Vínculo de alma (abisario)",
+	["Dämonische Vorherrschaft"] = "Supremacía demoníaca",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, guardia apocalíptico, señor del foso, guardia vil: detectados solos.",
 }
 
 P.LOC.ptBR = {
@@ -809,6 +845,18 @@ P.LOC.ptBR = {
 	["Wasserelementar beschwören"] = "Evocar Elemental da Água",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Marque os que você aprendeu.",
 	["Finger"] = "Dedo",
+	["Wichtel"] = "Diabrete",
+	["Teufelsjäger"] = "Caçador Vil",
+	["Leerwandler"] = "Emissário do Caos",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Guarda Apocalíptico",
+	["Grubenlord"] = "Senhor do Abismo",
+	["Teufelswache"] = "Guarda Vil",
+	["Dämonischer Vertrauter (Wichtel)"] = "Familiar Demoníaco (diabrete)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Devorador de Almas (caçador vil)",
+	["Seelenverbindung (Leerwandler)"] = "Vínculo de Alma (emissário)",
+	["Dämonische Vorherrschaft"] = "Supremacia Demoníaca",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Guarda Apocalíptico, Senhor do Abismo, Guarda Vil: detectados sozinhos.",
 }
 
 P.LOC.plPL = {
@@ -1010,6 +1058,18 @@ P.LOC.plPL = {
 	["Wasserelementar beschwören"] = "Przyzwanie Żywiołaka Wody",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaznacz te, które masz wykupione.",
 	["Finger"] = "Palec",
+	["Wichtel"] = "Chochlik",
+	["Teufelsjäger"] = "Ogar Spaczenia",
+	["Leerwandler"] = "Pustkowiec",
+	["Höllenbestie"] = "Piekielnik",
+	["Verdammniswache"] = "Strażnik Zagłady",
+	["Grubenlord"] = "Władca Otchłani",
+	["Teufelswache"] = "Strażnik Zguby",
+	["Dämonischer Vertrauter (Wichtel)"] = "Demoniczny chowaniec (chochlik)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Pożeracz Dusz (ogar)",
+	["Seelenverbindung (Leerwandler)"] = "Więź Dusz (pustkowiec)",
+	["Dämonische Vorherrschaft"] = "Demoniczna Supremacja",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Piekielnik, Strażnik Zagłady, Władca Otchłani, Strażnik Zguby: wykrywane same.",
 }
 
 P.LOC.csCZ = {
@@ -1211,6 +1271,18 @@ P.LOC.csCZ = {
 	["Wasserelementar beschwören"] = "Vyvolat vodního elementála",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Zaškrtni ty, které máš naučené.",
 	["Finger"] = "Prst",
+	["Wichtel"] = "Skřítek",
+	["Teufelsjäger"] = "Ďábelský lovec",
+	["Leerwandler"] = "Prázdnochodec",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Strážce zkázy",
+	["Grubenlord"] = "Pán jámy",
+	["Teufelswache"] = "Ďábelský strážce",
+	["Dämonischer Vertrauter (Wichtel)"] = "Démonický společník (skřítek)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Požírač duší (lovec)",
+	["Seelenverbindung (Leerwandler)"] = "Pouto duší (prázdnochodec)",
+	["Dämonische Vorherrschaft"] = "Démonická nadvláda",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, strážce zkázy, pán jámy, ďábelský strážce: rozpoznány samy.",
 }
 
 P.LOC.roRO = {
@@ -1412,6 +1484,18 @@ P.LOC.roRO = {
 	["Wasserelementar beschwören"] = "Invocă elemental de apă",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Bifează-le pe cele învățate.",
 	["Finger"] = "Deget",
+	["Wichtel"] = "Drac",
+	["Teufelsjäger"] = "Vânător infernal",
+	["Leerwandler"] = "Umblător al Hăului",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Gardian al Pieirii",
+	["Grubenlord"] = "Stăpân al Hăului",
+	["Teufelswache"] = "Gardian infernal",
+	["Dämonischer Vertrauter (Wichtel)"] = "Familiar demonic (drac)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Devorator de suflete (vânător)",
+	["Seelenverbindung (Leerwandler)"] = "Legătura sufletului (umblător)",
+	["Dämonische Vorherrschaft"] = "Supremație demonică",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, gardian al pieirii, stăpân al hăului, gardian infernal: detectați automat.",
 }
 
 P.LOC.trTR = {
@@ -1613,6 +1697,18 @@ P.LOC.trTR = {
 	["Wasserelementar beschwören"] = "Summon Water Elemental",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Öğrendiklerini işaretle.",
 	["Finger"] = "Parmak",
+	["Wichtel"] = "İmp",
+	["Teufelsjäger"] = "Felhunter",
+	["Leerwandler"] = "Voidwalker",
+	["Höllenbestie"] = "Infernal",
+	["Verdammniswache"] = "Doomguard",
+	["Grubenlord"] = "Pit Lord",
+	["Teufelswache"] = "Felguard",
+	["Dämonischer Vertrauter (Wichtel)"] = "Şeytani Yardımcı (imp)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Ruh Yiyici (felhunter)",
+	["Seelenverbindung (Leerwandler)"] = "Ruh Bağı (voidwalker)",
+	["Dämonische Vorherrschaft"] = "Şeytani Üstünlük",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: otomatik algılanır.",
 }
 
 P.LOC.ruRU = {
@@ -1814,6 +1910,18 @@ P.LOC.ruRU = {
 	["Wasserelementar beschwören"] = "Призыв элементаля воды",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Отметьте изученные таланты.",
 	["Finger"] = "Палец",
+	["Wichtel"] = "Бес",
+	["Teufelsjäger"] = "Охотник Скверны",
+	["Leerwandler"] = "Демон Бездны",
+	["Höllenbestie"] = "Инфернал",
+	["Verdammniswache"] = "Страж ужаса",
+	["Grubenlord"] = "Владыка преисподней",
+	["Teufelswache"] = "Страж Скверны",
+	["Dämonischer Vertrauter (Wichtel)"] = "Демонический фамильяр (бес)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Пожиратель душ (охотник)",
+	["Seelenverbindung (Leerwandler)"] = "Связка души (демон Бездны)",
+	["Dämonische Vorherrschaft"] = "Демоническое превосходство",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Инфернал, страж ужаса, владыка преисподней, страж Скверны: определяются сами.",
 }
 
 P.LOC.ukUA = {
@@ -2015,6 +2123,18 @@ P.LOC.ukUA = {
 	["Wasserelementar beschwören"] = "Виклик елементаля води",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "Позначте вивчені таланти.",
 	["Finger"] = "Палець",
+	["Wichtel"] = "Біс",
+	["Teufelsjäger"] = "Мисливець Скверни",
+	["Leerwandler"] = "Демон Порожнечі",
+	["Höllenbestie"] = "Інфернал",
+	["Verdammniswache"] = "Вартовий жаху",
+	["Grubenlord"] = "Володар безодні",
+	["Teufelswache"] = "Скверноварт",
+	["Dämonischer Vertrauter (Wichtel)"] = "Демонічний фамільяр (біс)",
+	["Seelenverschlinger (Teufelsjäger)"] = "Пожирач душ (мисливець)",
+	["Seelenverbindung (Leerwandler)"] = "Зв'язок душі (демон Порожнечі)",
+	["Dämonische Vorherrschaft"] = "Демонічна перевага",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Інфернал, вартовий жаху, володар безодні, скверноварт: визначаються самі.",
 }
 
 P.LOC.zhCN = {
@@ -2216,6 +2336,18 @@ P.LOC.zhCN = {
 	["Wasserelementar beschwören"] = "召唤水元素",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "勾选已学会的天赋。",
 	["Finger"] = "手指",
+	["Wichtel"] = "小鬼",
+	["Teufelsjäger"] = "地狱猎犬",
+	["Leerwandler"] = "虚空行者",
+	["Höllenbestie"] = "地狱火",
+	["Verdammniswache"] = "末日守卫",
+	["Grubenlord"] = "深渊领主",
+	["Teufelswache"] = "恶魔卫士",
+	["Dämonischer Vertrauter (Wichtel)"] = "恶魔仆从（小鬼）",
+	["Seelenverschlinger (Teufelsjäger)"] = "噬魂者（地狱猎犬）",
+	["Seelenverbindung (Leerwandler)"] = "灵魂链接（虚空行者）",
+	["Dämonische Vorherrschaft"] = "恶魔至尊",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "地狱火、末日守卫、深渊领主、恶魔卫士：自动识别。",
 }
 
 P.LOC.jaJP = {
@@ -2417,6 +2549,18 @@ P.LOC.jaJP = {
 	["Wasserelementar beschwören"] = "水のエレメンタル召喚",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "習得したものにチェック。",
 	["Finger"] = "指",
+	["Wichtel"] = "インプ",
+	["Teufelsjäger"] = "フェルハンター",
+	["Leerwandler"] = "ヴォイドウォーカー",
+	["Höllenbestie"] = "インファーナル",
+	["Verdammniswache"] = "ドゥームガード",
+	["Grubenlord"] = "ピットロード",
+	["Teufelswache"] = "フェルガード",
+	["Dämonischer Vertrauter (Wichtel)"] = "デーモンの使い魔（インプ）",
+	["Seelenverschlinger (Teufelsjäger)"] = "ソウルデバウアー（フェルハンター）",
+	["Seelenverbindung (Leerwandler)"] = "ソウルリンク（ヴォイドウォーカー）",
+	["Dämonische Vorherrschaft"] = "デーモンの覇権",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "インファーナル、ドゥームガード、ピットロード、フェルガード：自動で検出。",
 }
 
 P.LOC.koKR = {
@@ -2618,6 +2762,18 @@ P.LOC.koKR = {
 	["Wasserelementar beschwören"] = "물의 정령 소환",
 	["Haken setzen, wenn du das Talent geskillt hast."] = "배운 특성에 체크하세요.",
 	["Finger"] = "손가락",
+	["Wichtel"] = "임프",
+	["Teufelsjäger"] = "지옥사냥개",
+	["Leerwandler"] = "보이드워커",
+	["Höllenbestie"] = "지옥불정령",
+	["Verdammniswache"] = "파멸의 수호병",
+	["Grubenlord"] = "구렁텅이 군주",
+	["Teufelswache"] = "지옥수호병",
+	["Dämonischer Vertrauter (Wichtel)"] = "악마 사역마 (임프)",
+	["Seelenverschlinger (Teufelsjäger)"] = "영혼 포식자 (지옥사냥개)",
+	["Seelenverbindung (Leerwandler)"] = "영혼의 고리 (보이드워커)",
+	["Dämonische Vorherrschaft"] = "악마의 패권",
+	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "지옥불정령, 파멸의 수호병, 구렁텅이 군주, 지옥수호병: 자동 감지.",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

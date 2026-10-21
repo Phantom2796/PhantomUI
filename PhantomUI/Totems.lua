@@ -5,6 +5,8 @@
 -- die Abklingzeit der Totem-Faehigkeit neu startet (AZS_SPELLS: cd/cdmax, mit
 -- allen Verbesserungen). Die Dauer steht im Tooltip der Faehigkeit; den liest
 -- ein unsichtbarer Tooltip im Hintergrund, die Maus muss nicht drauf.
+-- Hexenmeister: Hoellenbestie, Verdammniswache, Grubenlord und Teufelswache
+-- kommen per Zufall; erkannt am Schadensmeter, mit Restzeit unter dem Symbol.
 -- Talente: "Ruf der Elemente" (twin_totems) setzt jedes Totem doppelt,
 -- "Totemischer Zorn" (totemic_call) stellt alle 14 Sek. ein Totem der
 -- Verbrennung von selbst auf.
@@ -23,8 +25,25 @@ local PETS = {
 	SHAMAN = { { key = "stormstrike", icon = "Spell_Nature_SpiritWolf", n = 2 } },          -- Wildgeist: zwei Geisterwoelfe
 	HUNTER = { { key = "tame_beast", icon = "Ability_Hunter_Pet_Wolf", n = 1 },              -- Wolf
 		{ key = "bestial_wrath", icon = "Ability_Hunter_Pet_Raptor", n = 1 } },               -- Raptor
-	WARLOCK = { { key = "summon_imp", icon = "Spell_Shadow_SummonImp", n = 1 },
-		{ key = "felguard", icon = "Spell_Shadow_SummonInfernal", n = 1 } },                  -- Teufelswache
+	-- Hexenmeister (AS 0.105): drei dauerhafte Begleiter aus Talenten, dazu
+	-- vier Daemonen, die per Zufall fuer kurze Zeit kommen (proc = Sekunden).
+	-- Die erkennen wir am Schadensmeter: steigt ihr Schaden, sind sie da.
+	WARLOCK = {
+		{ key = "demonic_familiar", icon = "Spell_Shadow_SummonImp", n = 1, label = "Wichtel", demon = true },
+		{ key = "soul_devourer", icon = "Spell_Shadow_SummonFelHunter", n = 1, label = "Teufelsjäger", demon = true },
+		{ key = "soul_link", icon = "Spell_Shadow_SummonVoidWalker", n = 1, label = "Leerwandler", demon = true },
+		{ key = "summon_infernal", icon = "Spell_Shadow_SummonInfernal", n = 1, label = "Höllenbestie", proc = 15, stays = true,
+			names = { "Infernal", "Höllenbestie", "Инфернал", "Пекельник", "地狱火", "インファーナル", "지옥불정령" } },
+		{ key = "summon_doomguard", icon = "Spell_Shadow_AntiMagicShell", n = 1, label = "Verdammniswache", proc = 15, stays = true,
+			names = { "Doomguard", "Verdammniswache", "Garde funeste", "Guardia apocalíptico", "Guarda Apocalíptico", "Strażnik Zagłady",
+				"Страж ужаса", "Вартовий жаху", "末日守卫", "ドゥームガード", "파멸의 수호병" } },
+		{ key = "pact_of_the_annihilan", icon = "Spell_Shadow_UnholyStrength", n = 1, label = "Grubenlord", proc = 12,
+			names = { "Pit Lord", "Felseeker", "Grubenlord", "Seigneur des fosses", "Señor del foso", "Senhor do Abismo",
+				"Władca Otchłani", "Владыка преисподней", "Володар безодні", "深渊领主", "ピットロード", "구렁텅이 군주" } },
+		{ key = "butcher", icon = "Ability_Warrior_Cleave", n = 1, label = "Teufelswache", proc = 20,
+			names = { "Felguard", "Teufelswache", "Gangregarde", "Guarda Vil", "Guardia vil", "Strażnik Zguby", "Ďábelský strážce",
+				"Скверноварт", "Страж Скверны", "フェルガード", "恶魔卫士", "지옥수호병" } },
+	},
 	DRUID = { { key = "force_of_nature", icon = "Spell_Nature_ForceOfNature", n = 2 } },     -- zwei Treants
 	MAGE = { { key = "water_elemental", icon = "Spell_Frost_SummonWaterElemental", n = 1 } },
 }
@@ -50,8 +69,10 @@ P.TOTEM_TALENTS = {
 		{ key = "bestial_wrath", name = "Raptor (Schlussstein)" },
 	},
 	WARLOCK = {
-		{ key = "summon_imp", name = "Wichtel beschwören" },
-		{ key = "felguard", name = "Teufelswache beschwören" },
+		{ key = "demonic_familiar", name = "Dämonischer Vertrauter (Wichtel)" },
+		{ key = "soul_devourer", name = "Seelenverschlinger (Teufelsjäger)" },
+		{ key = "soul_link", name = "Seelenverbindung (Leerwandler)" },
+		{ key = "demonic_supremacy", name = "Dämonische Vorherrschaft" },
 	},
 	DRUID = { { key = "force_of_nature", name = "Naturgewalt (2 Treants)" } },
 	MAGE = { { key = "water_elemental", name = "Wasserelementar beschwören" } },
@@ -168,6 +189,10 @@ local function Slot(i)
 	if s.count.SetJustifyV then
 		s.count:SetJustifyV("MIDDLE")
 	end
+	-- Restzeit kurzer Daemonen unter dem Symbol
+	s.timer = s:CreateFontString(nil, "OVERLAY")
+	s.timer:SetPoint("TOP", s, "BOTTOM", 0, -1)
+	s.timer:SetJustifyH("CENTER")
 	s:EnableMouse(true)
 	s:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
@@ -198,6 +223,7 @@ local function Layout()
 		s.count:SetFont(font, math.max(10, math.floor(size * 0.55)), "THICKOUTLINE")
 		s.count:SetWidth(size + 8)
 		s.count:SetHeight(size)
+		s.timer:SetFont(font, math.max(9, math.floor(size * 0.34)), "OUTLINE")
 	end
 end
 
@@ -209,6 +235,63 @@ local function Place(s, index)
 		s:ClearAllPoints()
 		s:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(index - 1) * (size + 3), 0)
 	end
+end
+
+-- Schaden eines Daemons im Lauf laut Schadensmeter (Zeilenname genau gleich,
+-- damit z. B. "Fuego infernal" nicht als Hoellenbestie zaehlt)
+local function MeterDamage(names)
+	local rows = AZS_METER
+	if type(rows) ~= "table" then
+		return 0
+	end
+	local sum = 0
+	for i = 1, table.getn(rows) do
+		local r = rows[i]
+		if type(r) == "table" and r.name then
+			for k = 1, table.getn(names) do
+				if r.name == names[k] then
+					sum = sum + (tonumber(r.dmg) or 0)
+					break
+				end
+			end
+		end
+	end
+	return sum
+end
+
+-- Ist der Begleiter da? Liefert (anzeigen, Restsekunden oder nil)
+local procState = {}
+local function PetState(def, spells, sup, now)
+	if not def.proc then
+		-- Dauerhafte Daemonen gibt es mit Daemonischer Vorherrschaft nicht
+		return Has(spells, def.key) and not (def.demon and sup), nil
+	end
+	local ps = procState[def.key]
+	if not ps then
+		ps = {}
+		procState[def.key] = ps
+	end
+	local dmg = MeterDamage(def.names)
+	if ps.last == nil or dmg < ps.last then
+		-- erster Blick oder neuer Lauf: nur merken
+		ps.last = dmg
+	elseif dmg > ps.last then
+		ps.last = dmg
+		ps.seen = true
+		-- neuer Daemon, wenn der alte abgelaufen ist (kleiner Puffer, weil
+		-- das Meter etwas nachhinkt)
+		if not ps.untilT or now > ps.untilT + 1.5 then
+			ps.untilT = now + def.proc
+		end
+	end
+	-- Daemonische Vorherrschaft: Hoellenbestie und Verdammniswache bleiben
+	if sup and def.stays and (ps.seen or Has(spells, def.key)) then
+		return true, nil
+	end
+	if ps.untilT and now < ps.untilT then
+		return true, ps.untilT - now
+	end
+	return false, nil
 end
 
 local function Update()
@@ -291,12 +374,13 @@ local function Update()
 			s:Hide()
 		end
 	end
-	-- dauerhafte Begleiter aus Talenten
+	-- Begleiter aus Talenten
+	local sup = Has(spells, "demonic_supremacy")
 	for j = 1, table.getn(myPets) do
 		local def = myPets[j]
 		local s = Slot(table.getn(TOTEMS) + j)
-		local has = Has(spells, def.key)
-		if has or P.unlocked then
+		local show, left = PetState(def, spells, sup, now)
+		if show or P.unlocked then
 			if s.iconPath ~= def.icon then
 				s.iconPath = def.icon
 				s.icon:SetTexture("Interface\\Icons\\" .. def.icon)
@@ -305,8 +389,13 @@ local function Update()
 				s.shownN = def.n
 				s.count:SetText(def.n)
 			end
-			s.name = spells[def.key] and spells[def.key].spell or def.key
-			s.duration, s.soon = nil, nil
+			local secs = left and math.ceil(left) or nil
+			if s.shownT ~= secs then
+				s.shownT = secs
+				s.timer:SetText(secs and (secs .. "s") or "")
+			end
+			s.name = def.label and P.T(def.label) or (spells[def.key] and spells[def.key].spell) or def.key
+			s.duration, s.soon = def.proc, left and (now + left) or nil
 			shown = shown + 1
 			Place(s, shown)
 			s:Show()
@@ -320,6 +409,9 @@ local function Update()
 		for key, st in pairs(state) do
 			st.up, st.nextAuto = {}, 0
 		end
+		for key, ps in pairs(procState) do
+			ps.untilT, ps.seen = nil, nil
+		end
 	end
 	if shown > 0 then
 		frame:Show()
@@ -331,6 +423,11 @@ end
 local function Init()
 	local _, class = UnitClass("player")
 	myPets = PETS[class] or {}
+	-- alter Haken "Wichtel beschwören" (vor AS 0.105) -> Daemonischer Vertrauter
+	local tal = P.DB().totems.talents
+	if tal and tal.summon_imp then
+		tal.demonic_familiar, tal.summon_imp, tal.felguard = true, nil, nil
+	end
 	if not P.DB().totems.enabled or (class ~= "SHAMAN" and table.getn(myPets) == 0) then
 		return
 	end
@@ -383,7 +480,9 @@ function P.TotemDebug()
 	end
 	P.Print("twin_totems " .. tostring(spells.twin_totems ~= nil) .. ", totemic_call " .. tostring(spells.totemic_call ~= nil))
 	for j = 1, table.getn(myPets) do
-		P.Print(myPets[j].key .. " " .. tostring(spells[myPets[j].key] ~= nil))
+		local def = myPets[j]
+		P.Print(def.key .. " " .. tostring(Has(spells, def.key))
+			.. (def.names and (", Meter " .. tostring(MeterDamage(def.names))) or ""))
 	end
 	local keys = ""
 	for k in pairs(spells) do
