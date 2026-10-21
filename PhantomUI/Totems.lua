@@ -16,6 +16,7 @@ local TOTEMS = {
 	{ key = "magma_totem", icon = "Spell_Fire_SelfDestruct", fallback = 20 },
 }
 local AUTO_EVERY = 14
+local MAX_PER_KIND = 40 -- seit AS 0.105: hoechstens 40 je Art, das aelteste faellt weg
 
 -- Dauerhafte Begleiter aus Talenten: Talent-Schluessel, Symbol, Anzahl
 local PETS = {
@@ -247,6 +248,16 @@ local function Update()
 					st.nextAuto = now + AUTO_EVERY
 					table.insert(st.up, now + duration)
 				end
+			end
+			-- mehr als 40: die aeltesten (kuerzeste Restzeit) fallen weg
+			while table.getn(st.up) > MAX_PER_KIND do
+				local oldest = 1
+				for k = 2, table.getn(st.up) do
+					if st.up[k] < st.up[oldest] then
+						oldest = k
+					end
+				end
+				table.remove(st.up, oldest)
 			end
 			-- abgelaufene entfernen, kuerzeste Restzeit suchen
 			local soon

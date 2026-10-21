@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.61
+- Plan: new warlock spell Demonic Empowerment (AS 0.104).
+- Totems: at most 40 of each kind, like the game (AS 0.105).
+
 ## 0.9.60
 - Damage meter: with its own scale it now moves all the way to the screen edge (the keep-on-screen check used the wrong units).
 
