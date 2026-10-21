@@ -29,6 +29,8 @@ local DEFAULTS = {
 	minPercent = 0,     -- Treffer unter so viel Prozent des aktuellen Spitzentreffers ausblenden
 	maxTexts = 30,      -- hoechstens so viele Zahlen gleichzeitig
 	merge = true,       -- gleiche Treffer kurz hintereinander zu einer Zahl zusammenfassen
+	mergeCount = true,  -- bei zusammengefassten Zahlen die Trefferanzahl zeigen (x12)
+	mergeTime = 1.5,    -- so lange (Sekunden) sammelt eine Zahl weitere Treffer ein
 	duration = 0.9,     -- Sekunden sichtbar
 	rise = 32,          -- so weit steigen sie nach oben
 	track = false,      -- [entfernt] Verfolgung ohne sichtbare Plaketten gibt es nicht mehr
@@ -943,6 +945,14 @@ local function ColorFor(info)
 	return SCHOOL_COLORS[info.school] or SCHOOL_COLORS.Physical
 end
 
+-- Summe, bei mehreren Treffern mit Anzahl dahinter: "238.3k x37"
+local function LabelText(amount, hits)
+	if hits and hits > 1 and db.mergeCount ~= false then
+		return Format(amount) .. "|cffc8c8c8 x" .. hits .. "|r"
+	end
+	return Format(amount)
+end
+
 local function Show(info, x, y, origin)
 	if table.getn(active) >= db.maxTexts then
 		Release(1)
@@ -951,7 +961,7 @@ local function Show(info, x, y, origin)
 	ApplyFont(t, info.crit and "crit" or (info.kind == "dot" and "dot" or "normal"))
 
 	local color = ColorFor(info)
-	t.label:SetText(Format(info.amount))
+	t.label:SetText(LabelText(info.amount, info.hits))
 	t.label:SetTextColor(color[1], color[2], color[3])
 
 	local texture = db.icons and IconFor(info)
@@ -983,6 +993,8 @@ local function Show(info, x, y, origin)
 	t.frame:SetAlpha((t.dot and 0.85 or 1) * db.opacity)
 	t.lastAlpha, t.lastX, t.lastY = nil, nil, nil
 	t.amount = info.amount
+	t.hits = info.hits or 1
+	t.alive, t.hold = 0, 0
 	t.mergeKey = info.mergeKey
 	t.frame:ClearAllPoints()
 	t.frame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y)
@@ -995,7 +1007,13 @@ local POP_TIME = 0.12
 local function UpdateTexts(elapsed)
 	for i = table.getn(active), 1, -1 do
 		local t = active[i]
-		t.age = t.age + elapsed
+		-- solange weitere Treffer einlaufen, bleibt die Zahl stehen
+		t.alive = (t.alive or 0) + elapsed
+		if t.hold and t.hold > 0 then
+			t.hold = t.hold - elapsed
+		else
+			t.age = t.age + elapsed
+		end
 		local p = t.age / t.life
 		if p >= 1 then
 			Release(i)
@@ -1034,22 +1052,24 @@ end
 
 local SETTLE = 0.04
 local FALLBACK = 0.14
-local MERGE_TIME = 0.25
+local HOLD = 0.3
 
--- Gleiche Faehigkeit, gleiches Ziel, kurz hintereinander: in die schon sichtbare Zahl
--- einrechnen statt eine neue zu erzeugen. Spart bei Flaechenschaden viele Zahlen.
+-- Gleiche Faehigkeit, gleiches Ziel: in die schon sichtbare Zahl einrechnen
+-- statt eine neue zu erzeugen, solange sie noch nicht verblasst und juenger als
+-- die Sammelzeit ist. Jeder Treffer haelt die Zahl kurz an; dahinter steht, wie
+-- oft getroffen wurde. Spart bei Flaechenschaden viele Zahlen.
 local function MergeIntoActive(info)
 	if not db.merge or not info.mergeKey then
 		return false
 	end
+	local window = db.mergeTime or 1.5
 	for i = table.getn(active), 1, -1 do
 		local t = active[i]
-		if t.age > MERGE_TIME then
-			break
-		end
-		if t.mergeKey == info.mergeKey then
+		if t.mergeKey == info.mergeKey and (t.alive or 0) < window and t.age < t.life * 0.6 then
 			t.amount = t.amount + info.amount
-			t.label:SetText(Format(t.amount))
+			t.hits = (t.hits or 1) + (info.hits or 1)
+			t.label:SetText(LabelText(t.amount, t.hits))
+			t.hold = HOLD
 			return true
 		end
 	end
@@ -1224,12 +1244,14 @@ local function HandleCombat(eventName, message)
 			if other.spell == info.spell and other.kind == info.kind and other.target == info.target
 				and other.crit == info.crit then
 				other.amount = other.amount + info.amount
+				other.hits = (other.hits or 1) + 1
 				return
 			end
 		end
 	end
 	-- Erst jetzt ein eigener Datensatz: nur fuer Zahlen, die auch erscheinen
 	info = CompactSCT.Keep(info)
+	info.hits = 1
 	info.mergeKey = (info.spell or info.kind or "") .. "\031" .. (info.target or "") .. (info.crit and "\031c" or "")
 	-- Bei einem Hagel aus Treffern nicht unbegrenzt stauen: die aeltesten fallen weg.
 	if table.getn(pending) >= 40 then

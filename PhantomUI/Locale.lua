@@ -218,6 +218,8 @@ P.LOC.enUS = {
 	["Seelenverbindung (Leerwandler)"] = "Soul Link (Voidwalker)",
 	["Dämonische Vorherrschaft"] = "Demonic Supremacy",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: detected automatically.",
+	["Trefferanzahl zeigen (x12)"] = "Show hit count (x12)",
+	["Zusammenfassen über"] = "Merge over",
 }
 
 P.LOC.frFR = {
@@ -431,6 +433,8 @@ P.LOC.frFR = {
 	["Seelenverbindung (Leerwandler)"] = "Lien spirituel (marcheur du Vide)",
 	["Dämonische Vorherrschaft"] = "Suprématie démoniaque",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, garde funeste, seigneur des fosses, gangregarde : détectés automatiquement.",
+	["Trefferanzahl zeigen (x12)"] = "Afficher le nombre de coups (x12)",
+	["Zusammenfassen über"] = "Fusionner sur",
 }
 
 P.LOC.esES = {
@@ -644,6 +648,8 @@ P.LOC.esES = {
 	["Seelenverbindung (Leerwandler)"] = "Vínculo de alma (abisario)",
 	["Dämonische Vorherrschaft"] = "Supremacía demoníaca",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, guardia apocalíptico, señor del foso, guardia vil: detectados solos.",
+	["Trefferanzahl zeigen (x12)"] = "Mostrar n.º de golpes (x12)",
+	["Zusammenfassen über"] = "Agrupar durante",
 }
 
 P.LOC.ptBR = {
@@ -857,6 +863,8 @@ P.LOC.ptBR = {
 	["Seelenverbindung (Leerwandler)"] = "Vínculo de Alma (emissário)",
 	["Dämonische Vorherrschaft"] = "Supremacia Demoníaca",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Guarda Apocalíptico, Senhor do Abismo, Guarda Vil: detectados sozinhos.",
+	["Trefferanzahl zeigen (x12)"] = "Mostrar nº de acertos (x12)",
+	["Zusammenfassen über"] = "Agrupar durante",
 }
 
 P.LOC.plPL = {
@@ -1070,6 +1078,8 @@ P.LOC.plPL = {
 	["Seelenverbindung (Leerwandler)"] = "Więź Dusz (pustkowiec)",
 	["Dämonische Vorherrschaft"] = "Demoniczna Supremacja",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Piekielnik, Strażnik Zagłady, Władca Otchłani, Strażnik Zguby: wykrywane same.",
+	["Trefferanzahl zeigen (x12)"] = "Pokazuj liczbę trafień (x12)",
+	["Zusammenfassen über"] = "Łącz przez",
 }
 
 P.LOC.csCZ = {
@@ -1283,6 +1293,8 @@ P.LOC.csCZ = {
 	["Seelenverbindung (Leerwandler)"] = "Pouto duší (prázdnochodec)",
 	["Dämonische Vorherrschaft"] = "Démonická nadvláda",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, strážce zkázy, pán jámy, ďábelský strážce: rozpoznány samy.",
+	["Trefferanzahl zeigen (x12)"] = "Zobrazit počet zásahů (x12)",
+	["Zusammenfassen über"] = "Slučovat po dobu",
 }
 
 P.LOC.roRO = {
@@ -1496,6 +1508,8 @@ P.LOC.roRO = {
 	["Seelenverbindung (Leerwandler)"] = "Legătura sufletului (umblător)",
 	["Dämonische Vorherrschaft"] = "Supremație demonică",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, gardian al pieirii, stăpân al hăului, gardian infernal: detectați automat.",
+	["Trefferanzahl zeigen (x12)"] = "Arată nr. de lovituri (x12)",
+	["Zusammenfassen über"] = "Combină timp de",
 }
 
 P.LOC.trTR = {
@@ -1709,6 +1723,8 @@ P.LOC.trTR = {
 	["Seelenverbindung (Leerwandler)"] = "Ruh Bağı (voidwalker)",
 	["Dämonische Vorherrschaft"] = "Şeytani Üstünlük",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Infernal, Doomguard, Pit Lord, Felguard: otomatik algılanır.",
+	["Trefferanzahl zeigen (x12)"] = "İsabet sayısını göster (x12)",
+	["Zusammenfassen über"] = "Birleştirme süresi",
 }
 
 P.LOC.ruRU = {
@@ -1922,6 +1938,8 @@ P.LOC.ruRU = {
 	["Seelenverbindung (Leerwandler)"] = "Связка души (демон Бездны)",
 	["Dämonische Vorherrschaft"] = "Демоническое превосходство",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Инфернал, страж ужаса, владыка преисподней, страж Скверны: определяются сами.",
+	["Trefferanzahl zeigen (x12)"] = "Показывать число попаданий (x12)",
+	["Zusammenfassen über"] = "Объединять в течение",
 }
 
 P.LOC.ukUA = {
@@ -2135,6 +2153,8 @@ P.LOC.ukUA = {
 	["Seelenverbindung (Leerwandler)"] = "Зв'язок душі (демон Порожнечі)",
 	["Dämonische Vorherrschaft"] = "Демонічна перевага",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "Інфернал, вартовий жаху, володар безодні, скверноварт: визначаються самі.",
+	["Trefferanzahl zeigen (x12)"] = "Показувати кількість влучань (x12)",
+	["Zusammenfassen über"] = "Об'єднувати протягом",
 }
 
 P.LOC.zhCN = {
@@ -2348,6 +2368,8 @@ P.LOC.zhCN = {
 	["Seelenverbindung (Leerwandler)"] = "灵魂链接（虚空行者）",
 	["Dämonische Vorherrschaft"] = "恶魔至尊",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "地狱火、末日守卫、深渊领主、恶魔卫士：自动识别。",
+	["Trefferanzahl zeigen (x12)"] = "显示命中次数 (x12)",
+	["Zusammenfassen über"] = "合并时长",
 }
 
 P.LOC.jaJP = {
@@ -2561,6 +2583,8 @@ P.LOC.jaJP = {
 	["Seelenverbindung (Leerwandler)"] = "ソウルリンク（ヴォイドウォーカー）",
 	["Dämonische Vorherrschaft"] = "デーモンの覇権",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "インファーナル、ドゥームガード、ピットロード、フェルガード：自動で検出。",
+	["Trefferanzahl zeigen (x12)"] = "ヒット数を表示 (x12)",
+	["Zusammenfassen über"] = "まとめる時間",
 }
 
 P.LOC.koKR = {
@@ -2774,6 +2798,8 @@ P.LOC.koKR = {
 	["Seelenverbindung (Leerwandler)"] = "영혼의 고리 (보이드워커)",
 	["Dämonische Vorherrschaft"] = "악마의 패권",
 	["Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt."] = "지옥불정령, 파멸의 수호병, 구렁텅이 군주, 지옥수호병: 자동 감지.",
+	["Trefferanzahl zeigen (x12)"] = "적중 횟수 표시 (x12)",
+	["Zusammenfassen über"] = "합산 시간",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

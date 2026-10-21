@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.64
+- Damage numbers: merged hits now show how often they hit, e.g. `238.3k x37` – the sum of all hits of one ability on one enemy.
+- A merged number keeps collecting hits for up to 1.5 sec (*Merge over* under `/pui` → Damage numbers, 0.25–3 sec) and stays on screen while hits keep coming. The count can be switched off with *Show hit count*.
+
 ## 0.9.63
 - Totems & pets for the new warlock talents (AS 0.105): tick *Demonic Familiar* (imp), *Soul Devourer* (felhunter), *Soul Link* (voidwalker) and *Demonic Supremacy* under `/pui` → General.
 - Infernal, Doomguard, Pit Lord and Felguard show up on their own while they are out, with the seconds they have left under the icon (read from the damage meter). With Demonic Supremacy, Infernal and Doomguard stay for good and imp, felhunter and voidwalker are hidden.
