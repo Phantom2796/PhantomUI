@@ -389,11 +389,7 @@ local function Update()
 				s.shownN = def.n
 				s.count:SetText(def.n)
 			end
-			local secs = left and math.ceil(left) or nil
-			if s.shownT ~= secs then
-				s.shownT = secs
-				s.timer:SetText(secs and (secs .. "s") or "")
-			end
+			-- nur die Anzahl zeigen; die Restzeit steht im Tooltip
 			s.name = def.label and P.T(def.label) or (spells[def.key] and spells[def.key].spell) or def.key
 			s.duration, s.soon = def.proc, left and (now + left) or nil
 			shown = shown + 1

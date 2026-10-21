@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.68
+- Totems & pets: no more seconds under the summoned demons – just the icon with the count. The time left is still in the tooltip.
+
 ## 0.9.67
 - Damage number fan: the start point is now exactly on your hero (the screen centre) – 0.9.66 put it up and to the left.
 
