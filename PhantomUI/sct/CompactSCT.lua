@@ -919,8 +919,69 @@ local function NewText()
 	return { frame = f, label = label, icon = icon, iconBack = iconBack }
 end
 
+-- Faecher: drei Bahnen ueber dem Helden (links schraeg, Mitte gerade nach
+-- oben, rechts schraeg). Jede Bahn ist ein Stapel: eine neue Zahl setzt sich
+-- unten an den Anfang und schiebt die aelteren auf ihrer Bahn weiter nach
+-- aussen, so ueberlappt nichts. Links buendig nach rechts, rechts nach links,
+-- damit sich die Bahnen nicht in die Quere kommen.
+local LANES = {
+	{ x = -58, y = 26, tan = -1.19, align = "RIGHT" },  -- ca. 50 Grad nach links
+	{ x = 0, y = 34, tan = 0, align = "CENTER" },
+	{ x = 58, y = 26, tan = 1.19, align = "LEFT" },
+}
+local LANE_MAX = 8
+local laneTexts = { {}, {}, {} }
+local laneTurn = 0
+
+-- Startpunkt = dein Held. Die Spielkamera zeigt ihn genau in der
+-- Bildschirmmitte. Im Ankermodus (/pui unlock) verschiebbar.
+local fanAnchor
+if PhantomUI and PhantomUI.RegisterMover then
+	fanAnchor = CreateFrame("Frame", "PhantomUI_SCTFan", UIParent)
+	fanAnchor:SetWidth(36)
+	fanAnchor:SetHeight(36)
+	-- neuer Schluessel: ein gespeicherter Platz vom falschen Standard (0.9.66) zaehlt nicht
+	PhantomUI.RegisterMover("sctfan2", fanAnchor, "Schadenszahlen-Fächer", function(f)
+		f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+	end)
+end
+
+local function FanAnchor()
+	if fanAnchor and fanAnchor.GetCenter then
+		local x, y = fanAnchor:GetCenter()
+		if x and y then
+			local ratio = (fanAnchor:GetEffectiveScale() or 1) / (UIParent:GetEffectiveScale() or 1)
+			return x * ratio, y * ratio
+		end
+	end
+	return UIParent:GetWidth() / 2, UIParent:GetHeight() / 2
+end
+
+-- naechste Bahn: reihum links, Mitte, rechts
+local function FanLane()
+	laneTurn = math.mod(laneTurn, 3) + 1
+	return laneTurn
+end
+
+-- Zahl aus ihrer Bahn nehmen (beim Verschwinden)
+local function LeaveLane(t)
+	local list = t.lane and laneTexts[t.lane]
+	if list then
+		for k = 1, table.getn(list) do
+			if list[k] == t then
+				table.remove(list, k)
+				break
+			end
+		end
+	end
+	t.lane = nil
+end
+
 local function Release(index)
 	local t = table.remove(active, index)
+	if t.lane then
+		LeaveLane(t)
+	end
 	t.frame:Hide()
 	t.origin = nil
 	table.insert(pool, t)
@@ -949,59 +1010,6 @@ local function ColorFor(info)
 	return SCHOOL_COLORS[info.school] or SCHOOL_COLORS.Physical
 end
 
--- Faecher: drei Bereiche (links, Mitte, rechts) mit je drei Bahnen, Winkel in
--- Grad von senkrecht nach oben. Neue Zahlen starten am Helden und fliegen auf
--- ihrer Bahn nach aussen: je aelter, desto weiter oben.
-local FAN = {
-	{ -64, -52, -40 },
-	{ -12, 0, 12 },
-	{ 40, 52, 64 },
-}
-local FAN_START = 14
-local laneUse = {}
-local sectorTurn = 0
-
--- Startpunkt = dein Held. Die Spielkamera zeigt ihn genau in der
--- Bildschirmmitte. Im Ankermodus (/pui unlock) verschiebbar.
-local fanAnchor
-if PhantomUI and PhantomUI.RegisterMover then
-	fanAnchor = CreateFrame("Frame", "PhantomUI_SCTFan", UIParent)
-	fanAnchor:SetWidth(36)
-	fanAnchor:SetHeight(36)
-	-- neuer Schluessel: ein gespeicherter Platz vom falschen Standard (0.9.66) zaehlt nicht
-	PhantomUI.RegisterMover("sctfan2", fanAnchor, "Schadenszahlen-Fächer", function(f)
-		f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-	end)
-end
-
-local function FanAnchor()
-	if fanAnchor and fanAnchor.GetCenter then
-		local x, y = fanAnchor:GetCenter()
-		if x and y then
-			local ratio = (fanAnchor:GetEffectiveScale() or 1) / (UIParent:GetEffectiveScale() or 1)
-			return x * ratio, y * ratio
-		end
-	end
-	return UIParent:GetWidth() / 2, UIParent:GetHeight() / 2
-end
-
--- naechste Bahn: Bereiche reihum, darin die am laengsten freie Bahn
-local function FanLane(now)
-	sectorTurn = math.mod(sectorTurn, 3) + 1
-	local lanes = FAN[sectorTurn]
-	local best, bestAt
-	for i = 1, 3 do
-		local key = sectorTurn * 10 + i
-		local at = laneUse[key] or 0
-		if not best or at < bestAt then
-			best, bestAt = i, at
-		end
-	end
-	laneUse[sectorTurn * 10 + best] = now
-	local a = lanes[best] * 0.017453
-	-- etwas breiter als hoch, damit links und rechts mehr Platz haben
-	return math.sin(a) * 1.25, math.cos(a)
-end
 
 -- Summe, bei mehreren Treffern mit Anzahl dahinter: "238.3k x37"
 local function LabelText(amount, hits)
@@ -1023,9 +1031,25 @@ local function Show(info, x, y, origin)
 	t.label:SetTextColor(color[1], color[2], color[3])
 
 	local texture = db.icons and IconFor(info)
+	local lane = db.layout == "fan" and FanLane() or nil
+	local align = lane and LANES[lane].align or "CENTER"
 	t.label:ClearAllPoints()
 	t.icon:ClearAllPoints()
-	if texture then
+	if texture and align == "RIGHT" then
+		-- linke Bahn: Zahl endet am Bahnpunkt, Symbol davor
+		t.label:SetPoint("RIGHT", t.frame, "CENTER", 0, 0)
+		t.icon:SetPoint("RIGHT", t.label, "LEFT", -4, 0)
+		t.icon:SetTexture(texture)
+		t.icon:Show()
+		t.iconBack:Show()
+	elseif texture and align == "LEFT" then
+		-- rechte Bahn: Symbol beginnt am Bahnpunkt, Zahl dahinter
+		t.icon:SetPoint("LEFT", t.frame, "CENTER", 0, 0)
+		t.label:SetPoint("LEFT", t.icon, "RIGHT", 4, 0)
+		t.icon:SetTexture(texture)
+		t.icon:Show()
+		t.iconBack:Show()
+	elseif texture then
 		local shift = ((t.size or db.size) + 4) / 2
 		t.label:SetPoint("CENTER", t.frame, "CENTER", shift, 0)
 		t.icon:SetPoint("RIGHT", t.label, "LEFT", -4, 0)
@@ -1033,16 +1057,29 @@ local function Show(info, x, y, origin)
 		t.icon:Show()
 		t.iconBack:Show()
 	else
-		t.label:SetPoint("CENTER", t.frame, "CENTER", 0, 0)
+		t.label:SetPoint(align, t.frame, "CENTER", 0, 0)
 		t.icon:Hide()
 		t.iconBack:Hide()
 	end
 
 	t.origin = origin
 	t.baseX, t.baseY = x, y
-	t.fan = db.layout == "fan"
-	if t.fan then
-		t.dirX, t.dirY = FanLane(GetTime())
+	t.fan = lane ~= nil
+	if lane then
+		-- unten in die Bahn setzen; ist sie voll, verschwindet die aelteste
+		local list = laneTexts[lane]
+		table.insert(list, 1, t)
+		t.lane = lane
+		t.curV = 0
+		if table.getn(list) > LANE_MAX then
+			local oldest = list[table.getn(list)]
+			for k = 1, table.getn(active) do
+				if active[k] == oldest then
+					Release(k)
+					break
+				end
+			end
+		end
 	end
 	local spread = db.spread or 1
 	t.jitterX = (math.random() - 0.5) * 60 * spread
@@ -1071,6 +1108,16 @@ local POP_TIME = 0.12
 
 
 local function UpdateTexts(elapsed)
+	-- Faecher: Zielhoehe jeder Zahl in ihrer Bahn (die neueste ganz unten)
+	for l = 1, 3 do
+		local list = laneTexts[l]
+		local v = 0
+		for k = 1, table.getn(list) do
+			local t = list[k]
+			t.targetV = v
+			v = v + (t.size or db.size) + 5
+		end
+	end
 	for i = table.getn(active), 1, -1 do
 		local t = active[i]
 		-- solange weitere Treffer einlaufen, bleibt die Zahl stehen
@@ -1086,12 +1133,13 @@ local function UpdateTexts(elapsed)
 		else
 			local eased = 1 - (1 - p) * (1 - p)
 			local x, y
-			if t.fan then
-				-- gleichmaessig und gemaechlich nach aussen, nur am Anfang ein
-				-- kleiner Schubs, damit die Zahl vom Helden wegkommt
-				local r = FAN_START + (db.fanReach or 240) * (0.15 * eased + 0.85 * p)
-				x = t.baseX + t.dirX * r
-				y = t.baseY + t.dirY * r
+			if t.fan and t.lane then
+				-- weich auf den Platz im Stapel gleiten, dazu langsam nach aussen
+				local L = LANES[t.lane]
+				t.curV = (t.curV or 0) + ((t.targetV or 0) - (t.curV or 0)) * math.min(1, elapsed * 12)
+				local v = t.curV + (db.fanReach or 240) * 0.25 * p
+				x = t.baseX + L.x + L.tan * v
+				y = t.baseY + L.y + v
 			else
 				-- Am lebenden Mob mitlaufen.
 				local o = t.origin

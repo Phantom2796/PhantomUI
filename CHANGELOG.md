@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.69
+- Damage number fan rebuilt: three lanes above your hero – up-left, straight up, up-right. Each lane is a stack: a new number takes the bottom spot and pushes the older ones further out along the lane, so numbers no longer overlap. The left lane is right-aligned and the right lane left-aligned so the lanes stay apart. At most 8 numbers per lane; the oldest goes first.
+
 ## 0.9.68
 - Totems & pets: no more seconds under the summoned demons – just the icon with the count. The time left is still in the tooltip.
 
