@@ -72,7 +72,8 @@ local function NeckWithLegendaries(class, items)
 			local t = tmpl[lang] or tmpl.enUS or "Legendary amulet · remakes {spell}"
 			names[lang] = (string.gsub(t, "{spell}", spell))
 		end
-		table.insert(list, { id = "legendary_" .. sp.id, icon = sp.icon, names = names, q = 5, legendary = true })
+		table.insert(list, { id = "legendary_" .. sp.id, icon = sp.icon, names = names, q = 5, legendary = true,
+			dyn = sp.dyn, dynNames = sp.names })
 	end
 	legendaryCache[class] = list
 	return list
@@ -100,6 +101,19 @@ local function Ability(class, id, cat)
 		end
 	end
 	return nil
+end
+
+-- Symbol; bei neuen Zaubern (dyn) das echte von der Aktionsleiste, sobald da
+local function IconPath(a)
+	if a.dyn and PhantomUI.ActionIconFor then
+		local names = a.dynNames or a.names or {}
+		local lang = PhantomUI_Lang and PhantomUI_Lang() or "enUS"
+		local tex = PhantomUI.ActionIconFor(names[lang] or names.enUS)
+		if tex then
+			return tex
+		end
+	end
+	return "Interface\\Icons\\" .. a.icon
 end
 
 local function NameOf(a)
@@ -329,7 +343,7 @@ local function RefreshEditor()
 		b.desc = DescOf(a)
 		b.q = a.q
 		b.cat = editorCat
-		b.icon:SetTexture("Interface\\Icons\\" .. a.icon)
+		b.icon:SetTexture(IconPath(a))
 		local idx = IndexIn(plan, a.id)
 		if idx then
 			b.edge:SetVertexColor(P.ACCENT[1], P.ACCENT[2], P.ACCENT[3], 1)
@@ -584,7 +598,7 @@ function RefreshWindow()
 					b:ClearAllPoints()
 					b:SetPoint("TOPLEFT", window, "TOPLEFT", (col - 1) * step, -rows * step)
 				end
-				local iconPath = a and ("Interface\\Icons\\" .. a.icon) or "Interface\\Icons\\INV_Misc_QuestionMark"
+				local iconPath = a and IconPath(a) or "Interface\\Icons\\INV_Misc_QuestionMark"
 				if b.iconPath ~= iconPath then
 					b.iconPath = iconPath
 					b.icon:SetTexture(iconPath)
@@ -767,4 +781,40 @@ function PhantomUI.GearDebug()
 		local link = GetInventoryItemLink and GetInventoryItemLink("player", slot)
 		PhantomUI.Print(slot .. ": " .. (link and string.gsub(link, "|", "||") or "-"))
 	end
+end
+
+-- Symbol eines Zaubers von der Aktionsleiste holen (fuer neue Zauber, deren
+-- Symbol PhantomUI noch nicht kennt): unsichtbarer Tooltip liest die Namen.
+local actionIcons, actionScanAt = {}, -100
+local actionTip
+function PhantomUI.ActionIconFor(name)
+	if not name or not GetActionTexture then
+		return nil
+	end
+	if actionIcons[name] then
+		return actionIcons[name]
+	end
+	local now = GetTime and GetTime() or 0
+	if now - actionScanAt < 5 then
+		return nil
+	end
+	actionScanAt = now
+	if not actionTip then
+		actionTip = CreateFrame("GameTooltip", "PhantomUI_ActionScan", nil, "GameTooltipTemplate")
+	end
+	for slot = 1, 120 do
+		local tex = GetActionTexture(slot)
+		if tex then
+			actionTip:SetOwner(WorldFrame, "ANCHOR_NONE")
+			actionTip:ClearLines()
+			actionTip:SetAction(slot)
+			local fs = getglobal("PhantomUI_ActionScanTextLeft1")
+			local n = fs and fs:GetText()
+			if n and n ~= "" then
+				actionIcons[n] = tex
+			end
+		end
+	end
+	actionTip:Hide()
+	return actionIcons[name]
 end

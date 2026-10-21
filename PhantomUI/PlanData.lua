@@ -98,7 +98,7 @@ PhantomUI_PlanData = {
 	},
 	WARLOCK = {
 		-- seit AS 0.104: neuer Zauber (Symbol vorlaeufig, bis die Spieldaten da sind)
-		{ id = "demonic_empowerment", icon = "Spell_Shadow_UnholyFrenzy", names = { enUS = "Demonic Empowerment", deDE = "Dämonische Ermächtigung", frFR = "Renforcement démoniaque", esES = "Potenciación demoníaca", ptBR = "Empoderamento Demoníaco", ruRU = "Демоническое усиление", plPL = "Demoniczne Wzmocnienie" } },
+		{ id = "demonic_empowerment", icon = "Spell_Shadow_UnholyFrenzy", dyn = true, names = { enUS = "Demonic Empowerment", deDE = "Dämonische Ermächtigung", frFR = "Renforcement démoniaque", esES = "Potenciación demoníaca", ptBR = "Empoderamento Demoníaco", ruRU = "Демоническое усиление", plPL = "Demoniczne Wzmocnienie" } },
 		{ id = "shadow_bolt", icon = "Spell_Shadow_ShadowBolt", names = { enUS = "Shadow Bolt", plPL = "Pocisk Cienia", deDE = "Schattenblitz", ptBR = "Seta Sombria", esES = "Descarga de las Sombras", frFR = "Trait de l'ombre", trTR = "Shadow Bolt", ruRU = "Стрела Тьмы", zhCN = "暗影箭", koKR = "어둠의 화살" } },
 		{ id = "corruption", icon = "Spell_Shadow_AbominationExplosion", names = { enUS = "Corruption", plPL = "Zepsucie", deDE = "Verderbnis", ptBR = "Corrupção", esES = "Corrupción", frFR = "Corruption", trTR = "Corruption", ruRU = "Порча", zhCN = "腐蚀术", koKR = "부패" } },
 		{ id = "immolate", icon = "Spell_Fire_Immolation", names = { enUS = "Immolate", plPL = "Podpalenie", deDE = "Feuerbrand", ptBR = "Imolar", esES = "Inmolar", frFR = "Immolation", trTR = "Immolate", ruRU = "Жертвенный огонь", zhCN = "献祭", koKR = "제물" } },

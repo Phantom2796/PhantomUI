@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.62
+- Icons: Demonic Empowerment takes its real icon straight from your action bar (plan and meter); the new demons (Infernal, Doomguard, Pit Lord, Felguard, Imp, Felhunter, Voidwalker, Succubus) have icons in the meter.
+
 ## 0.9.61
 - Plan: new warlock spell Demonic Empowerment (AS 0.104).
 - Totems: at most 40 of each kind, like the game (AS 0.105).

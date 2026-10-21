@@ -746,6 +746,20 @@ local EXTRA_ICONS = {
 	["Sukkubus"] = "Spell_Shadow_SummonSuccubus",
 	["Teufelsjäger"] = "Spell_Shadow_SummonFelHunter",
 	["Höllenbestie"] = "Spell_Shadow_SummonInfernal",
+	-- [Nobby] Dämonen seit AS 0.104/0.105 (eigene Zeilen im Meter)
+	["Infernal"] = "Spell_Shadow_SummonInfernal",
+	["Doomguard"] = "Spell_Shadow_AntiMagicShell",
+	["Verdammniswache"] = "Spell_Shadow_AntiMagicShell",
+	["Pit Lord"] = "Spell_Shadow_ShadowPact",
+	["Grubenlord"] = "Spell_Shadow_ShadowPact",
+	["Felguard"] = "Spell_Shadow_Metamorphosis",
+	["Imp"] = "Spell_Shadow_SummonImp",
+	["Felhunter"] = "Spell_Shadow_SummonFelHunter",
+	["Voidwalker"] = "Spell_Shadow_SummonVoidWalker",
+	["Succubus"] = "Spell_Shadow_SummonSuccubus",
+	["Felseeker"] = "Spell_Fire_SoulBurn",
+	["Soul Link"] = "Spell_Shadow_GatherShadows",
+	["Seelenverbindung"] = "Spell_Shadow_GatherShadows",
 	["Pets"] = "Ability_Hunter_BeastCall",
 	["Einbruch der Nacht"] = "Spell_Shadow_Twilight",
 	["Teufelswache beschwören"] = "Spell_Shadow_Metamorphosis",
@@ -875,6 +889,13 @@ local function iconFor(name)
 	for i = 1, table.getn(PREFIX_ICONS) do
 		if string.find(name, PREFIX_ICONS[i][1]) then
 			return "Interface\\Icons\\" .. PREFIX_ICONS[i][2]
+		end
+	end
+	-- [Nobby] neue Zauber: Symbol direkt von der Aktionsleiste des Spiels
+	if PhantomUI and PhantomUI.ActionIconFor then
+		local tex = PhantomUI.ActionIconFor(name)
+		if tex then
+			return tex
 		end
 	end
 	return QUESTION
