@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.79
+- Abilities at your hero: every icon equally bright; icons on cooldown are no longer darkened on top of the clock sweep (they looked almost black).
+
 ## 0.9.78
 - Abilities at your hero: the clock sweep is drawn a little larger so it covers the whole icon.
 

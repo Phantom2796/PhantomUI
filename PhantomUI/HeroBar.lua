@@ -110,15 +110,13 @@ local function Update()
 			local left = (start and duration and start > 0 and duration > 1.5) and (start + duration - GetTime()) or 0
 			local a = frame.iconAlpha or 0.5
 			local dim = left > 0
-			if b.dimmed ~= dim then
-				b.dimmed = dim
-				b.icon:SetAlpha(dim and a * 0.5 or a)
+			-- alle Symbole gleich hell; die Abklingzeit zeigt nur der Uhrzeiger
+			-- (zusaetzliches Abdunkeln machte sie fast schwarz)
+			if b.dimmed ~= a then
+				b.dimmed = a
+				b.icon:SetAlpha(a)
 				b.edge:SetAlpha(a)
-				if dim then
-					b.icon:SetVertexColor(0.45, 0.45, 0.45)
-				else
-					b.icon:SetVertexColor(1, 1, 1)
-				end
+				b.icon:SetVertexColor(1, 1, 1)
 			end
 			-- keine Zahlen, nur Uhrzeiger und Abdunkeln
 			local txt = ""
