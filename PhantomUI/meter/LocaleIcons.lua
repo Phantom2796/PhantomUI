@@ -7200,22 +7200,49 @@ function PhantomUI_Lang()
 		return saved or "enUS"
 	end
 	lastTry = now
-	local lines = AZS_GetMeter and AZS_GetMeter()
-	if type(lines) ~= "table" or table.getn(lines) == 0 then
+	-- Namen, die das Spiel in seiner Sprache meldet: Schadensmeter und die
+	-- Faehigkeiten des Laufs (die gibt es schon ab der ersten Sekunde)
+	local lines = {}
+	local meter = AZS_GetMeter and AZS_GetMeter()
+	if type(meter) == "table" then
+		for i = 1, table.getn(meter) do
+			if meter[i].name then
+				table.insert(lines, { name = meter[i].name })
+			end
+		end
+	end
+	if type(AZS_SPELLS) == "table" then
+		for i = 1, table.getn(AZS_SPELLS) do
+			local sp = AZS_SPELLS[i]
+			if type(sp) == "table" and type(sp.spell) == "string" and sp.spell ~= "" then
+				table.insert(lines, { name = sp.spell })
+			end
+		end
+	end
+	if table.getn(lines) == 0 then
 		return saved or "enUS"
 	end
+	-- je Sprache zaehlen, wie viele Namen eindeutig zu ihr passen (gleich
+	-- geschriebene Namen wie "Infernal" zaehlen nicht)
 	local best, bestCount = nil, 0
-	local lang, map
+	local enCount = 0
+	local de = PhantomUI_SpellLocale.deDE or {}
+	for i = 1, table.getn(lines) do
+		local n = lines[i].name
+		if de[n] and de[n] ~= n then
+			enCount = enCount + 1
+		end
+	end
 	for lang, map in pairs(PhantomUI_SpellLocale) do
 		local values = {}
-		local en, name
 		for en, name in pairs(map) do
-			values[name] = true
+			if name ~= en then
+				values[name] = true
+			end
 		end
 		local count = 0
-		local i
 		for i = 1, table.getn(lines) do
-			if lines[i].name and values[lines[i].name] then
+			if values[lines[i].name] then
 				count = count + 1
 			end
 		end
@@ -7223,14 +7250,14 @@ function PhantomUI_Lang()
 			best, bestCount = lang, count
 		end
 	end
+	if enCount >= 2 and enCount > bestCount then
+		best, bestCount = "enUS", enCount
+	end
 	local found
 	if best and bestCount >= 2 then
 		found = best
 	else
 		found = ScriptLang(lines)
-		if not found and table.getn(lines) >= 4 then
-			found = "enUS"
-		end
 	end
 	if found then
 		detected = found
@@ -7241,6 +7268,10 @@ function PhantomUI_Lang()
 			PhantomUI_TrimLanguages(found)
 		end
 		return found
+	end
+	-- erst ein passender Name: schon mal diese Sprache nehmen, aber weiter pruefen
+	if best and bestCount == 1 and enCount == 0 then
+		return best
 	end
 	return saved or "enUS"
 end

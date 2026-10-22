@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.83
+- Fixed: game texts (run stats, item names, plan) sometimes came out in English in a German (or other) game while PhantomUI's own texts were right. The game language is now recognised from your run's abilities right from the first second, not only from the damage meter, and a few unknown names no longer count as "English".
+- All 113 ability names in all 14 game languages straight from the game data (Wrath, Moonfire, Faerie Fire and more were missing; Czech, Romanian, Ukrainian and Japanese now included).
+
 ## 0.9.82
 - Abilities at your hero: the clock sweep is fitted like on the action bar (sized to the icon, not scaled), which removes the seams at 6 and 9 o'clock.
 
