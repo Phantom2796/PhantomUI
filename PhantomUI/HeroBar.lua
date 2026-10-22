@@ -42,7 +42,8 @@ local function Layout()
 		b:ClearAllPoints()
 		b:SetPoint("CENTER", frame, "CENTER", SPOTS[i][1] * s, SPOTS[i][2] * s)
 		if b.cd then
-			b.cd:SetScale(math.max(0.1, (s - 2) / 36))
+			-- etwas groesser als das Symbol: das Modell zeichnet seinen Schatten mit Rand
+			b.cd:SetScale(math.max(0.1, (s + 3) / 36))
 		end
 		b.left:SetFont(P.Font(), math.max(9, math.floor(s * 0.6)), "THICKOUTLINE")
 		b.dimmed = nil
