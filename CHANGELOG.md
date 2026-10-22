@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.89
+- Buffs: after resizing the buffs the clock sweep turned around the wrong point; the clocks are now rebuilt whenever the size changes.
+
 ## 0.9.88
 - Buffs: the clock sweep sat off-centre after a new run or loading screen; it is now laid exactly on the icon and rebuilt fresh at every new run.
 

@@ -223,11 +223,17 @@ local function Layout(force)
 	if not force and kb == lastBuffs and kd == lastDebuffs and size == lastSize then
 		return
 	end
+	-- Groesse geaendert: Uhren neu anlegen, sonst behaelt das Modell seine alte
+	-- Groesse im Kopf und dreht sich nicht mehr um die Mitte
+	local resized = lastSize and size ~= lastSize
 	lastBuffs, lastDebuffs, lastSize = kb, kd, size
 	container:SetWidth(10 * size)
 	container:SetHeight(2 * size + 4)
 	Row(BUFFS, 0)
 	Row(DEBUFFS, size + 4)
+	if resized then
+		FreshClocks()
+	end
 end
 
 -- Uhr, Zahl und Debuff-Farbe nachfuehren (5x pro Sekunde).
