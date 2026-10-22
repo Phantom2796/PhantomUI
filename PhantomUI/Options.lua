@@ -313,11 +313,6 @@ local function PageBar(page)
 	y = Slider(page, y, "Innenrand", { "bar", "padding" }, 0, 12, 1, "%d px")
 	y = Slider(page, y, "Hintergrund", { "bar", "bgAlpha" }, 0, 1, 0.05, "%.2f")
 	y = y - 6
-	-- Kopie der Faehigkeiten um den Helden (nur Anzeige)
-	Check(page, 16, y, "Fähigkeiten am Helden", { "herobar", "enabled" })
-	y = y - ROW - 6
-	y = Slider(page, y, "Sichtbarkeit", { "herobar", "alpha" }, 0.1, 1, 0.05, "%.2f")
-	y = y - 6
 	Button(page, 16, y, INNER, "Aktionsleiste zurücksetzen", function()
 		P.ResetSection("bar")
 		RefreshAll()

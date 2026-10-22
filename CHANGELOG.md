@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.86
+- Removed the abilities at your hero again (the action bar is unchanged).
+
 ## 0.9.85
 - Abilities at your hero: after a new run or a loading screen the clock sweeps only drew a quarter circle; they are now rebuilt fresh at every new run.
 

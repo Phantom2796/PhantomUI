@@ -179,7 +179,6 @@ local DEFAULTS = {
 		size = 30,
 	},
 	totems = { enabled = true, size = 32, talents = {} },
-	herobar = { enabled = true, alpha = 0.7, size = 18 },
 	minimap = {
 		enabled = true,
 		size = 180,
