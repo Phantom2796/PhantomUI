@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.76
+- Abilities at your hero: slots 3 and 6 sit a little further out and down, the racial lower beneath your hero – still mirrored.
+
 ## 0.9.75
 - Abilities at your hero: easier to read cooldowns – only the icons are see-through now, the clock sweep stays fully visible; an icon on cooldown turns darker and shows its seconds left in big numbers.
 

@@ -10,11 +10,11 @@ local SLOTS = { 1, 2, 3, 4, 5, 6, 12 }
 -- Lage je Symbol in Symbolgroessen, ab dem Helden (x rechts, y oben): zwei
 -- Halbmonde, die den Helden von unten umfassen. Links 1-3 von Hueftehoehe
 -- nach unten, rechts 4-6 gespiegelt, die 7. ganz unten in der Mitte; alle
--- im gleichen Abstand (30 Grad) auf einem Kreis.
+-- spiegelgleich; 3 und 6 etwas weiter aussen/unten, die 7. tiefer darunter.
 local SPOTS = {
-	{ -2.90, 0.00 }, { -2.51, -1.45 }, { -1.45, -2.51 },
-	{ 2.90, -0.00 }, { 2.51, -1.45 }, { 1.45, -2.51 },
-	{ -0.00, -2.90 },
+	{ -2.90, 0.00 }, { -2.51, -1.45 }, { -2.10, -3.00 },
+	{ 2.90, -0.00 }, { 2.51, -1.45 }, { 2.10, -3.00 },
+	{ 0, -4.20 },
 }
 
 local frame
