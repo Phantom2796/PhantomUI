@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.82
+- Abilities at your hero: the clock sweep is fitted like on the action bar (sized to the icon, not scaled), which removes the seams at 6 and 9 o'clock.
+
 ## 0.9.81
 - Abilities at your hero: the clock sweep no longer sticks out past the icon.
 

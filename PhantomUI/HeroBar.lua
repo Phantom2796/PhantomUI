@@ -45,7 +45,7 @@ local function Layout()
 		if b.cd then
 			-- Das Uhr-Modell des Classic-Clients: drei Arten, es aufs Symbol zu
 			-- legen (/puicd 1-3), weil es je nach Client anders zeichnet.
-			local mode = db.cdMode or 1
+			local mode = db.cdMode or 2
 			b.cd:ClearAllPoints()
 			if mode == 2 then
 				b.cd:SetScale(1)
@@ -147,6 +147,12 @@ end
 local function Init()
 	-- neuer Standard 0.7 (0.9.77): alte 0.5 einmal anheben
 	local hb = P.DB().herobar
+	-- Uhr wie auf der Aktionsleiste: nicht skaliert, sondern auf das Symbol
+	-- gezogen (Skalieren liess Naehte bei 6 und 9 Uhr stehen)
+	if not hb.cdNoScale then
+		hb.cdNoScale = true
+		hb.cdMode = nil
+	end
 	if not hb.alpha07 then
 		hb.alpha07 = true
 		if not hb.alpha or hb.alpha == 0.5 then
@@ -197,5 +203,5 @@ SlashCmdList["PHANTOMHEROCD"] = function(msg)
 			Layout()
 		end
 	end
-	P.Print(P.L("Uhrzeiger-Art: ", "Cooldown sweep mode: ") .. tostring(P.DB().herobar.cdMode or 1) .. "  (/puicd 1, 2, 3)")
+	P.Print(P.L("Uhrzeiger-Art: ", "Cooldown sweep mode: ") .. tostring(P.DB().herobar.cdMode or 2) .. "  (/puicd 1, 2, 3)")
 end
