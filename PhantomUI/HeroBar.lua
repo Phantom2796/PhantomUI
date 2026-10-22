@@ -40,10 +40,23 @@ local function Layout()
 		b:SetWidth(s)
 		b:SetHeight(s)
 		b:ClearAllPoints()
-		b:SetPoint("CENTER", frame, "CENTER", SPOTS[i][1] * s, SPOTS[i][2] * s)
+		-- ganze Pixel, sonst sitzt das Uhr-Modell leicht schief auf dem Symbol
+		b:SetPoint("CENTER", frame, "CENTER", math.floor(SPOTS[i][1] * s + 0.5), math.floor(SPOTS[i][2] * s + 0.5))
 		if b.cd then
-			-- etwas groesser als das Symbol: das Modell zeichnet seinen Schatten mit Rand
-			b.cd:SetScale(math.max(0.1, (s + 3) / 36))
+			-- Das Uhr-Modell des Classic-Clients: drei Arten, es aufs Symbol zu
+			-- legen (/puicd 1-3), weil es je nach Client anders zeichnet.
+			local mode = db.cdMode or 1
+			b.cd:ClearAllPoints()
+			if mode == 2 then
+				b.cd:SetScale(1)
+				b.cd:SetAllPoints(b)
+			else
+				local size = mode == 3 and s or (s + 3)
+				b.cd:SetScale(math.max(0.1, size / 36))
+				b.cd:SetWidth(36)
+				b.cd:SetHeight(36)
+				b.cd:SetPoint("CENTER", b, "CENTER", 0, 0)
+			end
 		end
 		b.left:SetFont(P.Font(), math.max(9, math.floor(s * 0.6)), "THICKOUTLINE")
 		b.dimmed = nil
@@ -173,3 +186,16 @@ local function Init()
 end
 
 P.OnInit(Init)
+
+-- /puicd 1|2|3: Art des Uhrzeigers ausprobieren (wirkt sofort)
+SLASH_PHANTOMHEROCD1 = "/puicd"
+SlashCmdList["PHANTOMHEROCD"] = function(msg)
+	local n = tonumber(msg)
+	if n and n >= 1 and n <= 3 then
+		P.DB().herobar.cdMode = n
+		if frame then
+			Layout()
+		end
+	end
+	P.Print(P.L("Uhrzeiger-Art: ", "Cooldown sweep mode: ") .. tostring(P.DB().herobar.cdMode or 1) .. "  (/puicd 1, 2, 3)")
+end
