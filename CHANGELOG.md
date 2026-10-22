@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.84
+- Damage meter icons: talents, procs and jewelry now have their icon in every language (2,600+ names added from the game's own translations, e.g. Omen of Clarity / Omen der Klarsicht). The question marks of the last version came from the wrong language detection, which also threw away the German icon names.
+
 ## 0.9.83
 - Fixed: game texts (run stats, item names, plan) sometimes came out in English in a German (or other) game while PhantomUI's own texts were right. The game language is now recognised from your run's abilities right from the first second, not only from the damage meter, and a few unknown names no longer count as "English".
 - All 113 ability names in all 14 game languages straight from the game data (Wrath, Moonfire, Faerie Fire and more were missing; Czech, Romanian, Ukrainian and Japanese now included).
