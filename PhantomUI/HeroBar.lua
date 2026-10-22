@@ -51,7 +51,7 @@ local function Layout()
 				b.cd:SetScale(1)
 				b.cd:SetAllPoints(b)
 			else
-				local size = mode == 3 and s or (s + 3)
+				local size = mode == 3 and (s - 2) or s
 				b.cd:SetScale(math.max(0.1, size / 36))
 				b.cd:SetWidth(36)
 				b.cd:SetHeight(36)

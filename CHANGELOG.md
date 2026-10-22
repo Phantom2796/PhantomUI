@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.81
+- Abilities at your hero: the clock sweep no longer sticks out past the icon.
+
 ## 0.9.80
 - Abilities at your hero: icons sit on whole pixels so the clock sweep lines up with them. `/puicd 1|2|3` switches between three ways of fitting the classic client's clock onto the small icons, live.
 
