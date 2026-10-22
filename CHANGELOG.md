@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.74
+- Abilities at your hero: the cooldown now runs as a clock sweep like on the action bar (the classic client draws it at a fixed 36 px, so it is scaled to the icon size instead of stretched).
+
 ## 0.9.73
 - Abilities at your hero: arranged as two half-moons around your hero – 1–3 on the left, 4–6 mirrored on the right, the racial at the bottom in the middle, evenly spaced on one circle.
 

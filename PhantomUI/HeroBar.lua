@@ -38,6 +38,9 @@ local function Layout()
 		b:SetHeight(s)
 		b:ClearAllPoints()
 		b:SetPoint("CENTER", frame, "CENTER", SPOTS[i][1] * s, SPOTS[i][2] * s)
+		if b.cd then
+			b.cd:SetScale(math.max(0.1, (s - 2) / 36))
+		end
 	end
 end
 
@@ -53,9 +56,13 @@ local function Make(i)
 	b.icon:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
 	b.icon:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
 	-- Abklingzeit wie auf der Leiste (Uhrzeiger-Schatten)
-	local ok, cd = pcall(CreateFrame, "Model", nil, b, "CooldownFrameTemplate")
+	-- Im Classic-Client zeichnet das Cooldown-Modell immer 36 px gross; fuer
+	-- kleinere Symbole wird es skaliert statt gestreckt (sonst kein Uhrzeiger).
+	local ok, cd = pcall(CreateFrame, "Model", "PhantomUI_HeroBarCooldown" .. i, b, "CooldownFrameTemplate")
 	if ok and cd then
-		cd:SetAllPoints(b.icon)
+		cd:SetWidth(36)
+		cd:SetHeight(36)
+		cd:SetPoint("CENTER", b, "CENTER", 0, 0)
 		if cd.EnableMouse then
 			cd:EnableMouse(false)
 		end
