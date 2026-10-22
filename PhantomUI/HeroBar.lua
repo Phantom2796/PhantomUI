@@ -119,10 +119,8 @@ local function Update()
 					b.icon:SetVertexColor(1, 1, 1)
 				end
 			end
+			-- keine Zahlen, nur Uhrzeiger und Abdunkeln
 			local txt = ""
-			if left > 0 then
-				txt = left >= 10 and tostring(math.floor(left + 0.5)) or string.format("%.1f", left)
-			end
 			if b.shownTxt ~= txt then
 				b.shownTxt = txt
 				b.left:SetText(txt)
@@ -135,6 +133,14 @@ local function Update()
 end
 
 local function Init()
+	-- neuer Standard 0.7 (0.9.77): alte 0.5 einmal anheben
+	local hb = P.DB().herobar
+	if not hb.alpha07 then
+		hb.alpha07 = true
+		if not hb.alpha or hb.alpha == 0.5 then
+			hb.alpha = 0.7
+		end
+	end
 	frame = CreateFrame("Frame", "PhantomUI_HeroBar", UIParent)
 	frame:SetFrameStrata("BACKGROUND")
 	frame:EnableMouse(false)

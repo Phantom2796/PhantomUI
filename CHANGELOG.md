@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.77
+- Abilities at your hero: opacity 0.7 by default (0.5 is raised once), no seconds on the icons any more – just the clock sweep and the darker icon.
+
 ## 0.9.76
 - Abilities at your hero: slots 3 and 6 sit a little further out and down, the racial lower beneath your hero – still mirrored.
 
