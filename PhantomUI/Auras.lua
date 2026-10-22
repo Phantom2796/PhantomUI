@@ -52,29 +52,49 @@ local function Clock(seconds)
 	return tostring(math.ceil(seconds))
 end
 
--- Uhr-Modell (Classic): nach einem Ladebildschirm zeichnet ein schon
--- benutztes Modell schief bzw. nur noch einen Teil. Darum bei jeder neuen
--- Runde frisch anlegen und genau auf das Symbol legen.
+-- Ablaufanzeige: eine dunkle Flaeche, die von oben ueber das Symbol waechst,
+-- je mehr Zeit vergangen ist. Das Uhr-Modell des Classic-Clients drehte sich
+-- nach Groessenaenderungen und Ladebildschirmen nicht mehr um die Mitte.
 local clockButtons = {}
 local function FreshClock(button)
 	if button.puiClock then
 		button.puiClock:Hide()
-		button.puiClock:SetParent(nil)
 		button.puiClock = nil
 	end
-	local ok, cd = pcall(CreateFrame, "Model", nil, button, "CooldownFrameTemplate")
-	if ok and cd then
-		cd:ClearAllPoints()
-		cd:SetAllPoints(button)
-		if cd.EnableMouse then
-			cd:EnableMouse(false)
-		end
-		button.puiClock = cd
+	if not button.puiShade then
+		local f = CreateFrame("Frame", nil, button)
+		f:SetAllPoints(button)
+		f:SetFrameLevel(button:GetFrameLevel() + 1)
+		f.tex = f:CreateTexture(nil, "OVERLAY")
+		f.tex:SetTexture(P.FLAT)
+		f.tex:SetVertexColor(0, 0, 0, 0.6)
+		f.tex:Hide()
+		button.puiShade = f
 		if button.puiHolder then
-			button.puiHolder:SetFrameLevel(cd:GetFrameLevel() + 2)
+			button.puiHolder:SetFrameLevel(f:GetFrameLevel() + 2)
 		end
 	end
 	button.puiStart = nil
+end
+-- Anteil 0..1 der vergangenen Zeit dunkel zeichnen
+local function Shade(button, done)
+	local f = button.puiShade
+	if not f then
+		return
+	end
+	local h = (button:GetHeight() or 0) - 2
+	if not done or done <= 0 or h <= 0 then
+		f.tex:Hide()
+		return
+	end
+	if done > 1 then
+		done = 1
+	end
+	f.tex:ClearAllPoints()
+	f.tex:SetPoint("TOPLEFT", button, "TOPLEFT", 1, -1)
+	f.tex:SetPoint("TOPRIGHT", button, "TOPRIGHT", -1, -1)
+	f.tex:SetHeight(math.max(1, h * done))
+	f.tex:Show()
 end
 local function FreshClocks()
 	for button in pairs(clockButtons) do
@@ -136,11 +156,6 @@ local function Style(entry)
 	button.puiEdge:ClearAllPoints()
 	button.puiEdge:SetAllPoints(button)
 	button.puiTime:SetFont(font, math.max(9, math.floor(size * 0.42)), "OUTLINE")
-	if button.puiClock then
-		button.puiClock:ClearAllPoints()
-		button.puiClock:SetPoint("TOPLEFT", button, "TOPLEFT", 1, -1)
-		button.puiClock:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -1, 1)
-	end
 
 	local icon = getglobal(name .. "Icon")
 	if icon then
@@ -255,20 +270,11 @@ local function TickList(list, now)
 					totals[key] = total
 				end
 				b.puiTime:SetText(Clock(left))
-				if b.puiClock and CooldownFrame_SetTimer then
-					local start = now - (total - left)
-					if not b.puiStart or math.abs(b.puiStart - start) > 0.3 then
-						b.puiStart = start
-						CooldownFrame_SetTimer(b.puiClock, start, total, 1)
-					end
-				end
+				Shade(b, total > 0 and (1 - left / total) or 0)
 			else
 				totals[key] = nil
 				b.puiTime:SetText("")
-				if b.puiClock and b.puiStart then
-					b.puiStart = nil
-					b.puiClock:Hide()
-				end
+				Shade(b, 0)
 			end
 			local r, g, bl = 0, 0, 0
 			if entry.debuff then

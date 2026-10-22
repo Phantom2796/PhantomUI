@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.90
+- Buffs: the classic client's clock model kept turning around the wrong point after resizing, so buffs now show their own run-down instead – a dark shade grows down over the icon as the time passes, always exactly on the icon at any size. The seconds stay as they were.
+
 ## 0.9.89
 - Buffs: after resizing the buffs the clock sweep turned around the wrong point; the clocks are now rebuilt whenever the size changes.
 
