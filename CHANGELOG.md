@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.75
+- Abilities at your hero: easier to read cooldowns – only the icons are see-through now, the clock sweep stays fully visible; an icon on cooldown turns darker and shows its seconds left in big numbers.
+
 ## 0.9.74
 - Abilities at your hero: the cooldown now runs as a clock sweep like on the action bar (the classic client draws it at a fixed 36 px, so it is scaled to the icon size instead of stretched).
 

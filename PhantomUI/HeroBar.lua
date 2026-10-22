@@ -25,7 +25,10 @@ local function Layout()
 	local s = db.size or 18
 	frame:SetWidth(s * 7)
 	frame:SetHeight(s * 10)
-	frame:SetAlpha(db.alpha or 0.5)
+	-- Durchsichtig sind nur die Symbole; Uhrzeiger und Restzeit bleiben voll
+	-- sichtbar, damit man die Abklingzeit auch bei 0.5 gut erkennt.
+	frame:SetAlpha(1)
+	frame.iconAlpha = db.alpha or 0.5
 	-- ein/aus wirkt sofort
 	if db.enabled then
 		frame:Show()
@@ -41,6 +44,8 @@ local function Layout()
 		if b.cd then
 			b.cd:SetScale(math.max(0.1, (s - 2) / 36))
 		end
+		b.left:SetFont(P.Font(), math.max(9, math.floor(s * 0.6)), "THICKOUTLINE")
+		b.dimmed = nil
 	end
 end
 
@@ -68,6 +73,12 @@ local function Make(i)
 		end
 		b.cd = cd
 	end
+	-- Restsekunden mittig, ueber dem Uhrzeiger
+	b.text = CreateFrame("Frame", nil, b)
+	b.text:SetAllPoints(b)
+	b.text:SetFrameLevel(b:GetFrameLevel() + 5)
+	b.left = b.text:CreateFontString(nil, "OVERLAY")
+	b.left:SetPoint("CENTER", b, "CENTER", 1, 0)
 	icons[i] = b
 	return b
 end
@@ -89,6 +100,32 @@ local function Update()
 					b.cdStart, b.cdDur = start, duration
 					CooldownFrame_SetTimer(b.cd, start, duration, enable)
 				end
+			end
+			-- waehrend der Abklingzeit: Symbol dunkler, Sekunden gross darauf
+			local start, duration = 0, 0
+			if GetActionCooldown then
+				start, duration = GetActionCooldown(slot)
+			end
+			local left = (start and duration and start > 0 and duration > 1.5) and (start + duration - GetTime()) or 0
+			local a = frame.iconAlpha or 0.5
+			local dim = left > 0
+			if b.dimmed ~= dim then
+				b.dimmed = dim
+				b.icon:SetAlpha(dim and a * 0.5 or a)
+				b.edge:SetAlpha(a)
+				if dim then
+					b.icon:SetVertexColor(0.45, 0.45, 0.45)
+				else
+					b.icon:SetVertexColor(1, 1, 1)
+				end
+			end
+			local txt = ""
+			if left > 0 then
+				txt = left >= 10 and tostring(math.floor(left + 0.5)) or string.format("%.1f", left)
+			end
+			if b.shownTxt ~= txt then
+				b.shownTxt = txt
+				b.left:SetText(txt)
 			end
 			b:Show()
 		else
