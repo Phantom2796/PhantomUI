@@ -1,5 +1,12 @@
 # PhantomUI – Changelog
 
+## 0.9.71 (for AS 0.108 – 0.110)
+- **Totems & pets** now come straight from the game (AS 0.110): every summon of every class – hunter beasts, treants, spirit wolves, water elemental and every warlock demon including Legion Gate's – with the right count. Two Felguards show "2". No more talent ticks for pets (only Call of the Elements and Totemic Wrath for shaman totems), and the game's own icon is used.
+- **Alerts** use the game's banner events (AS 0.108): bosses, guardians, achievements, opened zones, magnets, caches and runes, in the game's own words in your language, even while the game's banners are hidden. Achievements are gold, zones blue.
+- Damage meter: summons get their icon from the game; Soul Fire is now spelled Soulfire (English and Turkish).
+- Plan: Soulfire renamed in English and Turkish.
+- Unit frames: long hero names (up to 20 letters, AS 0.108) are written a little smaller instead of being cut off.
+
 ## 0.9.70
 - Damage number fan: the three areas are now fan slices instead of thin rays. Every number gets its own angle within its area (inner, middle, outer in turn, slightly scattered), so the gaps fill up – still stacked, so nothing overlaps.
 

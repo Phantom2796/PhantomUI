@@ -109,7 +109,7 @@ PhantomUI_PlanData = {
 		{ id = "searing_pain", icon = "Spell_Fire_SoulBurn", names = { enUS = "Searing Pain", plPL = "Palący Ból", deDE = "Sengender Schmerz", ptBR = "Dor Lancinante", esES = "Dolor abrasador", frFR = "Douleur brûlante", trTR = "Searing Pain", ruRU = "Жгучая боль", zhCN = "灼热之痛", koKR = "불타는 고통" } },
 		{ id = "drain_life", icon = "Spell_Shadow_LifeDrain02", names = { enUS = "Drain Life", plPL = "Wyssanie Życia", deDE = "Blutsauger", ptBR = "Drenar Vida", esES = "Drenar vida", frFR = "Drain de vie", trTR = "Drain Life", ruRU = "Похищение жизни", zhCN = "吸取生命", koKR = "생명력 흡수" } },
 		{ id = "fear", icon = "Spell_Shadow_Possession", names = { enUS = "Fear", plPL = "Strach", deDE = "Furcht", ptBR = "Medo", esES = "Miedo", frFR = "Peur", trTR = "Fear", ruRU = "Страх", zhCN = "恐惧术", koKR = "공포" } },
-		{ id = "soul_fire", icon = "Spell_Fire_Fireball02", names = { enUS = "Soul Fire", plPL = "Ogień Duszy", deDE = "Seelenfeuer", ptBR = "Fogo da Alma", esES = "Fuego de alma", frFR = "Feu de l'âme", trTR = "Soul Fire", ruRU = "Ожог души", zhCN = "灵魂之火", koKR = "영혼의 불꽃" } },
+		{ id = "soul_fire", icon = "Spell_Fire_Fireball02", names = { enUS = "Soulfire", plPL = "Ogień Duszy", deDE = "Seelenfeuer", ptBR = "Fogo da Alma", esES = "Fuego de alma", frFR = "Feu de l'âme", trTR = "Soulfire", ruRU = "Ожог души", zhCN = "灵魂之火", koKR = "영혼의 불꽃" } },
 	},
 	DRUID = {
 		{ id = "wrath", icon = "Spell_Nature_AbolishMagic", names = { enUS = "Wrath", plPL = "Gniew", deDE = "Zorn", ptBR = "Ira", esES = "Cólera", frFR = "Colère", trTR = "Wrath", ruRU = "Гнев", zhCN = "愤怒", koKR = "천벌" } },

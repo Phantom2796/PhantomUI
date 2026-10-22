@@ -448,6 +448,17 @@ local function PageGeneral(page)
 	-- geskillt ist, daher hier von Hand (nur die eigene Klasse)
 	local _, myClass = UnitClass("player")
 	local talents = P.TOTEM_TALENTS and P.TOTEM_TALENTS[myClass]
+	-- Seit AS 0.110 meldet das Spiel die Begleiter selbst: nur noch die
+	-- Totem-Talente des Schamanen brauchen einen Haken.
+	if talents and P.SummonAPI and P.SummonAPI() then
+		local keep = {}
+		for i = 1, table.getn(talents) do
+			if talents[i].key == "twin_totems" or talents[i].key == "totemic_call" then
+				table.insert(keep, talents[i])
+			end
+		end
+		talents = table.getn(keep) > 0 and keep or nil
+	end
 	if talents then
 		y = y - 6
 		y = Heading(page, y, "Totems & Begleiter: Talente")
@@ -468,7 +479,7 @@ local function PageGeneral(page)
 			end
 		end
 		y = Note(page, y, "Haken setzen, wenn du das Talent geskillt hast.")
-		if myClass == "WARLOCK" then
+		if myClass == "WARLOCK" and not (P.SummonAPI and P.SummonAPI()) then
 			y = Note(page, y, "Höllenbestie, Verdammniswache, Grubenlord, Teufelswache: automatisch erkannt.")
 		end
 	end

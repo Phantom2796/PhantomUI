@@ -855,8 +855,26 @@ local function iconLookup(name)
 	return QUESTION
 end
 
+-- [Nobby] AS 0.110+: das Spiel nennt fuer jede Beschwoerung ihr Symbol
+local function petIcon(name)
+	local pets = AZS_PETS
+	if type(pets) ~= "table" then
+		return nil
+	end
+	for i = 1, table.getn(pets) do
+		local p = pets[i]
+		if type(p) == "table" and p.name == name and type(p.icon) == "string" and p.icon ~= "" then
+			if string.find(p.icon, "\\", 1, true) then
+				return p.icon
+			end
+			return "Interface\\Icons\\" .. p.icon
+		end
+	end
+	return nil
+end
+
 local function iconFor(name)
-	local tex = iconLookup(name)
+	local tex = petIcon(name) or iconLookup(name)
 	if tex ~= QUESTION then
 		return tex
 	end

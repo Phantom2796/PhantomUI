@@ -320,6 +320,7 @@ local function Layout(f)
 
 	local size = db.fontSize
 	f.name:SetFont(font, math.min(size, nameH - 1), "OUTLINE")
+	f.nameFont, f.nameSize, f.fitFor = font, math.min(size, nameH - 1), nil
 	f.hp:SetFont(font, size, "OUTLINE")
 	f.pct:SetFont(font, size - 1, "OUTLINE")
 	f.level:SetFont(font, math.min(size - 1, nameH - 1), "OUTLINE")
@@ -388,6 +389,17 @@ local function Update(f)
 
 	local name = UnitName(unit) or ""
 	f.name:SetText(name)
+	-- Heldennamen bis 20 Zeichen (AS 0.108): zu lange Namen etwas kleiner
+	-- schreiben statt abschneiden (nur neu messen, wenn sich der Name aendert)
+	if f.fitFor ~= name and f.nameFont and f.name.GetStringWidth then
+		f.fitFor = name
+		f.name:SetFont(f.nameFont, f.nameSize, "OUTLINE")
+		local room = (f.name:GetWidth() or 0)
+		local need = f.name:GetStringWidth() or 0
+		if room > 20 and need > room then
+			f.name:SetFont(f.nameFont, math.max(7, math.floor(f.nameSize * room / need)), "OUTLINE")
+		end
+	end
 	local nc = UnitIsPlayer(unit) and ClassColor(unit) or nil
 	if nc then
 		f.name:SetTextColor(nc[1], nc[2], nc[3])

@@ -493,6 +493,7 @@ AZSSpellMeterIcon = {
 ["Slow"]="Spell_Nature_Slow",
 ["Smite"]="Spell_Holy_HolySmite",
 ["Soul Fire"]="Spell_Fire_Fireball02",
+["Soulfire"]="Spell_Fire_Fireball02",
 ["Speed"]="Ability_Rogue_Sprint",
 ["Spirit"]="Spell_Shadow_BurningSpirit",
 ["Spirit Bond"]="Ability_Druid_DemoralizingRoar",

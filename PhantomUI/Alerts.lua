@@ -116,9 +116,36 @@ local bossState = {}
 local guardians = {}  -- id -> { name, awake }
 local lairState = {}
 
+-- Seit AS 0.108 schickt das Spiel jedes Banner als Ereignis, mit fertig
+-- uebersetztem Text, auch wenn seine eigenen Banner ausgeblendet sind. Dann
+-- nehmen wir diese (Boss, Waechter, Erfolge, Magnet, Truhen, Runen, Zonen) und
+-- leiten Boss/Waechter nicht mehr selbst ab.
+local BANNER_COLORS = {
+	boss = { 1, 0.55, 0.35 },
+	finalboss = { 1, 0.3, 0.3 },
+	bossdown = { 0.45, 1, 0.5 },
+	guardian = { 0.45, 1, 0.5 },
+	achievement = { 1, 0.82, 0 },
+	zoneunlocked = { 0.55, 0.8, 1 },
+	magnet = { 0.85, 0.65, 1 },
+	cache = { 1, 0.82, 0.45 },
+	rune = { 0.85, 0.65, 1 },
+}
+local function BannerAPI()
+	return type(AZS_RegisterBannerHandler) == "function"
+end
+local function OnBanner(b)
+	if not frame or type(b) ~= "table" or not b.text or b.text == "" then
+		return
+	end
+	Push(b.text, BANNER_COLORS[b.kind or ""] or { 1, 1, 1 })
+end
+
 local function Watch()
 	local fresh = not seen
 	seen = true
+	-- Boss und Waechter kommen als Banner-Ereignis: nur noch mitzaehlen
+	local quiet = BannerAPI()
 
 	local sched = AZS_SCHEDULE
 	if type(sched) == "table" then
@@ -127,7 +154,7 @@ local function Watch()
 			if type(b) == "table" and b.name then
 				local key = tostring(b.index or i)
 				local old = bossState[key]
-				if not fresh and old and old ~= b.state then
+				if not fresh and not quiet and old and old ~= b.state then
 					if b.state == "up" then
 						P.Alert((b.final == 1 or b.final == true) and "come" or "approach", b.name)
 					elseif b.state == "dead" then
@@ -148,7 +175,7 @@ local function Watch()
 			local awake = g.awake == true or g.awake == 1
 			now[id] = true
 			local old = guardians[id]
-			if not fresh and awake and old and not old.awake then
+			if not fresh and not quiet and awake and old and not old.awake then
 				P.Alert("approach", g.name)
 			end
 			guardians[id] = { name = g.name, awake = awake }
@@ -156,7 +183,7 @@ local function Watch()
 	end
 	for id, g in pairs(guardians) do
 		if not now[id] then
-			if not fresh and g.awake then
+			if not fresh and not quiet and g.awake then
 				P.Alert("slain", g.name)
 			end
 			guardians[id] = nil
@@ -197,6 +224,9 @@ local function Init()
 	end
 	Layout()
 	HookErrors()
+	if BannerAPI() then
+		AZS_RegisterBannerHandler(OnBanner)
+	end
 	P.RegisterMover("alerts", frame, "Einblendungen", function(f)
 		if ChatFrame1 then
 			f:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT", 0, -34)

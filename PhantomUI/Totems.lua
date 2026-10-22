@@ -49,6 +49,12 @@ local PETS = {
 }
 local myPets = {}
 
+-- Meldet das Spiel die Beschwoerungen selbst (AS 0.110+)?
+local function SummonAPI()
+	return type(AZS_GetSummonGroups) == "function" and type(AZS_PETS) == "table"
+end
+P.SummonAPI = SummonAPI
+
 -- Talent geskillt? Von Hand in den Einstellungen (Allgemein -> Totems &
 -- Begleiter) oder, falls das Spiel es mitschickt, aus der Faehigkeitenliste.
 local function Has(spells, key)
@@ -213,7 +219,7 @@ end
 local function Layout()
 	local size = P.DB().totems.size or 32
 	local font = P.Font()
-	local count = table.getn(TOTEMS) + table.getn(myPets)
+	local count = table.getn(TOTEMS) + (SummonAPI() and MAX_SUMMON or table.getn(myPets))
 	frame:SetWidth(math.max(1, count) * (size + 3))
 	frame:SetHeight(size)
 	for i = 1, count do
@@ -292,6 +298,79 @@ local function PetState(def, spells, sup, now)
 		return true, ps.untilT - now
 	end
 	return false, nil
+end
+
+-- Seit AS 0.110 meldet das Spiel alle Beschwoerungen selbst (AZS_PETS):
+-- jede Klasse, mit Anzahl und Restzeit. Dann brauchen wir weder Talent-Haken
+-- noch das Schadensmeter.
+local MAX_SUMMON = 8
+local SUMMON_ICONS = {
+	imp = "Spell_Shadow_SummonImp", felhunter = "Spell_Shadow_SummonFelHunter",
+	voidwalker = "Spell_Shadow_SummonVoidWalker", succubus = "Spell_Shadow_SummonSuccubus",
+	infernal = "Spell_Shadow_SummonInfernal", doomguard = "Spell_Shadow_AntiMagicShell",
+	felguard = "Ability_Warrior_Cleave", pitlord = "Spell_Shadow_UnholyStrength", pit_lord = "Spell_Shadow_UnholyStrength",
+	spirit_wolf = "Spell_Nature_SpiritWolf", treant = "Spell_Nature_ForceOfNature",
+	water_elemental = "Spell_Frost_SummonWaterElemental", wolf = "Ability_Hunter_Pet_Wolf",
+	raptor = "Ability_Hunter_Pet_Raptor",
+}
+local groupsSrc, groupsCache, groupsAt
+local function SummonGroups(now)
+	if AZS_PETS ~= groupsSrc or not groupsCache then
+		groupsSrc = AZS_PETS
+		local ok, groups = pcall(AZS_GetSummonGroups)
+		groupsCache = ok and type(groups) == "table" and groups or {}
+		groupsAt = now
+	end
+	return groupsCache, groupsAt
+end
+local function SummonIcon(g)
+	local icon = g.icon
+	if not icon or icon == "" then
+		icon = SUMMON_ICONS[g.key or ""] or SUMMON_ICONS[g.kind or ""] or "INV_Misc_QuestionMark"
+	end
+	if not string.find(icon, "\\", 1, true) then
+		icon = "Interface\\Icons\\" .. icon
+	end
+	return icon
+end
+local function UpdateSummons(now, shown)
+	local groups, at = SummonGroups(now)
+	local base = table.getn(TOTEMS)
+	local n = 0
+	for j = 1, MAX_SUMMON do
+		local g = groups[j]
+		local s = Slot(base + j)
+		if g and (tonumber(g.count) or 0) > 0 then
+			n = n + 1
+			local icon = SummonIcon(g)
+			if s.iconPath ~= icon then
+				s.iconPath = icon
+				s.icon:SetTexture(icon)
+			end
+			if s.shownN ~= g.count then
+				s.shownN = g.count
+				s.count:SetText(g.count)
+			end
+			s.name = g.name or g.key
+			s.duration = nil
+			s.soon = g.remaining and (at + g.remaining) or nil
+			shown = shown + 1
+			Place(s, shown)
+			s:Show()
+		elseif j == 1 and P.unlocked and n == 0 then
+			-- Vorschau im Ankermodus
+			s.icon:SetTexture("Interface\\Icons\\Spell_Shadow_SummonImp")
+			s.iconPath = nil
+			s.count:SetText(1)
+			s.shownN = 1
+			shown = shown + 1
+			Place(s, shown)
+			s:Show()
+		else
+			s:Hide()
+		end
+	end
+	return shown
 end
 
 local function Update()
@@ -374,9 +453,12 @@ local function Update()
 			s:Hide()
 		end
 	end
-	-- Begleiter aus Talenten
+	-- Begleiter: vom Spiel gemeldet, sonst aus Talenten
 	local sup = Has(spells, "demonic_supremacy")
-	for j = 1, table.getn(myPets) do
+	if SummonAPI() then
+		shown = UpdateSummons(now, shown)
+	end
+	for j = 1, (SummonAPI() and 0 or table.getn(myPets)) do
 		local def = myPets[j]
 		local s = Slot(table.getn(TOTEMS) + j)
 		local show, left = PetState(def, spells, sup, now)
@@ -424,7 +506,7 @@ local function Init()
 	if tal and tal.summon_imp then
 		tal.demonic_familiar, tal.summon_imp, tal.felguard = true, nil, nil
 	end
-	if not P.DB().totems.enabled or (class ~= "SHAMAN" and table.getn(myPets) == 0) then
+	if not P.DB().totems.enabled or (class ~= "SHAMAN" and table.getn(myPets) == 0 and not SummonAPI()) then
 		return
 	end
 	if class ~= "SHAMAN" then
@@ -475,7 +557,16 @@ function P.TotemDebug()
 			.. ", " .. P.T("Dauer") .. " " .. tostring(ScanDuration(def) or "?"))
 	end
 	P.Print("twin_totems " .. tostring(spells.twin_totems ~= nil) .. ", totemic_call " .. tostring(spells.totemic_call ~= nil))
-	for j = 1, table.getn(myPets) do
+	if SummonAPI() then
+		local groups = SummonGroups(GetTime())
+		P.Print("AZS_PETS: " .. table.getn(AZS_PETS) .. ", " .. table.getn(groups) .. " groups")
+		for j = 1, table.getn(groups) do
+			local g = groups[j]
+			P.Print("  " .. tostring(g.key) .. " / " .. tostring(g.kind) .. " x" .. tostring(g.count)
+				.. " icon " .. tostring(g.icon) .. (g.remaining and string.format(" %.0fs", g.remaining) or ""))
+		end
+	end
+	for j = 1, (SummonAPI() and 0 or table.getn(myPets)) do
 		local def = myPets[j]
 		P.Print(def.key .. " " .. tostring(Has(spells, def.key))
 			.. (def.names and (", Meter " .. tostring(MeterDamage(def.names))) or ""))
