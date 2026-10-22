@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.88
+- Buffs: the clock sweep sat off-centre after a new run or loading screen; it is now laid exactly on the icon and rebuilt fresh at every new run.
+
 ## 0.9.87
 - Damage meter: summons have their icon in every language – Treant, Spirit Wolf, Water Elemental, hunter wolf and raptor and every warlock demon (Treant had none before). A summon's icon from the game is only used if it really is an icon.
 

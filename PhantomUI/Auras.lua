@@ -52,6 +52,56 @@ local function Clock(seconds)
 	return tostring(math.ceil(seconds))
 end
 
+-- Uhr-Modell (Classic): nach einem Ladebildschirm zeichnet ein schon
+-- benutztes Modell schief bzw. nur noch einen Teil. Darum bei jeder neuen
+-- Runde frisch anlegen und genau auf das Symbol legen.
+local clockButtons = {}
+local function FreshClock(button)
+	if button.puiClock then
+		button.puiClock:Hide()
+		button.puiClock:SetParent(nil)
+		button.puiClock = nil
+	end
+	local ok, cd = pcall(CreateFrame, "Model", nil, button, "CooldownFrameTemplate")
+	if ok and cd then
+		cd:ClearAllPoints()
+		cd:SetAllPoints(button)
+		if cd.EnableMouse then
+			cd:EnableMouse(false)
+		end
+		button.puiClock = cd
+		if button.puiHolder then
+			button.puiHolder:SetFrameLevel(cd:GetFrameLevel() + 2)
+		end
+	end
+	button.puiStart = nil
+end
+local function FreshClocks()
+	for button in pairs(clockButtons) do
+		FreshClock(button)
+	end
+end
+local clockEvents = CreateFrame("Frame")
+clockEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
+clockEvents:SetScript("OnEvent", FreshClocks)
+-- neue Runde ohne Ladebildschirm: ebenfalls frisch
+local lastPhase, phaseWait = nil, 0
+clockEvents:SetScript("OnUpdate", function()
+	phaseWait = phaseWait + arg1
+	if phaseWait < 0.5 then
+		return
+	end
+	phaseWait = 0
+	local phase = AZS_GetPhase and AZS_GetPhase()
+	if phase ~= lastPhase then
+		if phase == "ready" then
+			FreshClocks()
+		end
+		lastPhase = phase
+	end
+end)
+P.FreshAuraClocks = FreshClocks
+
 local function Style(entry)
 	local name = entry.name
 	local button = getglobal(name)
@@ -72,16 +122,14 @@ local function Style(entry)
 		button.puiEdge = edge
 
 		-- Uhr: dunkler Zeiger ueber dem Symbol, wie bei Abklingzeiten
-		local ok, cd = pcall(CreateFrame, "Model", nil, button, "CooldownFrameTemplate")
-		if ok and cd then
-			button.puiClock = cd
-		end
 		local holder = CreateFrame("Frame", nil, button)
 		holder:SetAllPoints(button)
 		holder:SetFrameLevel(button:GetFrameLevel() + 3)
 		button.puiTime = holder:CreateFontString(nil, "OVERLAY")
 		button.puiTime:SetPoint("CENTER", button, "CENTER", 0, 0)
 		button.puiHolder = holder
+		clockButtons[button] = true
+		FreshClock(button)
 	end
 	button.puiEdge:SetParent(button:GetParent() or UIParent)
 	button.puiEdge:SetFrameLevel(math.max(0, button:GetFrameLevel() - 1))
