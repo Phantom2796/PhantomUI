@@ -863,7 +863,9 @@ local function petIcon(name)
 	end
 	for i = 1, table.getn(pets) do
 		local p = pets[i]
-		if type(p) == "table" and p.name == name and type(p.icon) == "string" and p.icon ~= "" then
+		-- nur echte Symbolnamen (z. B. "Spell_Nature_..."), kein Modellpfad
+		if type(p) == "table" and p.name == name and type(p.icon) == "string"
+			and (string.find(p.icon, "^%a+_%w") or string.find(p.icon, "Interface\\Icons", 1, true)) then
 			if string.find(p.icon, "\\", 1, true) then
 				return p.icon
 			end

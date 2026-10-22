@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.87
+- Damage meter: summons have their icon in every language – Treant, Spirit Wolf, Water Elemental, hunter wolf and raptor and every warlock demon (Treant had none before). A summon's icon from the game is only used if it really is an icon.
+
 ## 0.9.86
 - Removed the abilities at your hero again (the action bar is unchanged).
 
