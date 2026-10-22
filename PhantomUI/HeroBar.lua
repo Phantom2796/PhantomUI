@@ -7,13 +7,14 @@
 local P = PhantomUI
 
 local SLOTS = { 1, 2, 3, 4, 5, 6, 12 }
--- Lage je Symbol in Symbolgroessen, ab dem Helden (x rechts, y oben):
--- zwei gerade Spalten links und rechts mit Platz fuer den Helden dazwischen,
--- spiegelgleich, und die passive Faehigkeit mittig darunter.
+-- Lage je Symbol in Symbolgroessen, ab dem Helden (x rechts, y oben): zwei
+-- Halbmonde, die den Helden von unten umfassen. Links 1-3 von Hueftehoehe
+-- nach unten, rechts 4-6 gespiegelt, die 7. ganz unten in der Mitte; alle
+-- im gleichen Abstand (30 Grad) auf einem Kreis.
 local SPOTS = {
-	{ -2.2, 1.2 }, { -2.2, 0 }, { -2.2, -1.2 },
-	{ 2.2, 1.2 }, { 2.2, 0 }, { 2.2, -1.2 },
-	{ 0, -2.4 },
+	{ -2.90, 0.00 }, { -2.51, -1.45 }, { -1.45, -2.51 },
+	{ 2.90, -0.00 }, { 2.51, -1.45 }, { 1.45, -2.51 },
+	{ -0.00, -2.90 },
 }
 
 local frame

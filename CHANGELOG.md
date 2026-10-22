@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.73
+- Abilities at your hero: arranged as two half-moons around your hero – 1–3 on the left, 4–6 mirrored on the right, the racial at the bottom in the middle, evenly spaced on one circle.
+
 ## 0.9.72
 - **Abilities at your hero:** your six spells and your racial once more around your hero, half transparent – three left, three right, mirrored, the racial centred below – with their cooldowns. Display only: no mouse, no tooltip; the action bar stays as it is. On/off and opacity under `/pui` → Action bar, movable and resizable in anchor mode.
 
