@@ -63,6 +63,30 @@ local function Layout()
 	end
 end
 
+-- Uhr-Modell neu anlegen. Nach einem Ladebildschirm (neue Runde) zeichnet
+-- der Classic-Client ein schon benutztes Modell nur noch als Viertelkreis;
+-- ein frisches Modell laeuft wieder sauber im Kreis.
+local cdSerial = 0
+local function NewCooldown(b, i)
+	if b.cd then
+		b.cd:Hide()
+		b.cd:SetParent(nil)
+		b.cd = nil
+	end
+	cdSerial = cdSerial + 1
+	local ok, cd = pcall(CreateFrame, "Model", "PhantomUI_HeroBarCooldown" .. i .. "_" .. cdSerial, b, "CooldownFrameTemplate")
+	if ok and cd then
+		cd:SetWidth(36)
+		cd:SetHeight(36)
+		cd:SetPoint("CENTER", b, "CENTER", 0, 0)
+		if cd.EnableMouse then
+			cd:EnableMouse(false)
+		end
+		b.cd = cd
+	end
+	b.cdStart, b.cdDur = nil, nil
+end
+
 local function Make(i)
 	local b = CreateFrame("Frame", nil, frame)
 	b:EnableMouse(false)
@@ -77,16 +101,7 @@ local function Make(i)
 	-- Abklingzeit wie auf der Leiste (Uhrzeiger-Schatten)
 	-- Im Classic-Client zeichnet das Cooldown-Modell immer 36 px gross; fuer
 	-- kleinere Symbole wird es skaliert statt gestreckt (sonst kein Uhrzeiger).
-	local ok, cd = pcall(CreateFrame, "Model", "PhantomUI_HeroBarCooldown" .. i, b, "CooldownFrameTemplate")
-	if ok and cd then
-		cd:SetWidth(36)
-		cd:SetHeight(36)
-		cd:SetPoint("CENTER", b, "CENTER", 0, 0)
-		if cd.EnableMouse then
-			cd:EnableMouse(false)
-		end
-		b.cd = cd
-	end
+	NewCooldown(b, i)
 	-- Restsekunden mittig, ueber dem Uhrzeiger
 	b.text = CreateFrame("Frame", nil, b)
 	b.text:SetAllPoints(b)
@@ -180,8 +195,26 @@ local function Init()
 		end,
 	})
 	P.OnApply(Layout)
+	-- neue Runde / Ladebildschirm: Uhren frisch anlegen
+	local function Fresh()
+		for i = 1, table.getn(SLOTS) do
+			NewCooldown(icons[i], i)
+		end
+		Layout()
+	end
+	local ev = CreateFrame("Frame")
+	ev:RegisterEvent("PLAYER_ENTERING_WORLD")
+	ev:SetScript("OnEvent", Fresh)
+	local lastPhase
 	local t = 0
 	frame:SetScript("OnUpdate", function()
+		local phase = AZS_GetPhase and AZS_GetPhase()
+		if phase ~= lastPhase then
+			if phase == "ready" or (phase == "playing" and lastPhase ~= "paused" and lastPhase ~= "choosing") then
+				Fresh()
+			end
+			lastPhase = phase
+		end
 		t = t + arg1
 		if t > 0.1 then
 			t = 0

@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.85
+- Abilities at your hero: after a new run or a loading screen the clock sweeps only drew a quarter circle; they are now rebuilt fresh at every new run.
+
 ## 0.9.84
 - Damage meter icons: talents, procs and jewelry now have their icon in every language (2,600+ names added from the game's own translations, e.g. Omen of Clarity / Omen der Klarsicht). The question marks of the last version came from the wrong language detection, which also threw away the German icon names.
 
