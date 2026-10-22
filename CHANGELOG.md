@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.72
+- **Abilities at your hero:** your six spells and your racial once more around your hero, half transparent – three left, three right, mirrored, the racial centred below – with their cooldowns. Display only: no mouse, no tooltip; the action bar stays as it is. On/off and opacity under `/pui` → Action bar, movable and resizable in anchor mode.
+
 ## 0.9.71 (for AS 0.108 – 0.110)
 - **Totems & pets** now come straight from the game (AS 0.110): every summon of every class – hunter beasts, treants, spirit wolves, water elemental and every warlock demon including Legion Gate's – with the right count. Two Felguards show "2". No more talent ticks for pets (only Call of the Elements and Totemic Wrath for shaman totems), and the game's own icon is used.
 - **Alerts** use the game's banner events (AS 0.108): bosses, guardians, achievements, opened zones, magnets, caches and runes, in the game's own words in your language, even while the game's banners are hidden. Achievements are gold, zones blue.

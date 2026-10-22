@@ -226,6 +226,7 @@ P.LOC.enUS = {
 	["Fächer-Weite"] = "Fan reach",
 	["Schadenszahlen-Fächer"] = "Damage number fan",
 	["Fächer-Flugzeit"] = "Fan flight time",
+	["Fähigkeiten am Helden"] = "Abilities at your hero",
 }
 
 P.LOC.frFR = {
@@ -447,6 +448,7 @@ P.LOC.frFR = {
 	["Fächer-Weite"] = "Portée de l'éventail",
 	["Schadenszahlen-Fächer"] = "Éventail des dégâts",
 	["Fächer-Flugzeit"] = "Durée de vol",
+	["Fähigkeiten am Helden"] = "Techniques autour du héros",
 }
 
 P.LOC.esES = {
@@ -668,6 +670,7 @@ P.LOC.esES = {
 	["Fächer-Weite"] = "Alcance del abanico",
 	["Schadenszahlen-Fächer"] = "Abanico de daño",
 	["Fächer-Flugzeit"] = "Tiempo de vuelo",
+	["Fähigkeiten am Helden"] = "Habilidades junto al héroe",
 }
 
 P.LOC.ptBR = {
@@ -889,6 +892,7 @@ P.LOC.ptBR = {
 	["Fächer-Weite"] = "Alcance do leque",
 	["Schadenszahlen-Fächer"] = "Leque de dano",
 	["Fächer-Flugzeit"] = "Tempo de voo",
+	["Fähigkeiten am Helden"] = "Habilidades junto ao herói",
 }
 
 P.LOC.plPL = {
@@ -1110,6 +1114,7 @@ P.LOC.plPL = {
 	["Fächer-Weite"] = "Zasięg wachlarza",
 	["Schadenszahlen-Fächer"] = "Wachlarz obrażeń",
 	["Fächer-Flugzeit"] = "Czas lotu",
+	["Fähigkeiten am Helden"] = "Umiejętności przy bohaterze",
 }
 
 P.LOC.csCZ = {
@@ -1331,6 +1336,7 @@ P.LOC.csCZ = {
 	["Fächer-Weite"] = "Dosah vějíře",
 	["Schadenszahlen-Fächer"] = "Vějíř poškození",
 	["Fächer-Flugzeit"] = "Doba letu",
+	["Fähigkeiten am Helden"] = "Schopnosti u hrdiny",
 }
 
 P.LOC.roRO = {
@@ -1552,6 +1558,7 @@ P.LOC.roRO = {
 	["Fächer-Weite"] = "Întindere evantai",
 	["Schadenszahlen-Fächer"] = "Evantai daune",
 	["Fächer-Flugzeit"] = "Timp de zbor",
+	["Fähigkeiten am Helden"] = "Abilități lângă erou",
 }
 
 P.LOC.trTR = {
@@ -1773,6 +1780,7 @@ P.LOC.trTR = {
 	["Fächer-Weite"] = "Yelpaze genişliği",
 	["Schadenszahlen-Fächer"] = "Hasar yelpazesi",
 	["Fächer-Flugzeit"] = "Uçuş süresi",
+	["Fähigkeiten am Helden"] = "Kahramanın yanında yetenekler",
 }
 
 P.LOC.ruRU = {
@@ -1994,6 +2002,7 @@ P.LOC.ruRU = {
 	["Fächer-Weite"] = "Размах веера",
 	["Schadenszahlen-Fächer"] = "Веер урона",
 	["Fächer-Flugzeit"] = "Время полёта",
+	["Fähigkeiten am Helden"] = "Способности у героя",
 }
 
 P.LOC.ukUA = {
@@ -2215,6 +2224,7 @@ P.LOC.ukUA = {
 	["Fächer-Weite"] = "Розмах віяла",
 	["Schadenszahlen-Fächer"] = "Віяло шкоди",
 	["Fächer-Flugzeit"] = "Час польоту",
+	["Fähigkeiten am Helden"] = "Здібності біля героя",
 }
 
 P.LOC.zhCN = {
@@ -2436,6 +2446,7 @@ P.LOC.zhCN = {
 	["Fächer-Weite"] = "扇形范围",
 	["Schadenszahlen-Fächer"] = "伤害数字扇形",
 	["Fächer-Flugzeit"] = "飞行时间",
+	["Fähigkeiten am Helden"] = "英雄身边的技能",
 }
 
 P.LOC.jaJP = {
@@ -2657,6 +2668,7 @@ P.LOC.jaJP = {
 	["Fächer-Weite"] = "扇の広さ",
 	["Schadenszahlen-Fächer"] = "ダメージ扇",
 	["Fächer-Flugzeit"] = "飛行時間",
+	["Fähigkeiten am Helden"] = "ヒーローの周りにスキル",
 }
 
 P.LOC.koKR = {
@@ -2878,6 +2890,7 @@ P.LOC.koKR = {
 	["Fächer-Weite"] = "부채꼴 범위",
 	["Schadenszahlen-Fächer"] = "피해 숫자 부채꼴",
 	["Fächer-Flugzeit"] = "비행 시간",
+	["Fähigkeiten am Helden"] = "영웅 주변 기술",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache
