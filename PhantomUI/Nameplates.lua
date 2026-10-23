@@ -180,6 +180,14 @@ local function Init()
 		if t > 0.2 then
 			t = 0
 			Allies()
+		elseif inGroup then
+			-- jedes Bild pruefen: das Spiel faerbt eine neue Plakette erst nach
+			-- dem Erscheinen ein, sonst blitzt sie kurz gruen auf
+			for plate in pairs(styled) do
+				if plate:IsShown() then
+					CheckPlate(plate)
+				end
+			end
 		end
 	end)
 end
