@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.93
+- Party frames show your ally's level in front of the name.
+- Fixed: totems and your ally's pets flashed a health bar for a moment when they appeared – friendly plates other than your ally are now hidden the instant they show.
+
 ## 0.9.92 (co-op)
 - **Party frames** for the new co-op mode: your allies with their name in class colour, health bar and percent (dead/offline shown), click to target, tooltip on mouseover. Movable and resizable in anchor mode (*Party*), on/off under `/pui` → General.
 - **Ally nameplate:** in a party, only your ally gets a friendly nameplate, in their class colour; other friendly plates (NPCs, pets) stay hidden. On/off under `/pui` → General.

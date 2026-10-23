@@ -108,7 +108,10 @@ local function Update()
 				r.bar:SetStatusBarColor(cr * 0.75, cg * 0.75, cb * 0.75)
 				r.bg:SetVertexColor(cr * 0.2, cg * 0.2, cb * 0.2, 0.9)
 			end
-			r.name:SetText(UnitName(unit) or "")
+			-- Stufe vor dem Namen
+			local lvl = UnitLevel(unit)
+			local lv = (lvl and lvl > 0) and ("|cffd8d8d8" .. lvl .. "|r  ") or ""
+			r.name:SetText(lv .. (UnitName(unit) or ""))
 			r.name:SetTextColor(cr, cg, cb)
 			if off then
 				r.hp:SetText(P.T("Offline"))

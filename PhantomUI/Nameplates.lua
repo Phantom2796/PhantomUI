@@ -65,6 +65,7 @@ local function Style(plate)
 	return true
 end
 
+local CheckPlate
 local function Scan()
 	local count = WorldFrame:GetNumChildren() or 0
 	if count == known then
@@ -84,6 +85,15 @@ local function Scan()
 			if first and first.GetObjectType and first:GetObjectType() == "Texture" and first:GetTexture() == BORDER then
 				if Style(f) then
 					styled[f] = true
+					-- sofort beim Erscheinen pruefen, nicht erst beim naechsten Takt
+					local old = f:GetScript("OnShow")
+					f:SetScript("OnShow", function()
+						if old then
+							old()
+						end
+						CheckPlate(this)
+					end)
+					CheckPlate(f)
 				end
 			end
 		end
@@ -107,8 +117,31 @@ local function PartyNames()
 end
 
 local friendOn = false
+local partyNames = {}
+local inGroup = false
+
+-- eine Plakette pruefen: Mitspieler in Klassenfarbe, sonst freundliche weg
+CheckPlate = function(plate)
+	if not inGroup or not P.DB().plates.ally or not plate.puiName or not plate.puiBar then
+		return
+	end
+	local n = plate.puiName:GetText()
+	local unit = n and partyNames[n]
+	if unit then
+		local r, g, b = P.PartyClassRGB(unit)
+		plate.puiBar:SetStatusBarColor(r, g, b)
+		plate.puiName:SetTextColor(r, g, b)
+		plate:SetAlpha(1)
+	else
+		-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
+		local r, g, b = plate.puiBar:GetStatusBarColor()
+		local friendly = r < 0.2 and (g > 0.8 or b > 0.8)
+		plate:SetAlpha(friendly and 0 or 1)
+	end
+end
 local function Allies()
 	local inParty = (GetNumPartyMembers and GetNumPartyMembers() or 0) > 0
+	inGroup = inParty
 	if not P.DB().plates.ally then
 		return
 	end
@@ -123,22 +156,10 @@ local function Allies()
 	if not inParty then
 		return
 	end
-	local names = PartyNames()
+	partyNames = PartyNames()
 	for plate in pairs(styled) do
-		if plate:IsShown() and plate.puiName and plate.puiBar then
-			local n = plate.puiName:GetText()
-			local unit = n and names[n]
-			if unit then
-				local r, g, b = P.PartyClassRGB(unit)
-				plate.puiBar:SetStatusBarColor(r, g, b)
-				plate.puiName:SetTextColor(r, g, b)
-				plate:SetAlpha(1)
-			else
-				-- freundlich = blau/gruen eingefaerbt vom Spiel
-				local r, g, b = plate.puiBar:GetStatusBarColor()
-				local friendly = r < 0.2 and (g > 0.8 or b > 0.8)
-				plate:SetAlpha(friendly and 0 or 1)
-			end
+		if plate:IsShown() then
+			CheckPlate(plate)
 		end
 	end
 end
@@ -152,9 +173,9 @@ local function Init()
 	local ticker = CreateFrame("Frame", "PhantomUI_PlatesTicker")
 	ticker:SetScript("OnUpdate", function()
 		t = t + arg1
+		Scan()
 		if t > 0.2 then
 			t = 0
-			Scan()
 			Allies()
 		end
 	end)
