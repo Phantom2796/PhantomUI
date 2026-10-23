@@ -64,18 +64,95 @@ local function Row(i)
 	return r
 end
 
+-- Buffs des Mitspielers unter seiner Leiste (mit Tooltip)
+local MAX_BUFFS = 16
+local function BuffIcon(r, k)
+	r.buffs = r.buffs or {}
+	local b = r.buffs[k]
+	if b then
+		return b
+	end
+	b = CreateFrame("Frame", nil, r)
+	b:EnableMouse(true)
+	b.edge = b:CreateTexture(nil, "BACKGROUND")
+	b.edge:SetTexture(P.FLAT)
+	b.edge:SetVertexColor(0, 0, 0, 1)
+	b.edge:SetAllPoints(b)
+	b.icon = b:CreateTexture(nil, "ARTWORK")
+	b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	b.icon:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+	b.icon:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
+	b.count = b:CreateFontString(nil, "OVERLAY")
+	b.count:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 1, 0)
+	b:SetScript("OnEnter", function()
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT")
+		GameTooltip:SetUnitBuff(this.unit, this.index)
+		GameTooltip:Show()
+	end)
+	b:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	r.buffs[k] = b
+	return b
+end
+
+local function UpdateBuffs(r, unit)
+	local db = P.DB().party
+	local size = math.max(10, math.floor((db.height or 22) * 0.8))
+	local font = P.Font()
+	local n = 0
+	for k = 1, MAX_BUFFS do
+		local tex, apps = UnitBuff(unit, k)
+		if not tex then
+			break
+		end
+		n = n + 1
+		local b = BuffIcon(r, n)
+		if b.size ~= size then
+			b.size = size
+			b:SetWidth(size)
+			b:SetHeight(size)
+			b:ClearAllPoints()
+			b:SetPoint("TOPLEFT", r, "BOTTOMLEFT", (n - 1) * (size + 2), -2)
+			b.count:SetFont(font, math.max(8, math.floor(size * 0.55)), "OUTLINE")
+		end
+		if b.tex ~= tex then
+			b.tex = tex
+			b.icon:SetTexture(tex)
+		end
+		local txt = (apps and apps > 1) and tostring(apps) or ""
+		if b.txt ~= txt then
+			b.txt = txt
+			b.count:SetText(txt)
+		end
+		b.unit, b.index = unit, k
+		b:Show()
+	end
+	if r.buffs then
+		for k = n + 1, table.getn(r.buffs) do
+			r.buffs[k]:Hide()
+		end
+	end
+end
+
 local function Layout()
 	local db = P.DB().party
 	local w, h = db.width or 160, db.height or 22
 	local font, tex = P.Font(), P.Texture()
 	frame:SetWidth(w)
-	frame:SetHeight(MAX * (h + 3))
+	local step = h + math.max(10, math.floor(h * 0.8)) + 6
+	frame:SetHeight(MAX * step)
 	for i = 1, MAX do
 		local r = Row(i)
 		r:SetWidth(w)
 		r:SetHeight(h)
 		r:ClearAllPoints()
-		r:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -(i - 1) * (h + 3))
+		r:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -(i - 1) * step)
+		if r.buffs then
+			for k = 1, table.getn(r.buffs) do
+				r.buffs[k].size = nil
+			end
+		end
 		r.bar:SetStatusBarTexture(tex)
 		r.bg:SetTexture(tex)
 		r.name:SetFont(font, math.max(9, h - 10), "OUTLINE")
@@ -120,6 +197,7 @@ local function Update()
 			else
 				r.hp:SetText(math.floor(cur / max * 100 + 0.5) .. "%")
 			end
+			UpdateBuffs(r, unit)
 			r:Show()
 		elseif P.unlocked and i <= 2 then
 			-- Vorschau im Ankermodus

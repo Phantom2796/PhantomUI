@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.96
+- Party frames: your ally's buffs under their bar, with stacks and the game's tooltip on mouseover.
+
 ## 0.9.95
 - Fixed: green health bars of totems and your ally's pets still flashed up when they appeared. The game colours a new nameplate a moment after showing it, so in a party every visible plate is now checked every frame.
 
