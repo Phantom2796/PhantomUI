@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.97
+- Item tooltips in the character window no longer act up: PhantomUI's background icon and duration scans (plan, totems, damage meter, damage numbers) pause while a tooltip or the character window is open.
+
 ## 0.9.96
 - Party frames: your ally's buffs under their bar, with stacks and the game's tooltip on mouseover.
 

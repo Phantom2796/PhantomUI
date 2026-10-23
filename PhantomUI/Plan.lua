@@ -798,6 +798,11 @@ function PhantomUI.ActionIconFor(name)
 	if now - actionScanAt < 5 then
 		return nil
 	end
+	-- nicht scannen, solange ein Tooltip oder das Charakterfenster offen ist
+	-- (der Scan-Tooltip stoert sonst die Item-Tooltips)
+	if (GameTooltip and GameTooltip:IsVisible()) or (CharacterFrame and CharacterFrame:IsVisible()) then
+		return nil
+	end
 	actionScanAt = now
 	if not actionTip then
 		actionTip = CreateFrame("GameTooltip", "PhantomUI_ActionScan", nil, "GameTooltipTemplate")

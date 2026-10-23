@@ -2393,7 +2393,8 @@ local function buildMeterUpdate(finishSize)
 			end
 		end
 		local now = GetTime()
-		if scanAt > 0 and now >= scanAt then
+		-- [Nobby] nicht scannen, solange ein Tooltip/Charakterfenster offen ist
+		if scanAt > 0 and now >= scanAt and not ((GameTooltip and GameTooltip:IsVisible()) or (CharacterFrame and CharacterFrame:IsVisible())) then
 			scanAt = 0
 			scanIcons()
 		end

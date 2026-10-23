@@ -394,6 +394,10 @@ local function ScheduleScan()
 end
 
 function CompactSCT.ScanIfDue(now)
+	-- nicht scannen, solange ein Tooltip/Charakterfenster offen ist
+	if (GameTooltip and GameTooltip:IsVisible()) or (CharacterFrame and CharacterFrame:IsVisible()) then
+		return
+	end
 	if scanDue > 0 and now >= scanDue then
 		scanDue = 0
 		missing = {}

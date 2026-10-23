@@ -137,6 +137,10 @@ local function ScanDuration(def)
 	if not GetActionTexture then
 		return nil
 	end
+	-- nicht scannen, solange ein Tooltip oder das Charakterfenster offen ist
+	if (GameTooltip and GameTooltip:IsVisible()) or (CharacterFrame and CharacterFrame:IsVisible()) then
+		return nil
+	end
 	if not scan then
 		scan = CreateFrame("GameTooltip", "PhantomUI_TotemScan", nil, "GameTooltipTemplate")
 	end
