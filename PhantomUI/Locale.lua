@@ -227,6 +227,8 @@ P.LOC.enUS = {
 	["Schadenszahlen-Fächer"] = "Damage number fan",
 	["Fächer-Flugzeit"] = "Fan flight time",
 	["Fähigkeiten am Helden"] = "Abilities at your hero",
+	["Stapel"] = "Stacks",
+	["dauerhaft"] = "permanent",
 }
 
 P.LOC.frFR = {
@@ -449,6 +451,8 @@ P.LOC.frFR = {
 	["Schadenszahlen-Fächer"] = "Éventail des dégâts",
 	["Fächer-Flugzeit"] = "Durée de vol",
 	["Fähigkeiten am Helden"] = "Techniques autour du héros",
+	["Stapel"] = "Cumuls",
+	["dauerhaft"] = "permanent",
 }
 
 P.LOC.esES = {
@@ -671,6 +675,8 @@ P.LOC.esES = {
 	["Schadenszahlen-Fächer"] = "Abanico de daño",
 	["Fächer-Flugzeit"] = "Tiempo de vuelo",
 	["Fähigkeiten am Helden"] = "Habilidades junto al héroe",
+	["Stapel"] = "Acumulaciones",
+	["dauerhaft"] = "permanente",
 }
 
 P.LOC.ptBR = {
@@ -893,6 +899,8 @@ P.LOC.ptBR = {
 	["Schadenszahlen-Fächer"] = "Leque de dano",
 	["Fächer-Flugzeit"] = "Tempo de voo",
 	["Fähigkeiten am Helden"] = "Habilidades junto ao herói",
+	["Stapel"] = "Acúmulos",
+	["dauerhaft"] = "permanente",
 }
 
 P.LOC.plPL = {
@@ -1115,6 +1123,8 @@ P.LOC.plPL = {
 	["Schadenszahlen-Fächer"] = "Wachlarz obrażeń",
 	["Fächer-Flugzeit"] = "Czas lotu",
 	["Fähigkeiten am Helden"] = "Umiejętności przy bohaterze",
+	["Stapel"] = "Ładunki",
+	["dauerhaft"] = "stały",
 }
 
 P.LOC.csCZ = {
@@ -1337,6 +1347,8 @@ P.LOC.csCZ = {
 	["Schadenszahlen-Fächer"] = "Vějíř poškození",
 	["Fächer-Flugzeit"] = "Doba letu",
 	["Fähigkeiten am Helden"] = "Schopnosti u hrdiny",
+	["Stapel"] = "Stohy",
+	["dauerhaft"] = "trvalý",
 }
 
 P.LOC.roRO = {
@@ -1559,6 +1571,8 @@ P.LOC.roRO = {
 	["Schadenszahlen-Fächer"] = "Evantai daune",
 	["Fächer-Flugzeit"] = "Timp de zbor",
 	["Fähigkeiten am Helden"] = "Abilități lângă erou",
+	["Stapel"] = "Cumuluri",
+	["dauerhaft"] = "permanent",
 }
 
 P.LOC.trTR = {
@@ -1781,6 +1795,8 @@ P.LOC.trTR = {
 	["Schadenszahlen-Fächer"] = "Hasar yelpazesi",
 	["Fächer-Flugzeit"] = "Uçuş süresi",
 	["Fähigkeiten am Helden"] = "Kahramanın yanında yetenekler",
+	["Stapel"] = "Yığın",
+	["dauerhaft"] = "kalıcı",
 }
 
 P.LOC.ruRU = {
@@ -2003,6 +2019,8 @@ P.LOC.ruRU = {
 	["Schadenszahlen-Fächer"] = "Веер урона",
 	["Fächer-Flugzeit"] = "Время полёта",
 	["Fähigkeiten am Helden"] = "Способности у героя",
+	["Stapel"] = "Стаки",
+	["dauerhaft"] = "постоянно",
 }
 
 P.LOC.ukUA = {
@@ -2225,6 +2243,8 @@ P.LOC.ukUA = {
 	["Schadenszahlen-Fächer"] = "Віяло шкоди",
 	["Fächer-Flugzeit"] = "Час польоту",
 	["Fähigkeiten am Helden"] = "Здібності біля героя",
+	["Stapel"] = "Стаки",
+	["dauerhaft"] = "постійно",
 }
 
 P.LOC.zhCN = {
@@ -2447,6 +2467,8 @@ P.LOC.zhCN = {
 	["Schadenszahlen-Fächer"] = "伤害数字扇形",
 	["Fächer-Flugzeit"] = "飞行时间",
 	["Fähigkeiten am Helden"] = "英雄身边的技能",
+	["Stapel"] = "层数",
+	["dauerhaft"] = "永久",
 }
 
 P.LOC.jaJP = {
@@ -2669,6 +2691,8 @@ P.LOC.jaJP = {
 	["Schadenszahlen-Fächer"] = "ダメージ扇",
 	["Fächer-Flugzeit"] = "飛行時間",
 	["Fähigkeiten am Helden"] = "ヒーローの周りにスキル",
+	["Stapel"] = "スタック",
+	["dauerhaft"] = "永続",
 }
 
 P.LOC.koKR = {
@@ -2891,6 +2915,8 @@ P.LOC.koKR = {
 	["Schadenszahlen-Fächer"] = "피해 숫자 부채꼴",
 	["Fächer-Flugzeit"] = "비행 시간",
 	["Fähigkeiten am Helden"] = "영웅 주변 기술",
+	["Stapel"] = "중첩",
+	["dauerhaft"] = "영구",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

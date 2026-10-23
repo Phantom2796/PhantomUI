@@ -174,8 +174,99 @@ local function Pill(i)
 	-- Waechter, die man selbst anlockt, Totenkopf fuer Bosse nach Zeitplan
 	p.icon = holder:CreateTexture(nil, "OVERLAY")
 	p.icon:SetPoint("RIGHT", p, "LEFT", -3, 0)
+	-- Klick auf die Leiste: Boss ins Ziel
+	p:EnableMouse(true)
+	p:SetScript("OnMouseUp", function()
+		if this.unitName and this.unitName ~= "" and TargetByName then
+			TargetByName(this.unitName)
+		end
+	end)
+	p.debuffs = {}
 	pills[i] = p
 	return p
+end
+
+-- Debuffs eines Bosses rechts neben seiner Leiste, mit Tooltip
+local MAX_DEBUFFS = 12
+local function DebuffIcon(p, k)
+	local d = p.debuffs[k]
+	if d then
+		return d
+	end
+	d = CreateFrame("Frame", nil, p)
+	d:EnableMouse(true)
+	d.edge = d:CreateTexture(nil, "BACKGROUND")
+	d.edge:SetTexture(P.FLAT)
+	d.edge:SetVertexColor(0, 0, 0, 1)
+	d.edge:SetAllPoints(d)
+	d.icon = d:CreateTexture(nil, "ARTWORK")
+	d.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	d.icon:SetPoint("TOPLEFT", d, "TOPLEFT", 1, -1)
+	d.icon:SetPoint("BOTTOMRIGHT", d, "BOTTOMRIGHT", -1, 1)
+	d.count = d:CreateFontString(nil, "OVERLAY")
+	d.count:SetPoint("BOTTOMRIGHT", d, "BOTTOMRIGHT", 1, 0)
+	d:SetScript("OnEnter", function()
+		local info = this.info
+		if not info then
+			return
+		end
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT")
+		GameTooltip:SetText(info.name or info.spell or "?", 1, 1, 1)
+		if info.stacks and tonumber(info.stacks) and tonumber(info.stacks) > 1 then
+			GameTooltip:AddLine(P.T("Stapel") .. ": " .. info.stacks, 0.8, 0.8, 0.8)
+		end
+		if info.remaining then
+			GameTooltip:AddLine(string.format("%.0f s", info.remaining), 0.8, 0.8, 0.8)
+		elseif info.permanent then
+			GameTooltip:AddLine(P.T("dauerhaft"), 0.8, 0.8, 0.8)
+		end
+		GameTooltip:Show()
+	end)
+	d:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	p.debuffs[k] = d
+	return d
+end
+
+local function UpdateDebuffs(p, list, h, font)
+	local n = 0
+	if type(list) == "table" then
+		for k = 1, math.min(table.getn(list), MAX_DEBUFFS) do
+			local info = list[k]
+			n = n + 1
+			local d = DebuffIcon(p, n)
+			if d.size ~= h then
+				d.size = h
+				d:SetWidth(h)
+				d:SetHeight(h)
+				d:ClearAllPoints()
+				d:SetPoint("LEFT", p, "RIGHT", 3 + (n - 1) * (h + 2), 0)
+				d.count:SetFont(font, math.max(8, math.floor(h * 0.55)), "OUTLINE")
+			end
+			local icon = info.icon
+			if icon and icon ~= "" and not string.find(icon, "\\", 1, true) then
+				icon = "Interface\\Icons\\" .. icon
+			end
+			icon = (icon and icon ~= "") and icon or "Interface\\Icons\\INV_Misc_QuestionMark"
+			if d.tex ~= icon then
+				d.tex = icon
+				d.icon:SetTexture(icon)
+			end
+			local st = tonumber(info.stacks) or 0
+			local txt = st > 1 and tostring(st) or ""
+			if d.txt ~= txt then
+				d.txt = txt
+				d.count:SetText(txt)
+			end
+			d.info = info
+			d:Show()
+		end
+	end
+	for k = n + 1, table.getn(p.debuffs) do
+		p.debuffs[k]:Hide()
+		p.debuffs[k].info = nil
+	end
 end
 
 local function UpdateBosses()
@@ -192,7 +283,7 @@ local function UpdateBosses()
 		for i = 1, table.getn(guardians) do
 			local g = guardians[i]
 			if g.awake == true or g.awake == 1 then
-				table.insert(list, { name = g.name, hp = g.hp, hpm = g.hpm, guardian = true })
+				table.insert(list, { name = g.name, hp = g.hp, hpm = g.hpm, guardian = true, debuffs = g.debuffs })
 			end
 		end
 	end
@@ -294,6 +385,8 @@ local function UpdateBosses()
 			p.lastName = name
 			p.name:SetText(name)
 		end
+		p.unitName = name
+		UpdateDebuffs(p, b.debuffs, h, font)
 		local pct = P.Short(cur) .. "  " .. math.floor(cur / max * 100 + 0.5) .. "%"
 		if p.lastPct ~= pct then
 			p.lastPct = pct

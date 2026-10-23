@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.91
+- Boss bars: every boss and guardian shows its debuffs (your DoTs and more) right of its bar, with stacks and a tooltip on mouseover (name, stacks, time left) – for all bosses at once.
+- Click a boss bar to target that boss.
+
 ## 0.9.90
 - Buffs: the classic client's clock model kept turning around the wrong point after resizing, so buffs now show their own run-down instead – a dark shade grows down over the icon as the time passes, always exactly on the icon at any size. The seconds stay as they were.
 
