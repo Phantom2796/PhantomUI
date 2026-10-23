@@ -132,11 +132,14 @@ CheckPlate = function(plate)
 		plate.puiBar:SetStatusBarColor(r, g, b)
 		plate.puiName:SetTextColor(r, g, b)
 		plate:SetAlpha(1)
+		plate:EnableMouse(true)
 	else
 		-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
 		local r, g, b = plate.puiBar:GetStatusBarColor()
 		local friendly = r < 0.2 and (g > 0.8 or b > 0.8)
 		plate:SetAlpha(friendly and 0 or 1)
+		-- unsichtbar heisst auch: nicht anklickbar, kein Mouseover
+		plate:EnableMouse(not friendly)
 	end
 end
 local function Allies()

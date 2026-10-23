@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.94
+- Hidden friendly nameplates (totems, pets) no longer catch the mouse.
+
 ## 0.9.93
 - Party frames show your ally's level in front of the name.
 - Fixed: totems and your ally's pets flashed a health bar for a moment when they appeared – friendly plates other than your ally are now hidden the instant they show.
