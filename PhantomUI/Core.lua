@@ -167,7 +167,7 @@ local DEFAULTS = {
 	},
 	menu = { enabled = true },
 	chat = { enabled = true, bgAlpha = 0, font = "roboto", fontSize = 13, fade = 10 },
-	plates = { enabled = true },
+	plates = { enabled = true, ally = true },
 	plan = {
 		enabled = true,
 		choice = false,
@@ -179,6 +179,7 @@ local DEFAULTS = {
 		size = 30,
 	},
 	totems = { enabled = true, size = 32, talents = {} },
+	party = { enabled = true, width = 160, height = 22 },
 	minimap = {
 		enabled = true,
 		size = 180,

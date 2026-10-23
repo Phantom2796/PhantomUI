@@ -56,6 +56,7 @@ local function Style(plate)
 		nameText:ClearAllPoints()
 		nameText:SetPoint("BOTTOM", bar, "TOP", 0, 3)
 	end
+	plate.puiName, plate.puiBar, plate.puiLevel = nameText, bar, levelText
 	if levelText then
 		levelText:SetFont(P.Font(), 9, "OUTLINE")
 		levelText:ClearAllPoints()
@@ -89,6 +90,59 @@ local function Scan()
 	end
 end
 
+-- Koop: Mitspieler-Plakette in Klassenfarbe; andere freundliche Plaketten
+-- (NPCs, Begleiter) unsichtbar
+local function PartyNames()
+	local names = {}
+	for i = 1, 4 do
+		local unit = "party" .. i
+		if UnitExists(unit) then
+			local n = UnitName(unit)
+			if n then
+				names[n] = unit
+			end
+		end
+	end
+	return names
+end
+
+local friendOn = false
+local function Allies()
+	local inParty = (GetNumPartyMembers and GetNumPartyMembers() or 0) > 0
+	if not P.DB().plates.ally then
+		return
+	end
+	-- freundliche Plaketten nur in der Gruppe einschalten
+	if inParty and not friendOn and ShowFriendNameplates then
+		ShowFriendNameplates()
+		friendOn = true
+	elseif not inParty and friendOn and HideFriendNameplates then
+		HideFriendNameplates()
+		friendOn = false
+	end
+	if not inParty then
+		return
+	end
+	local names = PartyNames()
+	for plate in pairs(styled) do
+		if plate:IsShown() and plate.puiName and plate.puiBar then
+			local n = plate.puiName:GetText()
+			local unit = n and names[n]
+			if unit then
+				local r, g, b = P.PartyClassRGB(unit)
+				plate.puiBar:SetStatusBarColor(r, g, b)
+				plate.puiName:SetTextColor(r, g, b)
+				plate:SetAlpha(1)
+			else
+				-- freundlich = blau/gruen eingefaerbt vom Spiel
+				local r, g, b = plate.puiBar:GetStatusBarColor()
+				local friendly = r < 0.2 and (g > 0.8 or b > 0.8)
+				plate:SetAlpha(friendly and 0 or 1)
+			end
+		end
+	end
+end
+
 local function Init()
 	if not P.DB().plates.enabled or DFRL then
 		-- Mit SurvivorsDragonUi bleiben dessen Plaketten.
@@ -101,6 +155,7 @@ local function Init()
 		if t > 0.2 then
 			t = 0
 			Scan()
+			Allies()
 		end
 	end)
 end

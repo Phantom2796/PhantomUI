@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.92 (co-op)
+- **Party frames** for the new co-op mode: your allies with their name in class colour, health bar and percent (dead/offline shown), click to target, tooltip on mouseover. Movable and resizable in anchor mode (*Party*), on/off under `/pui` → General.
+- **Ally nameplate:** in a party, only your ally gets a friendly nameplate, in their class colour; other friendly plates (NPCs, pets) stay hidden. On/off under `/pui` → General.
+
 ## 0.9.91
 - Boss bars: every boss and guardian shows its debuffs (your DoTs and more) right of its bar, with stacks and a tooltip on mouseover (name, stacks, time left) – for all bosses at once.
 - Click a boss bar to target that boss.

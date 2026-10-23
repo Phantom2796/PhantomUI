@@ -229,6 +229,11 @@ P.LOC.enUS = {
 	["Fähigkeiten am Helden"] = "Abilities at your hero",
 	["Stapel"] = "Stacks",
 	["dauerhaft"] = "permanent",
+	["Gruppe (Koop)"] = "Party (co-op)",
+	["Mitspieler-Plakette"] = "Ally nameplate",
+	["Mitspieler"] = "Ally",
+	["Offline"] = "Offline",
+	["Gruppe"] = "Party",
 }
 
 P.LOC.frFR = {
@@ -453,6 +458,11 @@ P.LOC.frFR = {
 	["Fähigkeiten am Helden"] = "Techniques autour du héros",
 	["Stapel"] = "Cumuls",
 	["dauerhaft"] = "permanent",
+	["Gruppe (Koop)"] = "Groupe (coop)",
+	["Mitspieler-Plakette"] = "Barre du coéquipier",
+	["Mitspieler"] = "Coéquipier",
+	["Offline"] = "Hors ligne",
+	["Gruppe"] = "Groupe",
 }
 
 P.LOC.esES = {
@@ -677,6 +687,11 @@ P.LOC.esES = {
 	["Fähigkeiten am Helden"] = "Habilidades junto al héroe",
 	["Stapel"] = "Acumulaciones",
 	["dauerhaft"] = "permanente",
+	["Gruppe (Koop)"] = "Grupo (cooperativo)",
+	["Mitspieler-Plakette"] = "Placa del aliado",
+	["Mitspieler"] = "Aliado",
+	["Offline"] = "Desconectado",
+	["Gruppe"] = "Grupo",
 }
 
 P.LOC.ptBR = {
@@ -901,6 +916,11 @@ P.LOC.ptBR = {
 	["Fähigkeiten am Helden"] = "Habilidades junto ao herói",
 	["Stapel"] = "Acúmulos",
 	["dauerhaft"] = "permanente",
+	["Gruppe (Koop)"] = "Grupo (cooperativo)",
+	["Mitspieler-Plakette"] = "Placa do aliado",
+	["Mitspieler"] = "Aliado",
+	["Offline"] = "Offline",
+	["Gruppe"] = "Grupo",
 }
 
 P.LOC.plPL = {
@@ -1125,6 +1145,11 @@ P.LOC.plPL = {
 	["Fähigkeiten am Helden"] = "Umiejętności przy bohaterze",
 	["Stapel"] = "Ładunki",
 	["dauerhaft"] = "stały",
+	["Gruppe (Koop)"] = "Drużyna (co-op)",
+	["Mitspieler-Plakette"] = "Plakietka sojusznika",
+	["Mitspieler"] = "Sojusznik",
+	["Offline"] = "Offline",
+	["Gruppe"] = "Drużyna",
 }
 
 P.LOC.csCZ = {
@@ -1349,6 +1374,11 @@ P.LOC.csCZ = {
 	["Fähigkeiten am Helden"] = "Schopnosti u hrdiny",
 	["Stapel"] = "Stohy",
 	["dauerhaft"] = "trvalý",
+	["Gruppe (Koop)"] = "Skupina (co-op)",
+	["Mitspieler-Plakette"] = "Štítek spoluhráče",
+	["Mitspieler"] = "Spoluhráč",
+	["Offline"] = "Offline",
+	["Gruppe"] = "Skupina",
 }
 
 P.LOC.roRO = {
@@ -1573,6 +1603,11 @@ P.LOC.roRO = {
 	["Fähigkeiten am Helden"] = "Abilități lângă erou",
 	["Stapel"] = "Cumuluri",
 	["dauerhaft"] = "permanent",
+	["Gruppe (Koop)"] = "Grup (co-op)",
+	["Mitspieler-Plakette"] = "Plăcuța aliatului",
+	["Mitspieler"] = "Aliat",
+	["Offline"] = "Deconectat",
+	["Gruppe"] = "Grup",
 }
 
 P.LOC.trTR = {
@@ -1797,6 +1832,11 @@ P.LOC.trTR = {
 	["Fähigkeiten am Helden"] = "Kahramanın yanında yetenekler",
 	["Stapel"] = "Yığın",
 	["dauerhaft"] = "kalıcı",
+	["Gruppe (Koop)"] = "Grup (ortak)",
+	["Mitspieler-Plakette"] = "Müttefik plakası",
+	["Mitspieler"] = "Müttefik",
+	["Offline"] = "Çevrimdışı",
+	["Gruppe"] = "Grup",
 }
 
 P.LOC.ruRU = {
@@ -2021,6 +2061,11 @@ P.LOC.ruRU = {
 	["Fähigkeiten am Helden"] = "Способности у героя",
 	["Stapel"] = "Стаки",
 	["dauerhaft"] = "постоянно",
+	["Gruppe (Koop)"] = "Группа (кооп)",
+	["Mitspieler-Plakette"] = "Табличка союзника",
+	["Mitspieler"] = "Союзник",
+	["Offline"] = "Не в сети",
+	["Gruppe"] = "Группа",
 }
 
 P.LOC.ukUA = {
@@ -2245,6 +2290,11 @@ P.LOC.ukUA = {
 	["Fähigkeiten am Helden"] = "Здібності біля героя",
 	["Stapel"] = "Стаки",
 	["dauerhaft"] = "постійно",
+	["Gruppe (Koop)"] = "Група (кооп)",
+	["Mitspieler-Plakette"] = "Табличка союзника",
+	["Mitspieler"] = "Союзник",
+	["Offline"] = "Не в мережі",
+	["Gruppe"] = "Група",
 }
 
 P.LOC.zhCN = {
@@ -2469,6 +2519,11 @@ P.LOC.zhCN = {
 	["Fähigkeiten am Helden"] = "英雄身边的技能",
 	["Stapel"] = "层数",
 	["dauerhaft"] = "永久",
+	["Gruppe (Koop)"] = "队伍（合作）",
+	["Mitspieler-Plakette"] = "队友姓名板",
+	["Mitspieler"] = "队友",
+	["Offline"] = "离线",
+	["Gruppe"] = "队伍",
 }
 
 P.LOC.jaJP = {
@@ -2693,6 +2748,11 @@ P.LOC.jaJP = {
 	["Fähigkeiten am Helden"] = "ヒーローの周りにスキル",
 	["Stapel"] = "スタック",
 	["dauerhaft"] = "永続",
+	["Gruppe (Koop)"] = "パーティー（協力）",
+	["Mitspieler-Plakette"] = "味方のネームプレート",
+	["Mitspieler"] = "味方",
+	["Offline"] = "オフライン",
+	["Gruppe"] = "パーティー",
 }
 
 P.LOC.koKR = {
@@ -2917,6 +2977,11 @@ P.LOC.koKR = {
 	["Fähigkeiten am Helden"] = "영웅 주변 기술",
 	["Stapel"] = "중첩",
 	["dauerhaft"] = "영구",
+	["Gruppe (Koop)"] = "파티 (협동)",
+	["Mitspieler-Plakette"] = "아군 이름표",
+	["Mitspieler"] = "아군",
+	["Offline"] = "오프라인",
+	["Gruppe"] = "파티",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache
