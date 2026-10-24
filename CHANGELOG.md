@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.99
+- Totems: when the game reports your totems as summons, PhantomUI now uses its exact count and time left instead of guessing from the cooldown (the count of one or both totems could be off). Totems no longer also show up a second time among the pets. `/pui totems` says which count is used.
+
 ## 0.9.98
 - **Party DPS meter** for co-op: its own window, one line per hero (rank, name in class colour, damage, DPS) with the party's total in the header – straight from the game's party meter. Sits above the damage meter by default, movable and resizable in anchor mode, on/off under `/pui` → General. Only shows while you are in a party.
 

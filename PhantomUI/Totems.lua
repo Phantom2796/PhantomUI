@@ -14,8 +14,8 @@
 local P = PhantomUI
 
 local TOTEMS = {
-	{ key = "searing_totem", icon = "Spell_Fire_SearingTotem", fallback = 30 },
-	{ key = "magma_totem", icon = "Spell_Fire_SelfDestruct", fallback = 20 },
+	{ key = "searing_totem", icon = "Spell_Fire_SearingTotem", fallback = 30, match = "searing" },
+	{ key = "magma_totem", icon = "Spell_Fire_SelfDestruct", fallback = 20, match = "magma" },
 }
 local AUTO_EVERY = 14
 local MAX_PER_KIND = 40 -- seit AS 0.105: hoechstens 40 je Art, das aelteste faellt weg
@@ -337,8 +337,53 @@ local function SummonIcon(g)
 	end
 	return icon
 end
+-- Totems vom Spiel gezaehlt (falls es sie als Beschwoerung meldet):
+-- Anzahl und kuerzeste Restzeit, sonst nil
+local gameTotems = false
+local function GameTotem(def, now)
+	local pets = AZS_PETS
+	if type(pets) ~= "table" then
+		return nil
+	end
+	local n, soon = 0, nil
+	local t = AZS_GetRunTime and AZS_GetRunTime() or 0
+	for i = 1, table.getn(pets) do
+		local p = pets[i]
+		local key = type(p) == "table" and string.lower(tostring(p.key or "") .. " " .. tostring(p.kind or "")) or ""
+		if string.find(key, "totem", 1, true) then
+			gameTotems = true
+			if string.find(key, def.match, 1, true) then
+				n = n + 1
+				local ends = tonumber(p.ends)
+				if ends and ends >= 0 then
+					local at = now + math.max(0, ends - t)
+					if not soon or at < soon then
+						soon = at
+					end
+				end
+			end
+		end
+	end
+	if not gameTotems then
+		return nil
+	end
+	return n, soon
+end
+
+local function IsTotemGroup(g)
+	local key = string.lower(tostring(g.key or "") .. " " .. tostring(g.kind or ""))
+	return string.find(key, "totem", 1, true) ~= nil
+end
+
 local function UpdateSummons(now, shown)
-	local groups, at = SummonGroups(now)
+	local all, at = SummonGroups(now)
+	-- Totems zeigt die Totem-Leiste selbst
+	local groups = {}
+	for j = 1, table.getn(all) do
+		if not IsTotemGroup(all[j]) then
+			table.insert(groups, all[j])
+		end
+	end
 	local base = table.getn(TOTEMS)
 	local n = 0
 	for j = 1, MAX_SUMMON do
@@ -435,6 +480,11 @@ local function Update()
 				end
 			end
 			local n = table.getn(st.up)
+			-- meldet das Spiel die Totems selbst, gilt seine Zahl (exakt)
+			local gn, gsoon = GameTotem(def, now)
+			if gn then
+				n, soon = gn, gsoon
+			end
 			s.name = sp.spell or def.key
 			s.duration, s.n, s.soon = duration, n, soon
 			if n > 0 or P.unlocked then
@@ -561,6 +611,10 @@ function P.TotemDebug()
 			.. ", " .. P.T("Dauer") .. " " .. tostring(ScanDuration(def) or "?"))
 	end
 	P.Print("twin_totems " .. tostring(spells.twin_totems ~= nil) .. ", totemic_call " .. tostring(spells.totemic_call ~= nil))
+	for i = 1, table.getn(TOTEMS) do
+		local gn = GameTotem(TOTEMS[i], GetTime())
+		P.Print(TOTEMS[i].key .. ": " .. (gn and (P.L("Spiel meldet ", "game reports ") .. gn) or P.L("Spiel meldet keine Totems (eigene Zaehlung)", "game reports no totems (own count)")))
+	end
 	if SummonAPI() then
 		local groups = SummonGroups(GetTime())
 		P.Print("AZS_PETS: " .. table.getn(AZS_PETS) .. ", " .. table.getn(groups) .. " groups")
