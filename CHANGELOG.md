@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.98
+- **Party DPS meter** for co-op: its own window, one line per hero (rank, name in class colour, damage, DPS) with the party's total in the header – straight from the game's party meter. Sits above the damage meter by default, movable and resizable in anchor mode, on/off under `/pui` → General. Only shows while you are in a party.
+
 ## 0.9.97
 - Item tooltips in the character window no longer act up: PhantomUI's background icon and duration scans (plan, totems, damage meter, damage numbers) pause while a tooltip or the character window is open.
 

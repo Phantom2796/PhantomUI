@@ -27,7 +27,7 @@
 - **Boss & guardian health bars** – docked above the target frame (same width), more bosses stack upwards; in anchor mode freely movable with their own width, height and scale
 - **Run stats under the player frame** – the numbers from the character pane (damage, haste, crit, echo, lifesteal, gold, luck …), always visible
 - **Square minimap** that rotates with you, zone text, clock, one button strip for all addons
-- **Party frames for co-op** – allies in class colour, click to target, and an ally nameplate in class colour
+- **Party frames for co-op** – allies in class colour, click to target, an ally nameplate in class colour and a party DPS meter
 - **Totems & pets above the player frame** – just the icon with the number inside: active Searing/Magma Totems for shamans (cooldown and duration read from the game, talents included) and every summon the game reports for your class – hunter beasts, treants, spirit wolves, water elemental and every warlock demon – with how many are out
 - **Retail-style buffs**, XP bar, gold & next-cache counter, compact game menu, styled nameplates
 - **Clean chat** – transparent and movable, modern Roboto font, flat input line, old lines fade after 10 s

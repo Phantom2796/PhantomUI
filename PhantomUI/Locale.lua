@@ -234,6 +234,8 @@ P.LOC.enUS = {
 	["Mitspieler"] = "Ally",
 	["Offline"] = "Offline",
 	["Gruppe"] = "Party",
+	["Gruppen-DPS"] = "Party DPS",
+	["DPS"] = "DPS",
 }
 
 P.LOC.frFR = {
@@ -463,6 +465,8 @@ P.LOC.frFR = {
 	["Mitspieler"] = "Coéquipier",
 	["Offline"] = "Hors ligne",
 	["Gruppe"] = "Groupe",
+	["Gruppen-DPS"] = "DPS du groupe",
+	["DPS"] = "DPS",
 }
 
 P.LOC.esES = {
@@ -692,6 +696,8 @@ P.LOC.esES = {
 	["Mitspieler"] = "Aliado",
 	["Offline"] = "Desconectado",
 	["Gruppe"] = "Grupo",
+	["Gruppen-DPS"] = "DPS del grupo",
+	["DPS"] = "DPS",
 }
 
 P.LOC.ptBR = {
@@ -921,6 +927,8 @@ P.LOC.ptBR = {
 	["Mitspieler"] = "Aliado",
 	["Offline"] = "Offline",
 	["Gruppe"] = "Grupo",
+	["Gruppen-DPS"] = "DPS do grupo",
+	["DPS"] = "DPS",
 }
 
 P.LOC.plPL = {
@@ -1150,6 +1158,8 @@ P.LOC.plPL = {
 	["Mitspieler"] = "Sojusznik",
 	["Offline"] = "Offline",
 	["Gruppe"] = "Drużyna",
+	["Gruppen-DPS"] = "DPS drużyny",
+	["DPS"] = "DPS",
 }
 
 P.LOC.csCZ = {
@@ -1379,6 +1389,8 @@ P.LOC.csCZ = {
 	["Mitspieler"] = "Spoluhráč",
 	["Offline"] = "Offline",
 	["Gruppe"] = "Skupina",
+	["Gruppen-DPS"] = "DPS skupiny",
+	["DPS"] = "DPS",
 }
 
 P.LOC.roRO = {
@@ -1608,6 +1620,8 @@ P.LOC.roRO = {
 	["Mitspieler"] = "Aliat",
 	["Offline"] = "Deconectat",
 	["Gruppe"] = "Grup",
+	["Gruppen-DPS"] = "DPS grup",
+	["DPS"] = "DPS",
 }
 
 P.LOC.trTR = {
@@ -1837,6 +1851,8 @@ P.LOC.trTR = {
 	["Mitspieler"] = "Müttefik",
 	["Offline"] = "Çevrimdışı",
 	["Gruppe"] = "Grup",
+	["Gruppen-DPS"] = "Grup DPS",
+	["DPS"] = "DPS",
 }
 
 P.LOC.ruRU = {
@@ -2066,6 +2082,8 @@ P.LOC.ruRU = {
 	["Mitspieler"] = "Союзник",
 	["Offline"] = "Не в сети",
 	["Gruppe"] = "Группа",
+	["Gruppen-DPS"] = "DPS группы",
+	["DPS"] = "УВС",
 }
 
 P.LOC.ukUA = {
@@ -2295,6 +2313,8 @@ P.LOC.ukUA = {
 	["Mitspieler"] = "Союзник",
 	["Offline"] = "Не в мережі",
 	["Gruppe"] = "Група",
+	["Gruppen-DPS"] = "DPS групи",
+	["DPS"] = "ШЗС",
 }
 
 P.LOC.zhCN = {
@@ -2524,6 +2544,8 @@ P.LOC.zhCN = {
 	["Mitspieler"] = "队友",
 	["Offline"] = "离线",
 	["Gruppe"] = "队伍",
+	["Gruppen-DPS"] = "队伍DPS",
+	["DPS"] = "DPS",
 }
 
 P.LOC.jaJP = {
@@ -2753,6 +2775,8 @@ P.LOC.jaJP = {
 	["Mitspieler"] = "味方",
 	["Offline"] = "オフライン",
 	["Gruppe"] = "パーティー",
+	["Gruppen-DPS"] = "パーティーDPS",
+	["DPS"] = "DPS",
 }
 
 P.LOC.koKR = {
@@ -2982,6 +3006,8 @@ P.LOC.koKR = {
 	["Mitspieler"] = "아군",
 	["Offline"] = "오프라인",
 	["Gruppe"] = "파티",
+	["Gruppen-DPS"] = "파티 DPS",
+	["DPS"] = "DPS",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache
