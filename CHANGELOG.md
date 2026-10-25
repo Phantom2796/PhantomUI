@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.105
+- Ability plan: *Star of Mystaria* moved from necklaces to trinkets (game 0.116) with its new icon and base values (+21% max health, +3.4% damage reduction).
+
 ## 0.9.104
 - Damage meter icons now come straight from the game's own talent and ability data (505 entries, 6,300 names in all 14 languages) and take precedence over older guesses – new talents like Chastise, Divine Aegis and Purifying Flame have their icons.
 
