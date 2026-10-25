@@ -236,6 +236,7 @@ P.LOC.enUS = {
 	["Gruppe"] = "Party",
 	["Gruppen-DPS"] = "Party DPS",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Too far away to inspect.",
 }
 
 P.LOC.frFR = {
@@ -467,6 +468,7 @@ P.LOC.frFR = {
 	["Gruppe"] = "Groupe",
 	["Gruppen-DPS"] = "DPS du groupe",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Trop loin pour inspecter.",
 }
 
 P.LOC.esES = {
@@ -698,6 +700,7 @@ P.LOC.esES = {
 	["Gruppe"] = "Grupo",
 	["Gruppen-DPS"] = "DPS del grupo",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Demasiado lejos para inspeccionar.",
 }
 
 P.LOC.ptBR = {
@@ -929,6 +932,7 @@ P.LOC.ptBR = {
 	["Gruppe"] = "Grupo",
 	["Gruppen-DPS"] = "DPS do grupo",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Longe demais para inspecionar.",
 }
 
 P.LOC.plPL = {
@@ -1160,6 +1164,7 @@ P.LOC.plPL = {
 	["Gruppe"] = "Drużyna",
 	["Gruppen-DPS"] = "DPS drużyny",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Za daleko, by obejrzeć.",
 }
 
 P.LOC.csCZ = {
@@ -1391,6 +1396,7 @@ P.LOC.csCZ = {
 	["Gruppe"] = "Skupina",
 	["Gruppen-DPS"] = "DPS skupiny",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Příliš daleko na prohlédnutí.",
 }
 
 P.LOC.roRO = {
@@ -1622,6 +1628,7 @@ P.LOC.roRO = {
 	["Gruppe"] = "Grup",
 	["Gruppen-DPS"] = "DPS grup",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "Prea departe pentru a inspecta.",
 }
 
 P.LOC.trTR = {
@@ -1853,6 +1860,7 @@ P.LOC.trTR = {
 	["Gruppe"] = "Grup",
 	["Gruppen-DPS"] = "Grup DPS",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "İncelemek için çok uzak.",
 }
 
 P.LOC.ruRU = {
@@ -2084,6 +2092,7 @@ P.LOC.ruRU = {
 	["Gruppe"] = "Группа",
 	["Gruppen-DPS"] = "DPS группы",
 	["DPS"] = "УВС",
+	["Zu weit weg zum Betrachten."] = "Слишком далеко для осмотра.",
 }
 
 P.LOC.ukUA = {
@@ -2315,6 +2324,7 @@ P.LOC.ukUA = {
 	["Gruppe"] = "Група",
 	["Gruppen-DPS"] = "DPS групи",
 	["DPS"] = "ШЗС",
+	["Zu weit weg zum Betrachten."] = "Задалеко для огляду.",
 }
 
 P.LOC.zhCN = {
@@ -2546,6 +2556,7 @@ P.LOC.zhCN = {
 	["Gruppe"] = "队伍",
 	["Gruppen-DPS"] = "队伍DPS",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "距离太远，无法观察。",
 }
 
 P.LOC.jaJP = {
@@ -2777,6 +2788,7 @@ P.LOC.jaJP = {
 	["Gruppe"] = "パーティー",
 	["Gruppen-DPS"] = "パーティーDPS",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "遠すぎて調べられません。",
 }
 
 P.LOC.koKR = {
@@ -3008,6 +3020,7 @@ P.LOC.koKR = {
 	["Gruppe"] = "파티",
 	["Gruppen-DPS"] = "파티 DPS",
 	["DPS"] = "DPS",
+	["Zu weit weg zum Betrachten."] = "너무 멀어서 살펴볼 수 없습니다.",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.100
+- Party frames: right-click an ally to inspect them (the game's inspect window with their gear). Left-click still targets.
+
 ## 0.9.99
 - Totems: when the game reports your totems as summons, PhantomUI now uses its exact count and time left instead of guessing from the cooldown (the count of one or both totems could be off). Totems no longer also show up a second time among the pets. `/pui totems` says which count is used.
 

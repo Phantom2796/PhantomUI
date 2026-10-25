@@ -27,9 +27,21 @@ local function Row(i)
 	r = CreateFrame("Button", "PhantomUI_Party" .. i, frame)
 	r.unit = "party" .. i
 	r:EnableMouse(true)
-	r:RegisterForClicks("LeftButtonUp")
+	r:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	r:SetScript("OnClick", function()
-		if UnitExists(this.unit) then
+		if not UnitExists(this.unit) then
+			return
+		end
+		if arg1 == "RightButton" then
+			-- Rechtsklick: Mitspieler betrachten (Ausruestung)
+			if CanInspect and not CanInspect(this.unit) then
+				P.Print(P.T("Zu weit weg zum Betrachten."))
+				return
+			end
+			if InspectUnit then
+				InspectUnit(this.unit)
+			end
+		else
 			TargetUnit(this.unit)
 		end
 	end)
