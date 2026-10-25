@@ -117,52 +117,91 @@ local function PartyNames()
 end
 
 local friendOn = false
+local enemyOn = false
 local partyNames = {}
 local inGroup = false
 
--- eine Plakette pruefen: Mitspieler in Klassenfarbe, sonst freundliche weg
+local bossNames = {}
+
+-- Namen der Bosse, Endbosse und Waechter im Lauf
+local function BossNames()
+	local names = {}
+	local units = AZS_UNITS
+	if type(units) == "table" then
+		for i = 1, table.getn(units) do
+			local u = units[i]
+			if type(u) == "table" and u.name and (u.kind == "boss" or u.kind == "final" or u.kind == "guardian") then
+				names[u.name] = true
+			end
+		end
+	end
+	return names
+end
+
+local function Visible(plate, on)
+	plate:SetAlpha(on and 1 or 0)
+	-- unsichtbar heisst auch: nicht anklickbar, kein Mouseover
+	plate:EnableMouse(on)
+end
+
+-- eine Plakette pruefen:
+-- Mitspieler in Klassenfarbe; freundliche weg; mit "nur Bosse" nur Bosse/Waechter
 CheckPlate = function(plate)
-	if not inGroup or not P.DB().plates.ally or not plate.puiName or not plate.puiBar then
+	if not plate.puiName or not plate.puiBar then
+		return
+	end
+	local db = P.DB().plates
+	local ally = inGroup and db.ally
+	local bossOnly = db.bossOnly
+	if not ally and not bossOnly then
 		return
 	end
 	local n = plate.puiName:GetText()
-	local unit = n and partyNames[n]
+	local unit = ally and n and partyNames[n]
 	if unit then
 		local r, g, b = P.PartyClassRGB(unit)
 		plate.puiBar:SetStatusBarColor(r, g, b)
 		plate.puiName:SetTextColor(r, g, b)
-		plate:SetAlpha(1)
-		plate:EnableMouse(true)
+		Visible(plate, true)
+		return
+	end
+	-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
+	local r, g, b = plate.puiBar:GetStatusBarColor()
+	if r < 0.2 and (g > 0.8 or b > 0.8) then
+		Visible(plate, false)
+	elseif bossOnly then
+		Visible(plate, n and bossNames[n] and true or false)
 	else
-		-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
-		local r, g, b = plate.puiBar:GetStatusBarColor()
-		local friendly = r < 0.2 and (g > 0.8 or b > 0.8)
-		plate:SetAlpha(friendly and 0 or 1)
-		-- unsichtbar heisst auch: nicht anklickbar, kein Mouseover
-		plate:EnableMouse(not friendly)
+		Visible(plate, true)
 	end
 end
+
 local function Allies()
+	local db = P.DB().plates
 	local inParty = (GetNumPartyMembers and GetNumPartyMembers() or 0) > 0
 	inGroup = inParty
-	if not P.DB().plates.ally then
-		return
-	end
 	-- freundliche Plaketten nur in der Gruppe einschalten
-	if inParty and not friendOn and ShowFriendNameplates then
-		ShowFriendNameplates()
-		friendOn = true
-	elseif not inParty and friendOn and HideFriendNameplates then
-		HideFriendNameplates()
-		friendOn = false
+	if db.ally then
+		if inParty and not friendOn and ShowFriendNameplates then
+			ShowFriendNameplates()
+			friendOn = true
+		elseif not inParty and friendOn and HideFriendNameplates then
+			HideFriendNameplates()
+			friendOn = false
+		end
 	end
-	if not inParty then
-		return
+	-- "nur Bosse": feindliche Plaketten einschalten, der Rest wird ausgeblendet
+	if db.bossOnly and not enemyOn and ShowNameplates then
+		ShowNameplates()
+		enemyOn = true
 	end
-	partyNames = PartyNames()
-	for plate in pairs(styled) do
-		if plate:IsShown() then
-			CheckPlate(plate)
+	partyNames = inParty and PartyNames() or {}
+	bossNames = db.bossOnly and BossNames() or {}
+	if (inParty and db.ally) or db.bossOnly then
+		for plate in pairs(styled) do
+			if plate:IsShown() then
+				CheckPlate(plate)
+			end
 		end
 	end
 end
@@ -180,7 +219,7 @@ local function Init()
 		if t > 0.2 then
 			t = 0
 			Allies()
-		elseif inGroup then
+		elseif inGroup or P.DB().plates.bossOnly then
 			-- jedes Bild pruefen: das Spiel faerbt eine neue Plakette erst nach
 			-- dem Erscheinen ein, sonst blitzt sie kurz gruen auf
 			for plate in pairs(styled) do

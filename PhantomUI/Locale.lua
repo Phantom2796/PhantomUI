@@ -237,6 +237,7 @@ P.LOC.enUS = {
 	["Gruppen-DPS"] = "Party DPS",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Too far away to inspect.",
+	["Plaketten nur für Bosse"] = "Nameplates for bosses only",
 }
 
 P.LOC.frFR = {
@@ -469,6 +470,7 @@ P.LOC.frFR = {
 	["Gruppen-DPS"] = "DPS du groupe",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Trop loin pour inspecter.",
+	["Plaketten nur für Bosse"] = "Barres de nom : boss seulement",
 }
 
 P.LOC.esES = {
@@ -701,6 +703,7 @@ P.LOC.esES = {
 	["Gruppen-DPS"] = "DPS del grupo",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Demasiado lejos para inspeccionar.",
+	["Plaketten nur für Bosse"] = "Placas solo para jefes",
 }
 
 P.LOC.ptBR = {
@@ -933,6 +936,7 @@ P.LOC.ptBR = {
 	["Gruppen-DPS"] = "DPS do grupo",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Longe demais para inspecionar.",
+	["Plaketten nur für Bosse"] = "Placas só para chefes",
 }
 
 P.LOC.plPL = {
@@ -1165,6 +1169,7 @@ P.LOC.plPL = {
 	["Gruppen-DPS"] = "DPS drużyny",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Za daleko, by obejrzeć.",
+	["Plaketten nur für Bosse"] = "Plakietki tylko dla bossów",
 }
 
 P.LOC.csCZ = {
@@ -1397,6 +1402,7 @@ P.LOC.csCZ = {
 	["Gruppen-DPS"] = "DPS skupiny",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Příliš daleko na prohlédnutí.",
+	["Plaketten nur für Bosse"] = "Štítky jen pro bossy",
 }
 
 P.LOC.roRO = {
@@ -1629,6 +1635,7 @@ P.LOC.roRO = {
 	["Gruppen-DPS"] = "DPS grup",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "Prea departe pentru a inspecta.",
+	["Plaketten nur für Bosse"] = "Plăcuțe doar pentru boși",
 }
 
 P.LOC.trTR = {
@@ -1861,6 +1868,7 @@ P.LOC.trTR = {
 	["Gruppen-DPS"] = "Grup DPS",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "İncelemek için çok uzak.",
+	["Plaketten nur für Bosse"] = "Sadece boss plakaları",
 }
 
 P.LOC.ruRU = {
@@ -2093,6 +2101,7 @@ P.LOC.ruRU = {
 	["Gruppen-DPS"] = "DPS группы",
 	["DPS"] = "УВС",
 	["Zu weit weg zum Betrachten."] = "Слишком далеко для осмотра.",
+	["Plaketten nur für Bosse"] = "Таблички только у боссов",
 }
 
 P.LOC.ukUA = {
@@ -2325,6 +2334,7 @@ P.LOC.ukUA = {
 	["Gruppen-DPS"] = "DPS групи",
 	["DPS"] = "ШЗС",
 	["Zu weit weg zum Betrachten."] = "Задалеко для огляду.",
+	["Plaketten nur für Bosse"] = "Таблички лише в босів",
 }
 
 P.LOC.zhCN = {
@@ -2557,6 +2567,7 @@ P.LOC.zhCN = {
 	["Gruppen-DPS"] = "队伍DPS",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "距离太远，无法观察。",
+	["Plaketten nur für Bosse"] = "仅首领显示姓名板",
 }
 
 P.LOC.jaJP = {
@@ -2789,6 +2800,7 @@ P.LOC.jaJP = {
 	["Gruppen-DPS"] = "パーティーDPS",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "遠すぎて調べられません。",
+	["Plaketten nur für Bosse"] = "ボスのみネームプレート",
 }
 
 P.LOC.koKR = {
@@ -3021,6 +3033,7 @@ P.LOC.koKR = {
 	["Gruppen-DPS"] = "파티 DPS",
 	["DPS"] = "DPS",
 	["Zu weit weg zum Betrachten."] = "너무 멀어서 살펴볼 수 없습니다.",
+	["Plaketten nur für Bosse"] = "보스만 이름표",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

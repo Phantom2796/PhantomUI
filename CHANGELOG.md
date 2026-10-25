@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.102
+- **Nameplates for bosses only** (on by default, `/pui` → General): enemy nameplates are switched on, but only bosses, final bosses and guardians keep theirs; every other plate is hidden and ignores the mouse. In a party your ally's plate stays.
+
 ## 0.9.101
 - Party frames are wider (230 px, the old 160 is raised once) and show health like the player and target frames: current / max and percent.
 
