@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.104
+- Damage meter icons now come straight from the game's own talent and ability data (505 entries, 6,300 names in all 14 languages) and take precedence over older guesses – new talents like Chastise, Divine Aegis and Purifying Flame have their icons.
+
 ## 0.9.103
 - "Nameplates for bosses only" removed again: the client stacks nameplates, and the hidden ones still took their place, so the boss plates jumped around.
 - New option *Enemy Name Plates* (`/pui` → General, off by default): PhantomUI switches enemy plates off; in a party only your ally keeps a friendly plate in class colour.
