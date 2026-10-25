@@ -179,7 +179,7 @@ local DEFAULTS = {
 		size = 30,
 	},
 	totems = { enabled = true, size = 32, talents = {} },
-	party = { enabled = true, width = 160, height = 22 },
+	party = { enabled = true, width = 230, height = 22 },
 	partymeter = { enabled = true, width = 260, row = 16 },
 	minimap = {
 		enabled = true,

@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.101
+- Party frames are wider (230 px, the old 160 is raised once) and show health like the player and target frames: current / max and percent.
+
 ## 0.9.100
 - Party frames: right-click an ally to inspect them (the game's inspect window with their gear). Left-click still targets.
 

@@ -70,8 +70,12 @@ local function Row(i)
 	r.name = holder:CreateFontString(nil, "OVERLAY")
 	r.name:SetPoint("LEFT", r, "LEFT", 5, 0)
 	r.name:SetJustifyH("LEFT")
+	-- wie Spieler/Ziel: "572 / 572" und Prozent rechts
 	r.hp = holder:CreateFontString(nil, "OVERLAY")
 	r.hp:SetPoint("RIGHT", r, "RIGHT", -5, 0)
+	r.val = holder:CreateFontString(nil, "OVERLAY")
+	r.val:SetPoint("RIGHT", r, "RIGHT", -48, 0)
+	r.val:SetJustifyH("RIGHT")
 	rows[i] = r
 	return r
 end
@@ -149,7 +153,7 @@ end
 
 local function Layout()
 	local db = P.DB().party
-	local w, h = db.width or 160, db.height or 22
+	local w, h = db.width or 230, db.height or 22
 	local font, tex = P.Font(), P.Texture()
 	frame:SetWidth(w)
 	local step = h + math.max(10, math.floor(h * 0.8)) + 6
@@ -169,7 +173,8 @@ local function Layout()
 		r.bg:SetTexture(tex)
 		r.name:SetFont(font, math.max(9, h - 10), "OUTLINE")
 		r.hp:SetFont(font, math.max(9, h - 11), "OUTLINE")
-		r.name:SetWidth(w - 60)
+		r.val:SetFont(font, math.max(9, h - 9), "OUTLINE")
+		r.name:SetWidth(math.max(40, w - 150))
 		r.name:SetHeight(h)
 	end
 end
@@ -204,10 +209,13 @@ local function Update()
 			r.name:SetTextColor(cr, cg, cb)
 			if off then
 				r.hp:SetText(P.T("Offline"))
+				r.val:SetText("")
 			elseif dead then
 				r.hp:SetText(P.T("Tot"))
+				r.val:SetText("")
 			else
 				r.hp:SetText(math.floor(cur / max * 100 + 0.5) .. "%")
+				r.val:SetText(P.Short(cur) .. " / " .. P.Short(max))
 			end
 			UpdateBuffs(r, unit)
 			r:Show()
@@ -220,6 +228,7 @@ local function Update()
 			r.name:SetText(P.T("Mitspieler"))
 			r.name:SetTextColor(1, 1, 1)
 			r.hp:SetText("70%")
+			r.val:SetText("700 / 1000")
 			r:Show()
 		else
 			r:Hide()
@@ -233,6 +242,14 @@ local function Update()
 end
 
 local function Init()
+	-- breiter (0.9.101): alter Standard 160 einmal anheben
+	local pd = P.DB().party
+	if not pd.wide then
+		pd.wide = true
+		if not pd.width or pd.width <= 160 then
+			pd.width = 230
+		end
+	end
 	if not P.DB().party.enabled then
 		return
 	end
@@ -250,7 +267,7 @@ local function Init()
 	end, {
 		get = function()
 			local d = P.DB().party
-			return d.width or 160, d.height or 22
+			return d.width or 230, d.height or 22
 		end,
 		set = function(w, h)
 			local d = P.DB().party
