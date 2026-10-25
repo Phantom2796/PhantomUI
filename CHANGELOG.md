@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.103
+- "Nameplates for bosses only" removed again: the client stacks nameplates, and the hidden ones still took their place, so the boss plates jumped around.
+- New option *Enemy Name Plates* (`/pui` → General, off by default): PhantomUI switches enemy plates off; in a party only your ally keeps a friendly plate in class colour.
+
 ## 0.9.102
 - **Nameplates for bosses only** (on by default, `/pui` → General): enemy nameplates are switched on, but only bosses, final bosses and guardians keep theirs; every other plate is hidden and ignores the mouse. In a party your ally's plate stays.
 

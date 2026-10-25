@@ -117,7 +117,7 @@ local function PartyNames()
 end
 
 local friendOn = false
-local enemyOn = false
+local enemyOff = false
 local partyNames = {}
 local inGroup = false
 
@@ -190,10 +190,14 @@ local function Allies()
 			friendOn = false
 		end
 	end
-	-- "nur Bosse": feindliche Plaketten einschalten, der Rest wird ausgeblendet
-	if db.bossOnly and not enemyOn and ShowNameplates then
+	-- feindliche Plaketten aus (Einstellung): unsichtbare Plaketten wuerden
+	-- beim Stapeln trotzdem Platz belegen, darum ganz abschalten
+	if not db.enemy and not enemyOff and HideNameplates then
+		HideNameplates()
+		enemyOff = true
+	elseif db.enemy and enemyOff and ShowNameplates then
 		ShowNameplates()
-		enemyOn = true
+		enemyOff = false
 	end
 	partyNames = inParty and PartyNames() or {}
 	bossNames = db.bossOnly and BossNames() or {}
@@ -207,6 +211,8 @@ local function Allies()
 end
 
 local function Init()
+	-- "nur Bosse" (0.9.102) wieder aus: unsichtbare Plaketten stapelten mit
+	P.DB().plates.bossOnly = false
 	if not P.DB().plates.enabled or DFRL then
 		-- Mit SurvivorsDragonUi bleiben dessen Plaketten.
 		return

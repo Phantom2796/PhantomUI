@@ -444,7 +444,7 @@ local function PageGeneral(page)
 	Check(page, 16 + INNER / 2 + 6, y, "Mitspieler-Plakette", { "plates", "ally" })
 	y = y - ROW
 	Check(page, 16, y, "Gruppen-DPS", { "partymeter", "enabled" })
-	Check(page, 16 + INNER / 2 + 6, y, "Plaketten nur für Bosse", { "plates", "bossOnly" })
+	Check(page, 16 + INNER / 2 + 6, y, "Feindliche Plaketten", { "plates", "enemy" })
 	y = y - ROW
 	Check(page, 16, y, "Eigene Einblendungen", { "alerts", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })
