@@ -165,6 +165,17 @@ CheckPlate = function(plate)
 		Visible(plate, true)
 		return
 	end
+	-- Feinde aus + Gruppe: jede andere Plakette ist freundlich (Totems, Begleiter)
+	-- -> sofort weg, ohne auf die Einfaerbung zu warten (kein Aufblitzen);
+	-- Hide statt nur Alpha: soll nicht mehr beim Stapeln mitzaehlen
+	if ally and enemyOff then
+		Visible(plate, false)
+		-- Name noch leer: nur unsichtbar, nicht verstecken
+		if n and n ~= "" then
+			plate:Hide()
+		end
+		return
+	end
 	-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
 	local r, g, b = plate.puiBar:GetStatusBarColor()
 	if r < 0.2 and (g > 0.8 or b > 0.8) then

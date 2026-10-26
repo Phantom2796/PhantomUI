@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.108
+- Co-op with enemy plates off: every plate that is not your ally (totems, pets) is hidden the moment it appears instead of waiting for the game to colour it – no more flash, and it should no longer push your ally's plate around.
+
 ## 0.9.107
 - Shamans are blue again in the party frame, ally nameplate and party DPS meter (the 1.12 client colours them like paladins).
 
