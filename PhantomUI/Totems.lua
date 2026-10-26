@@ -315,7 +315,7 @@ local SUMMON_ICONS = {
 	felguard = "Ability_Warrior_Cleave", pitlord = "Spell_Shadow_UnholyStrength", pit_lord = "Spell_Shadow_UnholyStrength",
 	spirit_wolf = "Spell_Nature_SpiritWolf", treant = "Spell_Nature_ForceOfNature",
 	water_elemental = "Spell_Frost_SummonWaterElemental", wolf = "Ability_Hunter_Pet_Wolf",
-	raptor = "Ability_Hunter_Pet_Raptor",
+	raptor = "Ability_Hunter_Pet_Raptor", white_devilsaur = "Ability_Hunter_Pet_Raptor", devilsaur = "Ability_Hunter_Pet_Raptor",
 }
 local groupsSrc, groupsCache, groupsAt
 local function SummonGroups(now)

@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.106
+- White Devilsaur (game 0.117, hunter): icon in the summon tracker and the damage meter, in all 14 languages.
+
 ## 0.9.105
 - Ability plan: *Star of Mystaria* moved from necklaces to trinkets (game 0.116) with its new icon and base values (+21% max health, +3.4% damage reduction).
 

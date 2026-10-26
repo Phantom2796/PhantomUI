@@ -10500,6 +10500,21 @@ end
 
 -- Beschwoerungen (Begleiter, Daemonen) in allen Sprachen: immer diese Symbole
 local PETS = {
+	-- Weisser Teufelssaurier (0.117)
+	["White Devilsaur"] = "Ability_Hunter_Pet_Raptor",
+	["Biały Diabłozaur"] = "Ability_Hunter_Pet_Raptor",
+	["Bílý ďáblosaurus"] = "Ability_Hunter_Pet_Raptor",
+	["Weißer Teufelssaurier"] = "Ability_Hunter_Pet_Raptor",
+	["Diabossauro Branco"] = "Ability_Hunter_Pet_Raptor",
+	["Demonsaurio blanco"] = "Ability_Hunter_Pet_Raptor",
+	["Diablosaure blanc"] = "Ability_Hunter_Pet_Raptor",
+	["Devilsaur alb"] = "Ability_Hunter_Pet_Raptor",
+	["Beyaz Devilsaur"] = "Ability_Hunter_Pet_Raptor",
+	["Белый девизавр"] = "Ability_Hunter_Pet_Raptor",
+	["Білий дияволозавр"] = "Ability_Hunter_Pet_Raptor",
+	["白色魔暴龙"] = "Ability_Hunter_Pet_Raptor",
+	["白いデビルザウルス"] = "Ability_Hunter_Pet_Raptor",
+	["하얀 데빌사우루스"] = "Ability_Hunter_Pet_Raptor",
 	["Arvoroso"] = "Spell_Nature_ForceOfNature",
 	["Drzewiec"] = "Spell_Nature_ForceOfNature",
 	["Ent"] = "Spell_Nature_ForceOfNature",
