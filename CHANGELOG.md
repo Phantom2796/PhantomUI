@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.107
+- Shamans are blue again in the party frame, ally nameplate and party DPS meter (the 1.12 client colours them like paladins).
+
 ## 0.9.106
 - White Devilsaur (game 0.117, hunter): icon in the summon tracker and the damage meter, in all 14 languages.
 

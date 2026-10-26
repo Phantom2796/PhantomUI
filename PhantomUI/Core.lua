@@ -5,6 +5,11 @@
 PhantomUI = {}
 local P = PhantomUI
 
+-- 1.12: Schamane = Paladin-Rosa -> Schamanen-Blau
+if RAID_CLASS_COLORS and RAID_CLASS_COLORS.SHAMAN then
+	RAID_CLASS_COLORS.SHAMAN.r, RAID_CLASS_COLORS.SHAMAN.g, RAID_CLASS_COLORS.SHAMAN.b = 0.0, 0.44, 0.87
+end
+
 P.FLAT = "Interface\\ChatFrame\\ChatFrameBackground"
 P.MEDIA = "Interface\\AddOns\\PhantomUI\\media\\"
 P.ACCENT = { 0.62, 0.30, 0.92 }
