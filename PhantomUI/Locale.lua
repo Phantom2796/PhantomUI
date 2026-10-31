@@ -239,6 +239,7 @@ P.LOC.enUS = {
 	["Zu weit weg zum Betrachten."] = "Too far away to inspect.",
 	["Plaketten nur für Bosse"] = "Nameplates for bosses only",
 	["Feindliche Plaketten"] = "Enemy Name Plates",
+	["Nur Bosse (Plaketten)"] = "Bosses only (plates)",
 }
 
 P.LOC.frFR = {
@@ -473,6 +474,7 @@ P.LOC.frFR = {
 	["Zu weit weg zum Betrachten."] = "Trop loin pour inspecter.",
 	["Plaketten nur für Bosse"] = "Barres de nom : boss seulement",
 	["Feindliche Plaketten"] = "Barres de nom ennemies",
+	["Nur Bosse (Plaketten)"] = "Boss uniquement (barres)",
 }
 
 P.LOC.esES = {
@@ -707,6 +709,7 @@ P.LOC.esES = {
 	["Zu weit weg zum Betrachten."] = "Demasiado lejos para inspeccionar.",
 	["Plaketten nur für Bosse"] = "Placas solo para jefes",
 	["Feindliche Plaketten"] = "Placas de nombre enemigas",
+	["Nur Bosse (Plaketten)"] = "Solo jefes (placas)",
 }
 
 P.LOC.ptBR = {
@@ -941,6 +944,7 @@ P.LOC.ptBR = {
 	["Zu weit weg zum Betrachten."] = "Longe demais para inspecionar.",
 	["Plaketten nur für Bosse"] = "Placas só para chefes",
 	["Feindliche Plaketten"] = "Placas de inimigos",
+	["Nur Bosse (Plaketten)"] = "Só chefes (placas)",
 }
 
 P.LOC.plPL = {
@@ -1175,6 +1179,7 @@ P.LOC.plPL = {
 	["Zu weit weg zum Betrachten."] = "Za daleko, by obejrzeć.",
 	["Plaketten nur für Bosse"] = "Plakietki tylko dla bossów",
 	["Feindliche Plaketten"] = "Tabliczki wrogów",
+	["Nur Bosse (Plaketten)"] = "Tylko bossowie (tabliczki)",
 }
 
 P.LOC.csCZ = {
@@ -1409,6 +1414,7 @@ P.LOC.csCZ = {
 	["Zu weit weg zum Betrachten."] = "Příliš daleko na prohlédnutí.",
 	["Plaketten nur für Bosse"] = "Štítky jen pro bossy",
 	["Feindliche Plaketten"] = "Jmenovky nepřátel",
+	["Nur Bosse (Plaketten)"] = "Jen bossové (štítky)",
 }
 
 P.LOC.roRO = {
@@ -1643,6 +1649,7 @@ P.LOC.roRO = {
 	["Zu weit weg zum Betrachten."] = "Prea departe pentru a inspecta.",
 	["Plaketten nur für Bosse"] = "Plăcuțe doar pentru boși",
 	["Feindliche Plaketten"] = "Plăcuțe de nume ale inamicilor",
+	["Nur Bosse (Plaketten)"] = "Doar boși (plăcuțe)",
 }
 
 P.LOC.trTR = {
@@ -1877,6 +1884,7 @@ P.LOC.trTR = {
 	["Zu weit weg zum Betrachten."] = "İncelemek için çok uzak.",
 	["Plaketten nur für Bosse"] = "Sadece boss plakaları",
 	["Feindliche Plaketten"] = "Düşman Ad Plakaları",
+	["Nur Bosse (Plaketten)"] = "Sadece bosslar (plakalar)",
 }
 
 P.LOC.ruRU = {
@@ -2111,6 +2119,7 @@ P.LOC.ruRU = {
 	["Zu weit weg zum Betrachten."] = "Слишком далеко для осмотра.",
 	["Plaketten nur für Bosse"] = "Таблички только у боссов",
 	["Feindliche Plaketten"] = "Индикаторы врагов",
+	["Nur Bosse (Plaketten)"] = "Только боссы (таблички)",
 }
 
 P.LOC.ukUA = {
@@ -2345,6 +2354,7 @@ P.LOC.ukUA = {
 	["Zu weit weg zum Betrachten."] = "Задалеко для огляду.",
 	["Plaketten nur für Bosse"] = "Таблички лише в босів",
 	["Feindliche Plaketten"] = "Таблички ворогів",
+	["Nur Bosse (Plaketten)"] = "Лише боси (таблички)",
 }
 
 P.LOC.zhCN = {
@@ -2579,6 +2589,7 @@ P.LOC.zhCN = {
 	["Zu weit weg zum Betrachten."] = "距离太远，无法观察。",
 	["Plaketten nur für Bosse"] = "仅首领显示姓名板",
 	["Feindliche Plaketten"] = "敌方姓名板",
+	["Nur Bosse (Plaketten)"] = "仅首领（姓名板）",
 }
 
 P.LOC.jaJP = {
@@ -2813,6 +2824,7 @@ P.LOC.jaJP = {
 	["Zu weit weg zum Betrachten."] = "遠すぎて調べられません。",
 	["Plaketten nur für Bosse"] = "ボスのみネームプレート",
 	["Feindliche Plaketten"] = "敵のネームプレート",
+	["Nur Bosse (Plaketten)"] = "ボスのみ（ネームプレート）",
 }
 
 P.LOC.koKR = {
@@ -3047,6 +3059,7 @@ P.LOC.koKR = {
 	["Zu weit weg zum Betrachten."] = "너무 멀어서 살펴볼 수 없습니다.",
 	["Plaketten nur für Bosse"] = "보스만 이름표",
 	["Feindliche Plaketten"] = "적 이름표",
+	["Nur Bosse (Plaketten)"] = "보스만 (이름표)",
 }
 
 -- Englisch ist zugleich die Rueckfallsprache

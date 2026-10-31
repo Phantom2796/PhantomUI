@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.109
+- AS 0.131 lets nameplates overlap: enemy plates are back with the new option *Bosses only (plates)* (`/pui` → General, on by default) – PhantomUI switches the game to *Overlapping*, so only bosses, final bosses and guardians show a plate and nothing jumps around anymore.
+
 ## 0.9.108
 - Co-op with enemy plates off: every plate that is not your ally (totems, pets) is hidden the moment it appears instead of waiting for the game to colour it – no more flash, and it should no longer push your ally's plate around.
 

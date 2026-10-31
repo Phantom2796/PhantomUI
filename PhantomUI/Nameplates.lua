@@ -222,8 +222,17 @@ local function Allies()
 end
 
 local function Init()
-	-- "nur Bosse" (0.9.102) wieder aus: unsichtbare Plaketten stapelten mit
-	P.DB().plates.bossOnly = false
+	local pd = P.DB().plates
+	-- AS 0.131: Plaketten koennen ueberlappen -> Feinde + nur Bosse wieder an (einmalig)
+	if not pd.v131 then
+		pd.v131 = true
+		pd.enemy = true
+		pd.bossOnly = true
+	end
+	-- nur Bosse: unsichtbare Plaketten duerfen nicht stapeln -> Ueberlappen
+	if pd.bossOnly and pd.enemy and SetCVar then
+		pcall(SetCVar, "nameplateLayout", "overlap")
+	end
 	if not P.DB().plates.enabled or DFRL then
 		-- Mit SurvivorsDragonUi bleiben dessen Plaketten.
 		return
