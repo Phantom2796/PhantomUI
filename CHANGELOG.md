@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.113
+- Plates page: *Above the bar* – name, debuffs or nothing (only one of them); *Debuffs on* – bosses & guardians, or bosses & guardians + your target. The game only sends debuffs for bosses and guardians; for normal enemies the client knows them only for your target.
+
 ## 0.9.112
 - Plates page: damage-number layout (*Fan above you* / *Above enemies*) is there too; hidden plates (bosses only) still give the enemies' positions.
 - `/pui plates` prints what the nameplates see (units, boss ids, debuffs) for troubleshooting.

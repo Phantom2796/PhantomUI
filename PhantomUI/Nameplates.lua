@@ -172,11 +172,28 @@ local function DebuffIcon(plate, k, size)
 	return b
 end
 
+local targetPlate
 local function PlateDebuffs(plate, id)
 	local db = P.DB().plates
+	local label = db.label or (db.debuffs == false and "name" or "debuffs")
+	local list
+	if label == "debuffs" then
+		if id and id ~= true and type(AZS_GetDebuffs) == "function" then
+			list = AZS_GetDebuffs(id) or {}
+		elseif db.debuffScope == "target" and plate == targetPlate and UnitDebuff then
+			-- normale Gegner: nur das Ziel (sonst kennt der Client keine Debuffs)
+			list = {}
+			for k = 1, 16 do
+				local tex, apps = UnitDebuff("target", k)
+				if not tex then
+					break
+				end
+				table.insert(list, { icon = tex, stacks = apps })
+			end
+		end
+	end
 	local n = 0
-	if db.debuffs and id and id ~= true and type(AZS_GetDebuffs) == "function" then
-		local list = AZS_GetDebuffs(id) or {}
+	if list then
 		local size = db.debuffSize or 18
 		local count = math.min(table.getn(list), 8)
 		local x0 = -(count * (size + 2) - 2) / 2
@@ -186,7 +203,11 @@ local function PlateDebuffs(plate, id)
 			local b = DebuffIcon(plate, n, size)
 			b:ClearAllPoints()
 			b:SetPoint("BOTTOMLEFT", plate.puiBar, "TOP", x0 + (i - 1) * (size + 2), 3)
-			b.icon:SetTexture(d.icon and ("Interface\\Icons\\" .. string.gsub(d.icon, "^Interface\\Icons\\", "")) or "Interface\\Icons\\INV_Misc_QuestionMark")
+			local icon = d.icon
+			if icon and not string.find(icon, "\\", 1, true) then
+				icon = "Interface\\Icons\\" .. icon
+			end
+			b.icon:SetTexture(icon or "Interface\\Icons\\INV_Misc_QuestionMark")
 			b.count:SetText((d.stacks and d.stacks > 1) and d.stacks or "")
 			b.time:SetText((d.remaining and not d.permanent) and math.ceil(d.remaining) or "")
 			b:Show()
@@ -197,8 +218,8 @@ local function PlateDebuffs(plate, id)
 			plate.puiDeb[k]:Hide()
 		end
 	end
-	-- mit Debuffs: Name weg
-	plate.puiName:SetAlpha(n > 0 and 0 or 1)
+	-- entweder Name oder Debuffs
+	plate.puiName:SetAlpha(label == "name" and 1 or 0)
 end
 
 local function Visible(plate, on)
@@ -230,6 +251,7 @@ CheckPlate = function(plate)
 		plate.puiName:SetTextColor(r, g, b)
 		Visible(plate, true)
 		PlateDebuffs(plate, nil)
+		plate.puiName:SetAlpha(1)
 		return
 	end
 	-- Feinde aus + nur Mitspieler: jede andere Plakette ist freundlich -> sofort weg
@@ -247,6 +269,7 @@ CheckPlate = function(plate)
 		local pet = g > 0.8
 		Visible(plate, friendMode == "all" and not (hidePets and pet))
 		PlateDebuffs(plate, nil)
+		plate.puiName:SetAlpha(1)
 		return
 	end
 	if enemyMode == "boss" then
@@ -289,6 +312,21 @@ local function Allies()
 	end
 	partyNames = inParty and PartyNames() or {}
 	bossNames = BossNames()
+	-- Ziel-Plakette: nur wenn der Name eindeutig ist
+	targetPlate = nil
+	local tn = UnitExists("target") and UnitCanAttack("player", "target") and UnitName("target")
+	if tn then
+		local hits = 0
+		for plate in pairs(styled) do
+			if plate:IsShown() and plate.puiName and plate.puiName:GetText() == tn then
+				hits = hits + 1
+				targetPlate = plate
+			end
+		end
+		if hits ~= 1 then
+			targetPlate = nil
+		end
+	end
 	for plate in pairs(styled) do
 		if plate:IsShown() then
 			CheckPlate(plate)

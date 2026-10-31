@@ -172,7 +172,7 @@ local DEFAULTS = {
 	},
 	menu = { enabled = true },
 	chat = { enabled = true, bgAlpha = 0, font = "roboto", fontSize = 13, fade = 10 },
-	plates = { enabled = true, ally = true, bossOnly = false, enemy = false, debuffs = true, debuffSize = 18, width = 100, height = 8, scale = 1 },
+	plates = { enabled = true, ally = true, bossOnly = false, enemy = false, debuffs = true, label = "debuffs", debuffScope = "target", debuffSize = 18, width = 100, height = 8, scale = 1 },
 	pins = { enabled = true, lairs = true, chests = true, size = 14 },
 	plan = {
 		enabled = true,

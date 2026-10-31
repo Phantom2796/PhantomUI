@@ -668,12 +668,13 @@ local function PagePlates(page)
 	local half = 16 + INNER / 2 + 6
 	y = Heading(page, y, "Namensplaketten")
 	Check(page, 16, y, "Namensplaketten-Stil", { "plates", "enabled" })
-	Check(page, half, y, "Debuffs statt Name", { "plates", "debuffs" })
 	y = y - ROW
 	y = Note(page, y, "Stil an/aus wirkt nach /reload.")
 	y = Cycle(page, y, "Anordnung", { "plates", "layout" }, { "overlap", "stack" }, { "Überlappen", "Stapeln" })
 	y = Cycle(page, y, "Feinde", { "plates", "enemyMode" }, { "boss", "all", "off" }, { "nur Bosse", "alle", "aus" })
 	y = Cycle(page, y, "Verbündete", { "plates", "friendMode" }, { "party", "all", "off" }, { "nur Mitspieler", "alle", "aus" })
+	y = Cycle(page, y, "Über der Leiste", { "plates", "label" }, { "name", "debuffs", "none" }, { "Name", "Debuffs", "nichts" })
+	y = Cycle(page, y, "Debuffs bei", { "plates", "debuffScope" }, { "boss", "target" }, { "Bossen & Wächtern", "Bossen & Wächtern + Ziel" })
 	Check(page, 16, y, "Begleiter & Totems ausblenden", { "plates", "hidePets" })
 	y = y - ROW
 	y = Note(page, y + 2, "Nur Bosse funktioniert sauber mit Überlappen: beim Stapeln belegen versteckte Plaketten Platz.")

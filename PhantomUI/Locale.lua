@@ -8,6 +8,13 @@ P.EN = P.EN or {}
 P.LOC = P.LOC or {}
 
 P.LOC.enUS = {
+	["Über der Leiste"] = "Above the bar",
+	["Name"] = "Name",
+	["Debuffs"] = "Debuffs",
+	["nichts"] = "nothing",
+	["Debuffs bei"] = "Debuffs on",
+	["Bossen & Wächtern"] = "bosses & guardians",
+	["Bossen & Wächtern + Ziel"] = "bosses & guardians + target",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Above enemies: hidden plates (bosses only) still give the position. With enemies off there are none.",
 	["Plaketten"] = "Plates",
 	["Namensplaketten"] = "Nameplates",
@@ -266,6 +273,13 @@ P.LOC.enUS = {
 }
 
 P.LOC.frFR = {
+	["Über der Leiste"] = "Au-dessus de la barre",
+	["Name"] = "Nom",
+	["Debuffs"] = "Affaiblissements",
+	["nichts"] = "rien",
+	["Debuffs bei"] = "Affaiblissements sur",
+	["Bossen & Wächtern"] = "boss et gardiens",
+	["Bossen & Wächtern + Ziel"] = "boss, gardiens + cible",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Au-dessus des ennemis : les barres cachées (boss uniquement) donnent quand même la position. Ennemis désactivés : aucune.",
 	["Plaketten"] = "Barres",
 	["Namensplaketten"] = "Barres de nom",
@@ -524,6 +538,13 @@ P.LOC.frFR = {
 }
 
 P.LOC.esES = {
+	["Über der Leiste"] = "Sobre la barra",
+	["Name"] = "Nombre",
+	["Debuffs"] = "Perjuicios",
+	["nichts"] = "nada",
+	["Debuffs bei"] = "Perjuicios en",
+	["Bossen & Wächtern"] = "jefes y guardianes",
+	["Bossen & Wächtern + Ziel"] = "jefes, guardianes + objetivo",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Sobre los enemigos: las placas ocultas (solo jefes) también dan la posición. Con enemigos desactivados no hay.",
 	["Plaketten"] = "Placas",
 	["Namensplaketten"] = "Placas de nombre",
@@ -782,6 +803,13 @@ P.LOC.esES = {
 }
 
 P.LOC.ptBR = {
+	["Über der Leiste"] = "Acima da barra",
+	["Name"] = "Nome",
+	["Debuffs"] = "Penalidades",
+	["nichts"] = "nada",
+	["Debuffs bei"] = "Penalidades em",
+	["Bossen & Wächtern"] = "chefes e guardiões",
+	["Bossen & Wächtern + Ziel"] = "chefes, guardiões + alvo",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Sobre os inimigos: placas ocultas (só chefes) também dão a posição. Com inimigos desligados não há.",
 	["Plaketten"] = "Placas",
 	["Namensplaketten"] = "Placas de nome",
@@ -1040,6 +1068,13 @@ P.LOC.ptBR = {
 }
 
 P.LOC.plPL = {
+	["Über der Leiste"] = "Nad paskiem",
+	["Name"] = "Nazwa",
+	["Debuffs"] = "Osłabienia",
+	["nichts"] = "nic",
+	["Debuffs bei"] = "Osłabienia na",
+	["Bossen & Wächtern"] = "bossach i strażnikach",
+	["Bossen & Wächtern + Ziel"] = "bossach, strażnikach + celu",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Nad wrogami: ukryte tabliczki (tylko bossowie) też podają pozycję. Przy wyłączonych wrogach nie ma żadnych.",
 	["Plaketten"] = "Tabliczki",
 	["Namensplaketten"] = "Tabliczki z imionami",
@@ -1298,6 +1333,13 @@ P.LOC.plPL = {
 }
 
 P.LOC.csCZ = {
+	["Über der Leiste"] = "Nad lištou",
+	["Name"] = "Jméno",
+	["Debuffs"] = "Oslabení",
+	["nichts"] = "nic",
+	["Debuffs bei"] = "Oslabení u",
+	["Bossen & Wächtern"] = "bossech a strážcích",
+	["Bossen & Wächtern + Ziel"] = "bossech, strážcích + cíli",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Nad nepřáteli: i skryté štítky (jen bossové) dávají pozici. S vypnutými nepřáteli žádné nejsou.",
 	["Plaketten"] = "Štítky",
 	["Namensplaketten"] = "Jmenovky",
@@ -1556,6 +1598,13 @@ P.LOC.csCZ = {
 }
 
 P.LOC.roRO = {
+	["Über der Leiste"] = "Deasupra barei",
+	["Name"] = "Nume",
+	["Debuffs"] = "Debuff-uri",
+	["nichts"] = "nimic",
+	["Debuffs bei"] = "Debuff-uri la",
+	["Bossen & Wächtern"] = "boși și gardieni",
+	["Bossen & Wächtern + Ziel"] = "boși, gardieni + țintă",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Deasupra inamicilor: și plăcuțele ascunse (doar boși) dau poziția. Cu inamicii opriți nu există.",
 	["Plaketten"] = "Plăcuțe",
 	["Namensplaketten"] = "Plăcuțe de nume",
@@ -1814,6 +1863,13 @@ P.LOC.roRO = {
 }
 
 P.LOC.trTR = {
+	["Über der Leiste"] = "Çubuğun üstünde",
+	["Name"] = "İsim",
+	["Debuffs"] = "Zayıflatmalar",
+	["nichts"] = "hiçbiri",
+	["Debuffs bei"] = "Zayıflatmalar",
+	["Bossen & Wächtern"] = "boss ve muhafızlar",
+	["Bossen & Wächtern + Ziel"] = "boss, muhafızlar + hedef",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Düşmanların üstünde: gizli plakalar (sadece bosslar) da konumu verir. Düşmanlar kapalıyken yok.",
 	["Plaketten"] = "Plakalar",
 	["Namensplaketten"] = "İsim plakaları",
@@ -2072,6 +2128,13 @@ P.LOC.trTR = {
 }
 
 P.LOC.ruRU = {
+	["Über der Leiste"] = "Над полосой",
+	["Name"] = "Имя",
+	["Debuffs"] = "Дебаффы",
+	["nichts"] = "ничего",
+	["Debuffs bei"] = "Дебаффы у",
+	["Bossen & Wächtern"] = "боссов и стражей",
+	["Bossen & Wächtern + Ziel"] = "боссов, стражей + цели",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Над врагами: скрытые таблички (только боссы) тоже дают позицию. При выключенных врагах их нет.",
 	["Plaketten"] = "Таблички",
 	["Namensplaketten"] = "Таблички имён",
@@ -2330,6 +2393,13 @@ P.LOC.ruRU = {
 }
 
 P.LOC.ukUA = {
+	["Über der Leiste"] = "Над смугою",
+	["Name"] = "Ім’я",
+	["Debuffs"] = "Дебафи",
+	["nichts"] = "нічого",
+	["Debuffs bei"] = "Дебафи в",
+	["Bossen & Wächtern"] = "босів і вартових",
+	["Bossen & Wächtern + Ziel"] = "босів, вартових + цілі",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Над ворогами: сховані таблички (лише боси) теж дають позицію. З вимкненими ворогами їх немає.",
 	["Plaketten"] = "Таблички",
 	["Namensplaketten"] = "Таблички імен",
@@ -2588,6 +2658,13 @@ P.LOC.ukUA = {
 }
 
 P.LOC.zhCN = {
+	["Über der Leiste"] = "条上方",
+	["Name"] = "名字",
+	["Debuffs"] = "减益",
+	["nichts"] = "无",
+	["Debuffs bei"] = "减益显示于",
+	["Bossen & Wächtern"] = "首领和守护者",
+	["Bossen & Wächtern + Ziel"] = "首领、守护者+目标",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "敌人上方：隐藏的姓名板（仅首领）也提供位置。敌人关闭时没有。",
 	["Plaketten"] = "姓名板",
 	["Namensplaketten"] = "姓名板",
@@ -2846,6 +2923,13 @@ P.LOC.zhCN = {
 }
 
 P.LOC.jaJP = {
+	["Über der Leiste"] = "バーの上",
+	["Name"] = "名前",
+	["Debuffs"] = "弱体効果",
+	["nichts"] = "なし",
+	["Debuffs bei"] = "弱体効果の対象",
+	["Bossen & Wächtern"] = "ボスと守護者",
+	["Bossen & Wächtern + Ziel"] = "ボス・守護者＋ターゲット",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "敵の上：隠れた名前板（ボスのみ）も位置を示します。敵オフでは表示されません。",
 	["Plaketten"] = "名前板",
 	["Namensplaketten"] = "ネームプレート",
@@ -3104,6 +3188,13 @@ P.LOC.jaJP = {
 }
 
 P.LOC.koKR = {
+	["Über der Leiste"] = "바 위",
+	["Name"] = "이름",
+	["Debuffs"] = "약화 효과",
+	["nichts"] = "없음",
+	["Debuffs bei"] = "약화 효과 대상",
+	["Bossen & Wächtern"] = "보스와 수호자",
+	["Bossen & Wächtern + Ziel"] = "보스, 수호자 + 대상",
 	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "적 위: 숨긴 이름표(보스만)도 위치를 제공합니다. 적 끄기에서는 없습니다.",
 	["Plaketten"] = "이름표",
 	["Namensplaketten"] = "이름표",
