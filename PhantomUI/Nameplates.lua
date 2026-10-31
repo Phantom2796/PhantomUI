@@ -39,8 +39,11 @@ local function Style(plate)
 	bar:SetStatusBarTexture(P.Texture())
 	bar:ClearAllPoints()
 	bar:SetPoint("CENTER", plate, "CENTER", 0, -4)
-	bar:SetWidth(100)
-	bar:SetHeight(8)
+	-- Breite/Höhe/Skalierung aus den Einstellungen
+	local db = P.DB().plates
+	local sc = db.scale or 1
+	bar:SetWidth((db.width or 100) * sc)
+	bar:SetHeight((db.height or 8) * sc)
 	if not bar.puiEdge then
 		local edge = CreateFrame("Frame", nil, plate)
 		edge:SetFrameLevel(math.max(0, bar:GetFrameLevel() - 1))
@@ -52,13 +55,13 @@ local function Style(plate)
 		bar.puiEdge = edge
 	end
 	if nameText then
-		nameText:SetFont(P.Font(), 10, "OUTLINE")
+		nameText:SetFont(P.Font(), math.floor(10 * sc + 0.5), "OUTLINE")
 		nameText:ClearAllPoints()
 		nameText:SetPoint("BOTTOM", bar, "TOP", 0, 3)
 	end
 	plate.puiName, plate.puiBar, plate.puiLevel = nameText, bar, levelText
 	if levelText then
-		levelText:SetFont(P.Font(), 9, "OUTLINE")
+		levelText:SetFont(P.Font(), math.floor(9 * sc + 0.5), "OUTLINE")
 		levelText:ClearAllPoints()
 		levelText:SetPoint("LEFT", bar, "RIGHT", 3, 0)
 	end
@@ -206,41 +209,47 @@ end
 
 -- eine Plakette pruefen:
 -- Mitspieler in Klassenfarbe; freundliche weg; mit "nur Bosse" nur Bosse/Waechter
+-- Einstellungen (Seite "Plaketten"):
+-- enemyMode off/all/boss, friendMode off/party/all, hidePets, layout stack/overlap
+local function Modes()
+	local db = P.DB().plates
+	return db.enemyMode or "boss", db.friendMode or "party", db.hidePets
+end
+
 CheckPlate = function(plate)
 	if not plate.puiName or not plate.puiBar then
 		return
 	end
-	local db = P.DB().plates
-	local ally = inGroup and db.ally
-	local bossOnly = db.bossOnly
-	if not ally and not bossOnly and not db.debuffs then
-		return
-	end
+	local enemyMode, friendMode, hidePets = Modes()
 	local n = plate.puiName:GetText()
-	local unit = ally and n and partyNames[n]
+	-- Mitspieler: Klassenfarbe
+	local unit = friendMode ~= "off" and n and partyNames[n]
 	if unit then
 		local r, g, b = P.PartyClassRGB(unit)
 		plate.puiBar:SetStatusBarColor(r, g, b)
 		plate.puiName:SetTextColor(r, g, b)
 		Visible(plate, true)
+		PlateDebuffs(plate, nil)
 		return
 	end
-	-- Feinde aus + Gruppe: jede andere Plakette ist freundlich (Totems, Begleiter)
-	-- -> sofort weg, ohne auf die Einfaerbung zu warten (kein Aufblitzen);
-	-- Hide statt nur Alpha: soll nicht mehr beim Stapeln mitzaehlen
-	if ally and enemyOff then
+	-- Feinde aus + nur Mitspieler: jede andere Plakette ist freundlich -> sofort weg
+	-- (kein Aufblitzen vor der Einfaerbung)
+	if enemyOff and friendMode == "party" then
 		Visible(plate, false)
-		-- Name noch leer: nur unsichtbar, nicht verstecken
 		if n and n ~= "" then
 			plate:Hide()
 		end
 		return
 	end
-	-- freundlich = vom Spiel blau/gruen eingefaerbt (Totems, Begleiter, NPCs)
 	local r, g, b = plate.puiBar:GetStatusBarColor()
 	if r < 0.2 and (g > 0.8 or b > 0.8) then
-		Visible(plate, false)
-	elseif bossOnly then
+		-- freundlich: blau = Spieler, gruen = Begleiter/Totems/NPCs
+		local pet = g > 0.8
+		Visible(plate, friendMode == "all" and not (hidePets and pet))
+		PlateDebuffs(plate, nil)
+		return
+	end
+	if enemyMode == "boss" then
 		Visible(plate, n and bossNames[n] and true or false)
 	else
 		Visible(plate, true)
@@ -248,53 +257,63 @@ CheckPlate = function(plate)
 	PlateDebuffs(plate, n and bossNames[n])
 end
 
+local layoutSet
 local function Allies()
 	local db = P.DB().plates
+	local enemyMode, friendMode = Modes()
 	local inParty = (GetNumPartyMembers and GetNumPartyMembers() or 0) > 0
 	inGroup = inParty
-	-- freundliche Plaketten nur in der Gruppe einschalten
-	if db.ally then
-		if inParty and not friendOn and ShowFriendNameplates then
-			ShowFriendNameplates()
-			friendOn = true
-		elseif not inParty and friendOn and HideFriendNameplates then
-			HideFriendNameplates()
-			friendOn = false
-		end
+	-- freundliche Plaketten: "alle" immer, "Mitspieler" nur in der Gruppe
+	local wantFriend = friendMode == "all" or (friendMode == "party" and inParty)
+	if wantFriend and not friendOn and ShowFriendNameplates then
+		ShowFriendNameplates()
+		friendOn = true
+	elseif not wantFriend and friendOn and HideFriendNameplates then
+		HideFriendNameplates()
+		friendOn = false
 	end
-	-- feindliche Plaketten aus (Einstellung): unsichtbare Plaketten wuerden
-	-- beim Stapeln trotzdem Platz belegen, darum ganz abschalten
-	if not db.enemy and not enemyOff and HideNameplates then
+	-- feindliche ganz aus statt unsichtbar
+	local wantEnemy = enemyMode ~= "off"
+	if not wantEnemy and not enemyOff and HideNameplates then
 		HideNameplates()
 		enemyOff = true
-	elseif db.enemy and enemyOff and ShowNameplates then
+	elseif wantEnemy and enemyOff and ShowNameplates then
 		ShowNameplates()
 		enemyOff = false
 	end
+	-- Stapeln / Ueberlappen (AS 0.131)
+	local layout = db.layout or "overlap"
+	if layoutSet ~= layout and SetCVar then
+		layoutSet = layout
+		pcall(SetCVar, "nameplateLayout", layout)
+	end
 	partyNames = inParty and PartyNames() or {}
-	bossNames = (db.bossOnly or db.debuffs) and BossNames() or {}
-	if (inParty and db.ally) or db.bossOnly or db.debuffs then
-		for plate in pairs(styled) do
-			if plate:IsShown() then
-				CheckPlate(plate)
-			end
+	bossNames = BossNames()
+	for plate in pairs(styled) do
+		if plate:IsShown() then
+			CheckPlate(plate)
 		end
 	end
 end
 
 local function Init()
 	local pd = P.DB().plates
-	-- AS 0.131: Plaketten koennen ueberlappen -> Feinde + nur Bosse wieder an (einmalig)
-	if not pd.v131 then
-		pd.v131 = true
-		pd.enemy = true
-		pd.bossOnly = true
+	-- alte Schalter -> neue Modi (einmalig)
+	if not pd.enemyMode then
+		if pd.v131 == nil or (pd.enemy and pd.bossOnly) then
+			pd.enemyMode = "boss"
+		elseif pd.enemy then
+			pd.enemyMode = "all"
+		else
+			pd.enemyMode = "off"
+		end
+		pd.friendMode = (pd.ally == false) and "off" or "party"
+		pd.layout = pd.layout or "overlap"
+		if pd.hidePets == nil then
+			pd.hidePets = true
+		end
 	end
-	-- nur Bosse: unsichtbare Plaketten duerfen nicht stapeln -> Ueberlappen
-	if pd.bossOnly and pd.enemy and SetCVar then
-		pcall(SetCVar, "nameplateLayout", "overlap")
-	end
-	if not P.DB().plates.enabled or DFRL then
+	if not pd.enabled or DFRL then
 		-- Mit SurvivorsDragonUi bleiben dessen Plaketten.
 		return
 	end
@@ -306,14 +325,19 @@ local function Init()
 		if t > 0.2 then
 			t = 0
 			Allies()
-		elseif inGroup or P.DB().plates.bossOnly then
-			-- jedes Bild pruefen: das Spiel faerbt eine neue Plakette erst nach
-			-- dem Erscheinen ein, sonst blitzt sie kurz gruen auf
+		else
+			-- jedes Bild pruefen: das Spiel faerbt neue Plaketten erst danach ein
 			for plate in pairs(styled) do
 				if plate:IsShown() then
 					CheckPlate(plate)
 				end
 			end
+		end
+	end)
+	P.OnApply(function()
+		layoutSet = nil
+		for plate in pairs(styled) do
+			Style(plate)
 		end
 	end)
 end

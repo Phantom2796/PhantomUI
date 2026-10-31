@@ -246,7 +246,7 @@ local function Init()
 		title = "Schadenszahlen",
 		icon = "Interface\\Icons\\Spell_Fire_FlameBolt",
 		available = function() return CompactSCT and CompactSCT.API end,
-		left = function() P.ShowOptions(5) end,
+		left = function() P.ShowOptions(6) end,
 		right = function() CompactSCT.API.Test() end,
 		leftText = "Einstellungen",
 		rightText = "Vorschau",
@@ -256,7 +256,7 @@ local function Init()
 		icon = "Interface\\Icons\\INV_Misc_Note_01",
 		available = function() return SlashCmdList and SlashCmdList.AZSSPELLMETER end,
 		left = function() SlashCmdList.AZSSPELLMETER("toggle") end,
-		right = function() P.ShowOptions(6) end,
+		right = function() P.ShowOptions(7) end,
 		leftText = "ein/aus",
 		rightText = "Einstellungen (Schaden / Boss / Heilung)",
 	})

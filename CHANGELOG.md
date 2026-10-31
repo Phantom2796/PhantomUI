@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.111
+- New options page **Plates** with every nameplate setting: layout (Overlapping/Stacking), enemies (bosses only/all/off), allies (party members only/all/off), hide pets & totems, debuffs instead of name, width, height, scale and debuff size.
+
 ## 0.9.110
 - Minimap markers: guardian lairs with a skull (always shown, held at the minimap's edge when far away, dimmed with a countdown while empty) and chests. Options: `/pui` → General.
 - Boss and guardian nameplates show their debuffs instead of the name, size adjustable (*Debuff size (plates)*).

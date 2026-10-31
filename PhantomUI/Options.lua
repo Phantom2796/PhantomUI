@@ -431,7 +431,6 @@ local function PageGeneral(page)
 	Check(page, 16, y, "Spielmenü (Escape)", { "menu", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Chat-Stil", { "chat", "enabled" })
 	y = y - ROW
-	Check(page, 16, y, "Namensplaketten-Stil", { "plates", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Buffs", { "auras", "enabled" })
 	y = y - ROW
 	Check(page, 16, y, "Laufwerte", { "stats", "enabled" })
@@ -441,18 +440,12 @@ local function PageGeneral(page)
 	Check(page, 16 + INNER / 2 + 6, y, "Totems & Begleiter", { "totems", "enabled" })
 	y = y - ROW
 	Check(page, 16, y, "Gruppe (Koop)", { "party", "enabled" })
-	Check(page, 16 + INNER / 2 + 6, y, "Mitspieler-Plakette", { "plates", "ally" })
 	y = y - ROW
 	Check(page, 16, y, "Gruppen-DPS", { "partymeter", "enabled" })
-	Check(page, 16 + INNER / 2 + 6, y, "Feindliche Plaketten", { "plates", "enemy" })
-	y = y - ROW
-	Check(page, 16, y, "Debuffs statt Name", { "plates", "debuffs" })
-	Check(page, 16 + INNER / 2 + 6, y, "Nur Bosse (Plaketten)", { "plates", "bossOnly" })
 	y = y - ROW
 	Check(page, 16, y, "Minimap: Wächter-Höhlen", { "pins", "lairs" })
 	Check(page, 16 + INNER / 2 + 6, y, "Minimap: Truhen", { "pins", "chests" })
 	y = y - ROW
-	y = Slider(page, y, "Debuff-Größe (Plaketten)", { "plates", "debuffSize" }, 10, 40, 1, "%d px")
 	Check(page, 16, y, "Eigene Einblendungen", { "alerts", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })
 	y = y - ROW
@@ -670,6 +663,29 @@ local function PageMinimap(page)
 	return y
 end
 
+local function PagePlates(page)
+	local y = -10
+	local half = 16 + INNER / 2 + 6
+	y = Heading(page, y, "Namensplaketten")
+	Check(page, 16, y, "Namensplaketten-Stil", { "plates", "enabled" })
+	Check(page, half, y, "Debuffs statt Name", { "plates", "debuffs" })
+	y = y - ROW
+	y = Note(page, y, "Stil an/aus wirkt nach /reload.")
+	y = Cycle(page, y, "Anordnung", { "plates", "layout" }, { "overlap", "stack" }, { "Überlappen", "Stapeln" })
+	y = Cycle(page, y, "Feinde", { "plates", "enemyMode" }, { "boss", "all", "off" }, { "nur Bosse", "alle", "aus" })
+	y = Cycle(page, y, "Verbündete", { "plates", "friendMode" }, { "party", "all", "off" }, { "nur Mitspieler", "alle", "aus" })
+	Check(page, 16, y, "Begleiter & Totems ausblenden", { "plates", "hidePets" })
+	y = y - ROW
+	y = Note(page, y + 2, "Nur Bosse funktioniert sauber mit Überlappen: beim Stapeln belegen versteckte Plaketten Platz.")
+	y = y - 4
+	y = Heading(page, y, "Größe")
+	y = Slider(page, y, "Breite", { "plates", "width" }, 50, 200, 2, "%d px")
+	y = Slider(page, y, "Höhe", { "plates", "height" }, 4, 20, 1, "%d px")
+	y = Slider(page, y, "Skalierung", { "plates", "scale" }, 0.5, 2, 0.05, "x%.2f")
+	y = Slider(page, y, "Debuff-Größe", { "plates", "debuffSize" }, 10, 40, 1, "%d px")
+	return y
+end
+
 local function ShowPage(index)
 	for i = 1, table.getn(pages) do
 		if i == index then
@@ -746,8 +762,8 @@ local function BuildPanel()
 		P.Unlock(true)
 	end)
 
-	local names = { "Leiste", "Einheiten", "Ressource", "Minimap", "Zahlen", "Meter", "Allgemein" }
-	local builders = { PageBar, PageUnits, PagePower, PageMinimap, PageNumbers, PageMeter, PageGeneral }
+	local names = { "Leiste", "Einheiten", "Ressource", "Minimap", "Plaketten", "Zahlen", "Meter", "Allgemein" }
+	local builders = { PageBar, PageUnits, PagePower, PageMinimap, PagePlates, PageNumbers, PageMeter, PageGeneral }
 	local count = table.getn(names)
 	local tabW = (INNER - (count - 1) * 4) / count
 	local lowest = 0
@@ -790,7 +806,7 @@ end
 -- Die Schadenszahlen haben kein eigenes Fenster mehr: /csct oeffnet diesen Reiter.
 CompactSCT = CompactSCT or {}
 CompactSCT.ToggleOptions = function()
-	P.ShowOptions(5)
+	P.ShowOptions(6)
 end
 
 function P.ToggleOptions()
