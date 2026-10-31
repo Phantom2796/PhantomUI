@@ -8,6 +8,7 @@ P.EN = P.EN or {}
 P.LOC = P.LOC or {}
 
 P.LOC.enUS = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Above enemies: hidden plates (bosses only) still give the position. With enemies off there are none.",
 	["Plaketten"] = "Plates",
 	["Namensplaketten"] = "Nameplates",
 	["Stil an/aus wirkt nach /reload."] = "Style on/off takes effect after /reload.",
@@ -265,6 +266,7 @@ P.LOC.enUS = {
 }
 
 P.LOC.frFR = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Au-dessus des ennemis : les barres cachées (boss uniquement) donnent quand même la position. Ennemis désactivés : aucune.",
 	["Plaketten"] = "Barres",
 	["Namensplaketten"] = "Barres de nom",
 	["Stil an/aus wirkt nach /reload."] = "Style activé/désactivé après /reload.",
@@ -522,6 +524,7 @@ P.LOC.frFR = {
 }
 
 P.LOC.esES = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Sobre los enemigos: las placas ocultas (solo jefes) también dan la posición. Con enemigos desactivados no hay.",
 	["Plaketten"] = "Placas",
 	["Namensplaketten"] = "Placas de nombre",
 	["Stil an/aus wirkt nach /reload."] = "Estilo sí/no tras /reload.",
@@ -779,6 +782,7 @@ P.LOC.esES = {
 }
 
 P.LOC.ptBR = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Sobre os inimigos: placas ocultas (só chefes) também dão a posição. Com inimigos desligados não há.",
 	["Plaketten"] = "Placas",
 	["Namensplaketten"] = "Placas de nome",
 	["Stil an/aus wirkt nach /reload."] = "Estilo liga/desliga após /reload.",
@@ -1036,6 +1040,7 @@ P.LOC.ptBR = {
 }
 
 P.LOC.plPL = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Nad wrogami: ukryte tabliczki (tylko bossowie) też podają pozycję. Przy wyłączonych wrogach nie ma żadnych.",
 	["Plaketten"] = "Tabliczki",
 	["Namensplaketten"] = "Tabliczki z imionami",
 	["Stil an/aus wirkt nach /reload."] = "Styl wł./wył. działa po /reload.",
@@ -1293,6 +1298,7 @@ P.LOC.plPL = {
 }
 
 P.LOC.csCZ = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Nad nepřáteli: i skryté štítky (jen bossové) dávají pozici. S vypnutými nepřáteli žádné nejsou.",
 	["Plaketten"] = "Štítky",
 	["Namensplaketten"] = "Jmenovky",
 	["Stil an/aus wirkt nach /reload."] = "Styl zap./vyp. platí po /reload.",
@@ -1550,6 +1556,7 @@ P.LOC.csCZ = {
 }
 
 P.LOC.roRO = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Deasupra inamicilor: și plăcuțele ascunse (doar boși) dau poziția. Cu inamicii opriți nu există.",
 	["Plaketten"] = "Plăcuțe",
 	["Namensplaketten"] = "Plăcuțe de nume",
 	["Stil an/aus wirkt nach /reload."] = "Stil pornit/oprit după /reload.",
@@ -1807,6 +1814,7 @@ P.LOC.roRO = {
 }
 
 P.LOC.trTR = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Düşmanların üstünde: gizli plakalar (sadece bosslar) da konumu verir. Düşmanlar kapalıyken yok.",
 	["Plaketten"] = "Plakalar",
 	["Namensplaketten"] = "İsim plakaları",
 	["Stil an/aus wirkt nach /reload."] = "Stil aç/kapa /reload sonrası geçerli.",
@@ -2064,6 +2072,7 @@ P.LOC.trTR = {
 }
 
 P.LOC.ruRU = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Над врагами: скрытые таблички (только боссы) тоже дают позицию. При выключенных врагах их нет.",
 	["Plaketten"] = "Таблички",
 	["Namensplaketten"] = "Таблички имён",
 	["Stil an/aus wirkt nach /reload."] = "Стиль вкл/выкл после /reload.",
@@ -2321,6 +2330,7 @@ P.LOC.ruRU = {
 }
 
 P.LOC.ukUA = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "Над ворогами: сховані таблички (лише боси) теж дають позицію. З вимкненими ворогами їх немає.",
 	["Plaketten"] = "Таблички",
 	["Namensplaketten"] = "Таблички імен",
 	["Stil an/aus wirkt nach /reload."] = "Стиль увімк/вимк після /reload.",
@@ -2578,6 +2588,7 @@ P.LOC.ukUA = {
 }
 
 P.LOC.zhCN = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "敌人上方：隐藏的姓名板（仅首领）也提供位置。敌人关闭时没有。",
 	["Plaketten"] = "姓名板",
 	["Namensplaketten"] = "姓名板",
 	["Stil an/aus wirkt nach /reload."] = "样式开关在 /reload 后生效。",
@@ -2835,6 +2846,7 @@ P.LOC.zhCN = {
 }
 
 P.LOC.jaJP = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "敵の上：隠れた名前板（ボスのみ）も位置を示します。敵オフでは表示されません。",
 	["Plaketten"] = "名前板",
 	["Namensplaketten"] = "ネームプレート",
 	["Stil an/aus wirkt nach /reload."] = "スタイルのオン/オフは /reload 後に反映。",
@@ -3092,6 +3104,7 @@ P.LOC.jaJP = {
 }
 
 P.LOC.koKR = {
+	["Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine."] = "적 위: 숨긴 이름표(보스만)도 위치를 제공합니다. 적 끄기에서는 없습니다.",
 	["Plaketten"] = "이름표",
 	["Namensplaketten"] = "이름표",
 	["Stil an/aus wirkt nach /reload."] = "스타일 켜기/끄기는 /reload 후 적용.",

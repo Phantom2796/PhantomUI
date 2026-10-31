@@ -1,5 +1,9 @@
 # PhantomUI – Changelog
 
+## 0.9.112
+- Plates page: damage-number layout (*Fan above you* / *Above enemies*) is there too; hidden plates (bosses only) still give the enemies' positions.
+- `/pui plates` prints what the nameplates see (units, boss ids, debuffs) for troubleshooting.
+
 ## 0.9.111
 - New options page **Plates** with every nameplate setting: layout (Overlapping/Stacking), enemies (bosses only/all/off), allies (party members only/all/off), hide pets & totems, debuffs instead of name, width, height, scale and debuff size.
 

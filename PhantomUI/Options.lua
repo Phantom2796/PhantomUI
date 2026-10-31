@@ -683,6 +683,10 @@ local function PagePlates(page)
 	y = Slider(page, y, "Höhe", { "plates", "height" }, 4, 20, 1, "%d px")
 	y = Slider(page, y, "Skalierung", { "plates", "scale" }, 0.5, 2, 0.05, "x%.2f")
 	y = Slider(page, y, "Debuff-Größe", { "plates", "debuffSize" }, 10, 40, 1, "%d px")
+	y = y - 4
+	y = Heading(page, y, "Schadenszahlen")
+	y = Cycle(page, y, "Anordnung", SCT("layout"), { "fan", "plates" }, { "Fächer über dir", "über den Gegnern" })
+	y = Note(page, y + 2, "Über den Gegnern: auch versteckte Plaketten (nur Bosse) geben die Position. Mit Feinde aus gibt es keine.")
 	return y
 end
 

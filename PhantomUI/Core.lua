@@ -1003,6 +1003,12 @@ SlashCmdList["PHANTOMUI"] = function(msg)
 		end
 		return
 	end
+	if msg == "plates" or msg == "plaketten" then
+		if P.PlateDebug then
+			P.PlateDebug()
+		end
+		return
+	end
 	if msg == "combo" then
 		if P.ComboDebug then
 			P.ComboDebug()

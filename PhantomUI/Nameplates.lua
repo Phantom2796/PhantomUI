@@ -342,4 +342,27 @@ local function Init()
 	end)
 end
 
+-- /pui plates: was die Plaketten sehen (Fehlersuche)
+function P.PlateDebug()
+	local db = P.DB().plates
+	local units = type(AZS_UNITS) == "table" and AZS_UNITS or {}
+	local debs = type(AZS_DEBUFFS) == "table" and AZS_DEBUFFS or {}
+	P.Print("Plaketten: Stil " .. tostring(db.enabled) .. ", Debuffs " .. tostring(db.debuffs)
+		.. ", Feinde " .. tostring(db.enemyMode) .. ", Einheiten " .. table.getn(units) .. ", Debuffs gesamt " .. table.getn(debs))
+	for i = 1, table.getn(units) do
+		local u = units[i]
+		local n = type(AZS_GetDebuffs) == "function" and table.getn(AZS_GetDebuffs(u.id) or {}) or -1
+		P.Print("  Einheit: " .. tostring(u.name) .. " (" .. tostring(u.kind) .. ", id " .. tostring(u.id) .. ") Debuffs " .. n)
+	end
+	local shown = 0
+	for plate in pairs(styled) do
+		if plate:IsShown() then
+			shown = shown + 1
+			local n = plate.puiName and plate.puiName:GetText()
+			P.Print("  Plakette: " .. tostring(n) .. " -> Boss-id " .. tostring(bossNames[n]) .. ", Alpha " .. string.format("%.1f", plate:GetAlpha()))
+		end
+	end
+	P.Print("  sichtbare Plaketten: " .. shown)
+end
+
 P.OnInit(Init)
