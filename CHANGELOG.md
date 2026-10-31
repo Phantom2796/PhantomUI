@@ -1,5 +1,10 @@
 # PhantomUI – Changelog
 
+## 0.9.110
+- Minimap markers: guardian lairs with a skull (always shown, held at the minimap's edge when far away, dimmed with a countdown while empty) and chests. Options: `/pui` → General.
+- Boss and guardian nameplates show their debuffs instead of the name, size adjustable (*Debuff size (plates)*).
+- "Minimap rotates" removed: the client has no rotating minimap.
+
 ## 0.9.109
 - AS 0.131 lets nameplates overlap: enemy plates are back with the new option *Bosses only (plates)* (`/pui` → General, on by default) – PhantomUI switches the game to *Overlapping*, so only bosses, final bosses and guardians show a plate and nothing jumps around anymore.
 

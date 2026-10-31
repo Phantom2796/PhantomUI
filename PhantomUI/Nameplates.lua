@@ -131,11 +131,71 @@ local function BossNames()
 		for i = 1, table.getn(units) do
 			local u = units[i]
 			if type(u) == "table" and u.name and (u.kind == "boss" or u.kind == "final" or u.kind == "guardian") then
-				names[u.name] = true
+				names[u.name] = u.id or true
 			end
 		end
 	end
 	return names
+end
+
+
+-- Debuffs statt Name (Bosse/Wächter; das Spiel liefert Debuffs nur für sie)
+local function DebuffIcon(plate, k, size)
+	plate.puiDeb = plate.puiDeb or {}
+	local b = plate.puiDeb[k]
+	if not b then
+		b = CreateFrame("Frame", nil, plate)
+		b.edge = b:CreateTexture(nil, "BACKGROUND")
+		b.edge:SetTexture(P.FLAT)
+		b.edge:SetVertexColor(0, 0, 0, 1)
+		b.edge:SetAllPoints(b)
+		b.icon = b:CreateTexture(nil, "ARTWORK")
+		b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+		b.icon:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+		b.icon:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
+		b.count = b:CreateFontString(nil, "OVERLAY")
+		b.count:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 1, 0)
+		b.time = b:CreateFontString(nil, "OVERLAY")
+		b.time:SetPoint("CENTER", b, "TOP", 0, 0)
+		plate.puiDeb[k] = b
+	end
+	if b.size ~= size then
+		b.size = size
+		b:SetWidth(size)
+		b:SetHeight(size)
+		b.count:SetFont(P.Font(), math.max(7, math.floor(size * 0.5)), "OUTLINE")
+		b.time:SetFont(P.Font(), math.max(7, math.floor(size * 0.45)), "OUTLINE")
+	end
+	return b
+end
+
+local function PlateDebuffs(plate, id)
+	local db = P.DB().plates
+	local n = 0
+	if db.debuffs and id and id ~= true and type(AZS_GetDebuffs) == "function" then
+		local list = AZS_GetDebuffs(id) or {}
+		local size = db.debuffSize or 18
+		local count = math.min(table.getn(list), 8)
+		local x0 = -(count * (size + 2) - 2) / 2
+		for i = 1, count do
+			local d = list[i]
+			n = n + 1
+			local b = DebuffIcon(plate, n, size)
+			b:ClearAllPoints()
+			b:SetPoint("BOTTOMLEFT", plate.puiBar, "TOP", x0 + (i - 1) * (size + 2), 3)
+			b.icon:SetTexture(d.icon and ("Interface\\Icons\\" .. string.gsub(d.icon, "^Interface\\Icons\\", "")) or "Interface\\Icons\\INV_Misc_QuestionMark")
+			b.count:SetText((d.stacks and d.stacks > 1) and d.stacks or "")
+			b.time:SetText((d.remaining and not d.permanent) and math.ceil(d.remaining) or "")
+			b:Show()
+		end
+	end
+	if plate.puiDeb then
+		for k = n + 1, table.getn(plate.puiDeb) do
+			plate.puiDeb[k]:Hide()
+		end
+	end
+	-- mit Debuffs: Name weg
+	plate.puiName:SetAlpha(n > 0 and 0 or 1)
 end
 
 local function Visible(plate, on)
@@ -153,7 +213,7 @@ CheckPlate = function(plate)
 	local db = P.DB().plates
 	local ally = inGroup and db.ally
 	local bossOnly = db.bossOnly
-	if not ally and not bossOnly then
+	if not ally and not bossOnly and not db.debuffs then
 		return
 	end
 	local n = plate.puiName:GetText()
@@ -185,6 +245,7 @@ CheckPlate = function(plate)
 	else
 		Visible(plate, true)
 	end
+	PlateDebuffs(plate, n and bossNames[n])
 end
 
 local function Allies()
@@ -211,8 +272,8 @@ local function Allies()
 		enemyOff = false
 	end
 	partyNames = inParty and PartyNames() or {}
-	bossNames = db.bossOnly and BossNames() or {}
-	if (inParty and db.ally) or db.bossOnly then
+	bossNames = (db.bossOnly or db.debuffs) and BossNames() or {}
+	if (inParty and db.ally) or db.bossOnly or db.debuffs then
 		for plate in pairs(styled) do
 			if plate:IsShown() then
 				CheckPlate(plate)

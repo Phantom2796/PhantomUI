@@ -446,8 +446,13 @@ local function PageGeneral(page)
 	Check(page, 16, y, "Gruppen-DPS", { "partymeter", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Feindliche Plaketten", { "plates", "enemy" })
 	y = y - ROW
+	Check(page, 16, y, "Debuffs statt Name", { "plates", "debuffs" })
 	Check(page, 16 + INNER / 2 + 6, y, "Nur Bosse (Plaketten)", { "plates", "bossOnly" })
 	y = y - ROW
+	Check(page, 16, y, "Minimap: Wächter-Höhlen", { "pins", "lairs" })
+	Check(page, 16 + INNER / 2 + 6, y, "Minimap: Truhen", { "pins", "chests" })
+	y = y - ROW
+	y = Slider(page, y, "Debuff-Größe (Plaketten)", { "plates", "debuffSize" }, 10, 40, 1, "%d px")
 	Check(page, 16, y, "Eigene Einblendungen", { "alerts", "enabled" })
 	Check(page, 16 + INNER / 2 + 6, y, "Fehlermeldungen dorthin", { "alerts", "errors" })
 	y = y - ROW
@@ -634,7 +639,6 @@ local function PageMinimap(page)
 	Check(page, 16, y, "Minimap im PhantomUI-Stil", { "minimap", "enabled" })
 	Check(page, half, y, "Fremde Addon-Knöpfe einsammeln", { "minimap", "collect" })
 	y = y - ROW
-	Check(page, 16, y, "Minimap dreht sich mit", { "minimap", "rotate" })
 	y = y - ROW
 	y = Note(page, y, "Diese beiden wirken nach /reload.")
 	y = y - 6

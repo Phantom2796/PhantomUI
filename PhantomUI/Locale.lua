@@ -8,6 +8,14 @@ P.EN = P.EN or {}
 P.LOC = P.LOC or {}
 
 P.LOC.enUS = {
+	["Debuffs statt Name"] = "Debuffs instead of name",
+	["Minimap: Wächter-Höhlen"] = "Minimap: guardian lairs",
+	["Minimap: Truhen"] = "Minimap: chests",
+	["Debuff-Größe (Plaketten)"] = "Debuff size (plates)",
+	["Wächter"] = "Guardian",
+	["Wächter da"] = "Guardian present",
+	["Höhle leer"] = "Lair empty",
+	["Truhe"] = "Chest",
 	["Ziehen: verschieben"] = "Drag: move",
 	["Rechtsklick: Standardplatz"] = "Right click: default position",
 	["Kanten ziehen: Breite / Höhe"] = "Drag edges: width / height",
@@ -243,6 +251,14 @@ P.LOC.enUS = {
 }
 
 P.LOC.frFR = {
+	["Debuffs statt Name"] = "Affaiblissements au lieu du nom",
+	["Minimap: Wächter-Höhlen"] = "Minicarte : repaires des gardiens",
+	["Minimap: Truhen"] = "Minicarte : coffres",
+	["Debuff-Größe (Plaketten)"] = "Taille des affaiblissements",
+	["Wächter"] = "Gardien",
+	["Wächter da"] = "Gardien présent",
+	["Höhle leer"] = "Repaire vide",
+	["Truhe"] = "Coffre",
 	["Ziehen: verschieben"] = "Glisser : déplacer",
 	["Rechtsklick: Standardplatz"] = "Clic droit : position par défaut",
 	["Kanten ziehen: Breite / Höhe"] = "Bords : largeur / hauteur",
@@ -478,6 +494,14 @@ P.LOC.frFR = {
 }
 
 P.LOC.esES = {
+	["Debuffs statt Name"] = "Perjuicios en lugar del nombre",
+	["Minimap: Wächter-Höhlen"] = "Minimapa: guaridas de guardianes",
+	["Minimap: Truhen"] = "Minimapa: cofres",
+	["Debuff-Größe (Plaketten)"] = "Tamaño de perjuicios",
+	["Wächter"] = "Guardián",
+	["Wächter da"] = "Guardián presente",
+	["Höhle leer"] = "Guarida vacía",
+	["Truhe"] = "Cofre",
 	["Ziehen: verschieben"] = "Arrastrar: mover",
 	["Rechtsklick: Standardplatz"] = "Clic derecho: posición por defecto",
 	["Kanten ziehen: Breite / Höhe"] = "Bordes: ancho / alto",
@@ -713,6 +737,14 @@ P.LOC.esES = {
 }
 
 P.LOC.ptBR = {
+	["Debuffs statt Name"] = "Penalidades em vez do nome",
+	["Minimap: Wächter-Höhlen"] = "Minimapa: covis dos guardiões",
+	["Minimap: Truhen"] = "Minimapa: baús",
+	["Debuff-Größe (Plaketten)"] = "Tamanho das penalidades",
+	["Wächter"] = "Guardião",
+	["Wächter da"] = "Guardião presente",
+	["Höhle leer"] = "Covil vazio",
+	["Truhe"] = "Baú",
 	["Ziehen: verschieben"] = "Arrastar: mover",
 	["Rechtsklick: Standardplatz"] = "Clique direito: posição padrão",
 	["Kanten ziehen: Breite / Höhe"] = "Bordas: largura / altura",
@@ -948,6 +980,14 @@ P.LOC.ptBR = {
 }
 
 P.LOC.plPL = {
+	["Debuffs statt Name"] = "Osłabienia zamiast nazwy",
+	["Minimap: Wächter-Höhlen"] = "Minimapa: legowiska strażników",
+	["Minimap: Truhen"] = "Minimapa: skrzynie",
+	["Debuff-Größe (Plaketten)"] = "Rozmiar osłabień",
+	["Wächter"] = "Strażnik",
+	["Wächter da"] = "Strażnik obecny",
+	["Höhle leer"] = "Legowisko puste",
+	["Truhe"] = "Skrzynia",
 	["Ziehen: verschieben"] = "Przeciągnij: przesuń",
 	["Rechtsklick: Standardplatz"] = "Prawy klik: domyślna pozycja",
 	["Kanten ziehen: Breite / Höhe"] = "Krawędzie: szerokość / wysokość",
@@ -1183,6 +1223,14 @@ P.LOC.plPL = {
 }
 
 P.LOC.csCZ = {
+	["Debuffs statt Name"] = "Oslabení místo jména",
+	["Minimap: Wächter-Höhlen"] = "Minimapa: doupata strážců",
+	["Minimap: Truhen"] = "Minimapa: truhly",
+	["Debuff-Größe (Plaketten)"] = "Velikost oslabení",
+	["Wächter"] = "Strážce",
+	["Wächter da"] = "Strážce přítomen",
+	["Höhle leer"] = "Doupě prázdné",
+	["Truhe"] = "Truhla",
 	["Ziehen: verschieben"] = "Táhnout: přesunout",
 	["Rechtsklick: Standardplatz"] = "Pravý klik: výchozí pozice",
 	["Kanten ziehen: Breite / Höhe"] = "Okraje: šířka / výška",
@@ -1418,6 +1466,14 @@ P.LOC.csCZ = {
 }
 
 P.LOC.roRO = {
+	["Debuffs statt Name"] = "Debuff-uri în loc de nume",
+	["Minimap: Wächter-Höhlen"] = "Minihartă: bârlogurile gardienilor",
+	["Minimap: Truhen"] = "Minihartă: cufere",
+	["Debuff-Größe (Plaketten)"] = "Mărime debuff-uri",
+	["Wächter"] = "Gardian",
+	["Wächter da"] = "Gardian prezent",
+	["Höhle leer"] = "Bârlog gol",
+	["Truhe"] = "Cufăr",
 	["Ziehen: verschieben"] = "Trage: mută",
 	["Rechtsklick: Standardplatz"] = "Clic dreapta: poziția implicită",
 	["Kanten ziehen: Breite / Höhe"] = "Margini: lățime / înălțime",
@@ -1653,6 +1709,14 @@ P.LOC.roRO = {
 }
 
 P.LOC.trTR = {
+	["Debuffs statt Name"] = "İsim yerine zayıflatmalar",
+	["Minimap: Wächter-Höhlen"] = "Mini harita: muhafız inleri",
+	["Minimap: Truhen"] = "Mini harita: sandıklar",
+	["Debuff-Größe (Plaketten)"] = "Zayıflatma boyutu",
+	["Wächter"] = "Muhafız",
+	["Wächter da"] = "Muhafız burada",
+	["Höhle leer"] = "İn boş",
+	["Truhe"] = "Sandık",
 	["Ziehen: verschieben"] = "Sürükle: taşı",
 	["Rechtsklick: Standardplatz"] = "Sağ tık: varsayılan konum",
 	["Kanten ziehen: Breite / Höhe"] = "Kenarlar: genişlik / yükseklik",
@@ -1888,6 +1952,14 @@ P.LOC.trTR = {
 }
 
 P.LOC.ruRU = {
+	["Debuffs statt Name"] = "Дебаффы вместо имени",
+	["Minimap: Wächter-Höhlen"] = "Миникарта: логова стражей",
+	["Minimap: Truhen"] = "Миникарта: сундуки",
+	["Debuff-Größe (Plaketten)"] = "Размер дебаффов",
+	["Wächter"] = "Страж",
+	["Wächter da"] = "Страж здесь",
+	["Höhle leer"] = "Логово пусто",
+	["Truhe"] = "Сундук",
 	["Ziehen: verschieben"] = "Тянуть: переместить",
 	["Rechtsklick: Standardplatz"] = "ПКМ: место по умолчанию",
 	["Kanten ziehen: Breite / Höhe"] = "Края: ширина / высота",
@@ -2123,6 +2195,14 @@ P.LOC.ruRU = {
 }
 
 P.LOC.ukUA = {
+	["Debuffs statt Name"] = "Дебафи замість імені",
+	["Minimap: Wächter-Höhlen"] = "Мінікарта: лігва вартових",
+	["Minimap: Truhen"] = "Мінікарта: скрині",
+	["Debuff-Größe (Plaketten)"] = "Розмір дебафів",
+	["Wächter"] = "Вартовий",
+	["Wächter da"] = "Вартовий тут",
+	["Höhle leer"] = "Лігво порожнє",
+	["Truhe"] = "Скриня",
 	["Ziehen: verschieben"] = "Тягнути: перемістити",
 	["Rechtsklick: Standardplatz"] = "ПКМ: типове місце",
 	["Kanten ziehen: Breite / Höhe"] = "Краї: ширина / висота",
@@ -2358,6 +2438,14 @@ P.LOC.ukUA = {
 }
 
 P.LOC.zhCN = {
+	["Debuffs statt Name"] = "减益代替名字",
+	["Minimap: Wächter-Höhlen"] = "小地图：守护者巢穴",
+	["Minimap: Truhen"] = "小地图：宝箱",
+	["Debuff-Größe (Plaketten)"] = "减益大小",
+	["Wächter"] = "守护者",
+	["Wächter da"] = "守护者在场",
+	["Höhle leer"] = "巢穴为空",
+	["Truhe"] = "宝箱",
 	["Ziehen: verschieben"] = "拖动：移动",
 	["Rechtsklick: Standardplatz"] = "右键：默认位置",
 	["Kanten ziehen: Breite / Höhe"] = "拖动边缘：宽度 / 高度",
@@ -2593,6 +2681,14 @@ P.LOC.zhCN = {
 }
 
 P.LOC.jaJP = {
+	["Debuffs statt Name"] = "名前の代わりに弱体効果",
+	["Minimap: Wächter-Höhlen"] = "ミニマップ：守護者の巣",
+	["Minimap: Truhen"] = "ミニマップ：宝箱",
+	["Debuff-Größe (Plaketten)"] = "弱体効果のサイズ",
+	["Wächter"] = "守護者",
+	["Wächter da"] = "守護者がいる",
+	["Höhle leer"] = "巣は空",
+	["Truhe"] = "宝箱",
 	["Ziehen: verschieben"] = "ドラッグ：移動",
 	["Rechtsklick: Standardplatz"] = "右クリック：初期位置",
 	["Kanten ziehen: Breite / Höhe"] = "端をドラッグ：幅 / 高さ",
@@ -2828,6 +2924,14 @@ P.LOC.jaJP = {
 }
 
 P.LOC.koKR = {
+	["Debuffs statt Name"] = "이름 대신 약화 효과",
+	["Minimap: Wächter-Höhlen"] = "미니맵: 수호자 둥지",
+	["Minimap: Truhen"] = "미니맵: 상자",
+	["Debuff-Größe (Plaketten)"] = "약화 효과 크기",
+	["Wächter"] = "수호자",
+	["Wächter da"] = "수호자 있음",
+	["Höhle leer"] = "둥지 비어 있음",
+	["Truhe"] = "상자",
 	["Ziehen: verschieben"] = "드래그: 이동",
 	["Rechtsklick: Standardplatz"] = "우클릭: 기본 위치",
 	["Kanten ziehen: Breite / Höhe"] = "가장자리: 너비 / 높이",
