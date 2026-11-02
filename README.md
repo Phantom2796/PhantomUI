@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.svg" alt="PhantomUI – the complete interface for Azeroth Survivors" width="100%">
+<img src="PhantomUI/docs/banner.svg" alt="PhantomUI – the complete interface for Azeroth Survivors" width="100%">
 </p>
 
 <p align="center">
