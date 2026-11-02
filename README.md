@@ -12,7 +12,6 @@
 
 **PhantomUI** is a complete, modern interface for **Azeroth Survivors**. One addon replaces the classic look with a dark, flat style – crisp black borders, purple accents – and puts the frames, minimap, damage meter, floating damage numbers and an ability plan under one roof. Everything is movable, everything lives in one settings window, and its menus are translated into all 14 game languages (English, Deutsch, Français, Español, Português, Polski, Čeština, Română, Türkçe, Русский, Українська, 简体中文, 日本語, 한국어) – picked automatically from your game language, or set it under General → Language.
 
-> No other UI addon needed. SurvivorsDragonUi, CompactSCT and AZS Spell Meter are all built in.
 
 ---
 
