@@ -5,6 +5,41 @@
 PhantomUI = {}
 local P = PhantomUI
 
+-- Klasse des Helden: aus den eigenen Zaubern (AZS_SPELLS) ableiten,
+-- UnitClass bleibt seit dem Engine-Update beim Heldenwechsel teils alt
+local spellClass, spellSrc
+function P.PlayerClass()
+	local list = AZS_SPELLS
+	if type(list) == "table" and table.getn(list) > 0 and PhantomUI_PlanData then
+		if list ~= spellSrc then
+			spellSrc = list
+			spellClass = nil
+			local votes = {}
+			for i = 1, table.getn(list) do
+				local key = list[i].key
+				for class, abilities in pairs(PhantomUI_PlanData) do
+					for k = 1, table.getn(abilities) do
+						if abilities[k].id == key then
+							votes[class] = (votes[class] or 0) + 1
+						end
+					end
+				end
+			end
+			local best = 0
+			for class, n in pairs(votes) do
+				if n > best then
+					best, spellClass = n, class
+				end
+			end
+		end
+		if spellClass then
+			return spellClass
+		end
+	end
+	local _, class = UnitClass("player")
+	return class or "WARRIOR"
+end
+
 -- Symbolpfad: Name -> Interface\Icons\Name; "PUI_x" -> eigenes Symbol in media\icons
 function PhantomUI_IconPath(name)
 	if not name then

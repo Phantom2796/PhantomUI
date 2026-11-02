@@ -45,8 +45,7 @@ local function Lang()
 end
 
 local function PlayerClass()
-	local _, class = UnitClass("player")
-	return class or "WARRIOR"
+	return P.PlayerClass()
 end
 
 -- Auswahl je Reiter: Faehigkeiten der Klasse oder Gegenstaende eines Platzes

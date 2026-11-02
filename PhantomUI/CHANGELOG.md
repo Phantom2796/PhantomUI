@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.121
+- Ability plan follows a class change again: the hero's class is now read from the spells the game reports (AZS_SPELLS), since after AS 0.139's engine update the client could keep the old class when switching heroes.
+
 ## 0.9.120
 - Damage numbers: new layout *Anchored in the world* (AS 0.138, now the default): each number sits over the enemy it hit and stays where it died, follows the camera without trailing and hides when that spot leaves the screen – no nameplates needed. Falls back to *Above enemies* for a hit the game does not report.
 - `/pui world` prints what the world anchors deliver, for troubleshooting.

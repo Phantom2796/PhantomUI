@@ -47,7 +47,7 @@ end
 local function Mode()
 	-- Nur der Krieger bekommt eine Leiste (Wut). Mana braucht in Azeroth
 	-- Survivors keiner, Kombopunkte zeigt das Spiel selbst (siehe UnitFrames).
-	local _, class = UnitClass("player")
+	local class = P.PlayerClass()
 	if class == "WARRIOR" then
 		return "bar"
 	end
