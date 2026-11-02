@@ -57,7 +57,17 @@
 ---
 
 ## 📦 Install
-1. Download the [zip](https://github.com/Phantom2796/PhantomUI/raw/main/download/PhantomUI.zip) – always the newest version.
+
+### Option A – Latest release (recommended)
+1. Download **PhantomUI.zip** from the [latest release](https://github.com/Phantom2796/PhantomUI/releases/latest/download/PhantomUI.zip) – always the newest version.
+2. Unzip it into `benilla-config/AddOns/` so the file sits at `benilla-config/AddOns/PhantomUI/PhantomUI.toc`.
+3. Disable SurvivorsDragonUi; delete old `CompactSCT` / `AZSSpellMeter` folders – they are part of PhantomUI now.
+4. Start the game (a full restart after updating, not just `/reload`, when new files were added).
+
+**— OR —**
+
+### Option B – Zip from the repository
+1. Download the [zip](https://github.com/Phantom2796/PhantomUI/raw/main/PhantomUI/download/PhantomUI.zip).
 2. Unzip so the folder sits at `benilla-config/AddOns/PhantomUI/PhantomUI.toc`.
 3. Disable SurvivorsDragonUi; delete old `CompactSCT` / `AZSSpellMeter` folders – they are part of PhantomUI now.
 4. Start the game (a full restart after updating, not just `/reload`, when new files were added).
