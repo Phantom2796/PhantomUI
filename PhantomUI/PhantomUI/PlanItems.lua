@@ -54,7 +54,20 @@ PhantomUI_LegendaryName = { enUS = "Legendary amulet · remakes {spell}", plPL =
 
 -- Namen der legendaeren Halsketten in allen Sprachen (zum Erkennen, ob man eine traegt)
 PhantomUI_LegendaryNecks = {
-	-- Schamane 0.134
+	-- Schamane 0.134 / Jäger 0.140
+	["Corazón del Señor de la jauría"] = true,
+	["Coração do Senhor da Matilha"] = true,
+	["Cœur du Seigneur de la meute"] = true,
+	["Heart of the Packlord"] = true,
+	["Herz des Rudelfürsten"] = true,
+	["Inima Stăpânului haitei"] = true,
+	["Serce Władcy Stada"] = true,
+	["Srdce Vládce smečky"] = true,
+	["Сердце Повелителя стаи"] = true,
+	["Серце Володаря зграї"] = true,
+	["兽群领主之心"] = true,
+	["群れの王の心臓"] = true,
+	["무리군주의 심장"] = true,
 	["Corazón del Rompetierra"] = true,
 	["Coração do Quebra-Terra"] = true,
 	["Cœur du Brise-terre"] = true,

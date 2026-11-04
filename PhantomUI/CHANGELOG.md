@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.122
+- AS 0.140: Kill Command replaces Explosive Trap in the Hunter's ability plan; icons re-read from the game data (Tier 0.5 sets, Scholomance); Heart of the Packlord recognised as a legendary necklace.
+
 ## 0.9.121
 - Ability plan follows a class change again: the hero's class is now read from the spells the game reports (AZS_SPELLS), since after AS 0.139's engine update the client could keep the old class when switching heroes.
 
