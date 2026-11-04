@@ -1,5 +1,8 @@
 # PhantomUI – Changelog
 
+## 0.9.123
+- Player frame takes its class colour and class icon from the hero's spells too, so a Shaman no longer shows the Mage's light blue after switching heroes.
+
 ## 0.9.122
 - AS 0.140: Kill Command replaces Explosive Trap in the Hunter's ability plan; icons re-read from the game data (Tier 0.5 sets, Scholomance); Heart of the Packlord recognised as a legendary necklace.
 

@@ -39,8 +39,17 @@ local FIXED = {
 
 local frames = {}
 
-local function ClassColor(unit)
+-- eigener Held: Klasse aus den Zaubern (UnitClass bleibt beim Heldenwechsel alt)
+local function UnitClassKey(unit)
+	if UnitIsUnit and UnitIsUnit(unit, "player") then
+		return P.PlayerClass()
+	end
 	local _, class = UnitClass(unit)
+	return class
+end
+
+local function ClassColor(unit)
+	local class = UnitClassKey(unit)
 	return class and CLASS_COLORS[class]
 end
 
@@ -448,7 +457,7 @@ local function Update(f)
 	end
 
 	if db.class then
-		local _, class = UnitClass(unit)
+		local class = UnitClassKey(unit)
 		local coords = UnitIsPlayer(unit) and class and CLASS_COORDS[class]
 		if coords then
 			f.classIcon:SetTexCoord(coords[1] + 0.02, coords[2] - 0.02, coords[3] + 0.02, coords[4] - 0.02)
